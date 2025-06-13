@@ -1,0 +1,5217 @@
+
+
+#include <ESP8266WiFi.h>
+#include <ESP8266WebServer.h>
+#include "RT_HW_BASE.h"
+#include <Wire.h>
+#include <ESP8266HTTPUpdateServer.h>
+#include "RT_HW_EXPANDERS.h"
+#include <EEPROM.h>
+struct UB_182885883
+{
+bool ubo_218810585 = 0;
+bool ubo_64046820 = 0;
+bool ubo_74323408 = 0;
+bool ubo_5266079 = 0;
+bool ubo_233133022 = 0;
+bool _dms1Q0 = 0;
+bool _dms1Q1 = 0;
+bool _dms1Q2 = 0;
+bool _dms1Q3 = 0;
+bool _dms1Q4 = 0;
+bool _dms1Q5 = 0;
+bool _dms1Q6 = 0;
+bool _dms1Q7 = 0;
+bool _dms1Q8 = 0;
+bool _dms1Q9 = 0;
+bool _dms1Q10 = 0;
+bool _dms1Q11 = 0;
+bool _dms1Q12 = 0;
+bool _dms1Q13 = 0;
+bool _dms1Q14 = 0;
+bool _dms1Q15 = 0;
+bool _FreeLog1_Q1 = 0;
+bool _FreeLog1_Q2 = 0;
+bool _FreeLog1_Q3 = 0;
+bool _FreeLog1_Q4 = 0;
+};
+UB_182885883 UB_182885883_Instance1;
+int UB_182885883_ubi_234709184 = 0;
+extern "C" {
+#include "user_interface.h"
+}
+bool _FreeLog4_IArr[2];
+bool _FreeLog4_Q1_StArr[] = {0, 1};
+unsigned long time_work_30209440_1;
+unsigned long time_w_167663691_1;
+bool screen_start_167663691_1= 0;
+bool En_UART_T;
+int p1;
+int p2;
+int p3;
+int p4;
+int p5;
+int p6;
+int p7;
+int p8;
+int p9;
+int p10;
+int p11;
+int p12;
+byte b1;
+byte b2;
+byte b3;
+byte b4;
+byte b5;
+byte b6;
+byte b7;
+byte b8;
+byte b9;
+byte b10;
+byte b11;
+byte b12;
+byte bm;
+int ss;
+byte gm;
+bool NewDataReceived ;
+// Объявление переменных
+boolean stringComplete= false; // Флаг завершения строки
+boolean receiving= false;
+boolean messageStarted= false; // Флаг начала сообщения
+char inputStringUART[256]; // Входящая строка
+int inputIndex= 0; // Индекс текущей позиции в буфере
+boolean reboot= false;
+boolean wifion= false;
+bool Print_term_264093668_1;
+int  price_0;
+bool En_Price;
+bool Permission;
+#define mySerial Serial 
+
+static uint16_t crcTable[256];
+bool En_Payment;
+bool Test_mode1;
+bool paymant_result;
+bool Print_term_20992536_3;
+bool en_triggered_bank;
+bool term;
+#define INPUT_PIN 14
+
+volatile bool pin14_waiting= false; // Ждём подтверждения длинного сигнала
+volatile unsigned long pin14_startUs= 0; // Время фронта
+bool en_reset_165983470_1;
+bool En_Coin;
+bool En_Coin_changeTime;
+int coin_price_int;
+int coin_price_button;
+int coin_rest_time_int;
+byte coin_buttons_work;
+bool CoinGetGoods;
+// -----------------------------------------------
+// Глобальные/статические переменные (или в начале файла):
+// -----------------------------------------------
+static unsigned long lastCoinCheckTime= 0; // Для ограничения вызова 1 раз в секунду
+static bool coinButtonsWasActive= false; // Запоминаем, был ли coin_buttons_work>0 в предыдущем цикле
+static int lastDate1Len= -1; // Предыдущая длина date1Str
+static int lastDate2Len= -1; // Предыдущая длина date2Str
+static int lastDate3Len= -1; // Предыдущая длина date3Str
+//int16_t coin_price_rest= 0;
+uint8_t check_COINMODE=0;
+bool En_Coin_once;
+bool coin_screen;
+bool Print_term_47651352_1;
+bool Cashless_off_231853876_1;
+bool En_Price1_149139899_1;
+byte goods_number_149139899_1;
+bool En_Price1_187797143_2;
+byte goods_number_187797143_2;
+bool en_pcf8575_82056555_1;
+byte device_address_pcf_82056555_1;
+bool pin1_en_82056555_1;
+int pin_out1_82056555_1;
+bool pin2_en_82056555_1;
+byte pin_out2_82056555_1;
+#define PCF8575_BASE_ADDR_82056555_1 0x20
+
+uint16_t previousConfig_82056555_1= 0xFFFF;
+uint16_t previousOutput_82056555_1= 0xFFFF;
+bool Print_term_259698074_1;
+bool Exit_comscr_259698074_1;
+bool Print_term_85678555_2;
+bool En_Price1_219376631_1;
+byte goods_number_219376631_1;
+bool EN_MONEY;
+bool En_success_goods_11519465_1;
+bool Payment_on_motor_11519465_1;
+bool Exit_Screen_11519465_1;
+bool Fiscal_11519465_1;
+bool En_mistake_goods;
+bool Payment_on_motor;
+bool Exit_Screen;
+bool Fiscal;
+bool En_Price1_95158574_2;
+byte goods_number_95158574_2;
+bool Print_term_102479269_1;
+bool reset_coin_236455121_1;
+int servoPin;
+bool Servo_En;
+byte ServoMove;
+bool ServoPinExit;
+//int servoPin= 13; // Пин для подключения сервопривода
+int ServoPause= 20; // Длительность паузы между сигналами (в миллисекундах)
+bool serialActive= true; // Флаг для отслеживания состояния Serial
+bool en_trigged;
+bool term1;
+bool en_reset_1425741_2;
+bool En_SendStatus_14559945_1;
+int price1_14559945_1;
+int price2_14559945_1;
+int price3_14559945_1;
+int price4_14559945_1;
+int price5_14559945_1;
+int price6_14559945_1;
+int price7_14559945_1;
+int price8_14559945_1;
+int price9_14559945_1;
+int price10_14559945_1;
+int price11_14559945_1;
+int price12_14559945_1;
+byte ban1_14559945_1;
+byte ban2_14559945_1;
+byte ban3_14559945_1;
+byte ban4_14559945_1;
+byte ban5_14559945_1;
+byte ban6_14559945_1;
+byte ban7_14559945_1;
+byte ban8_14559945_1;
+byte ban9_14559945_1;
+byte ban10_14559945_1;
+byte ban11_14559945_1;
+byte ban12_14559945_1;
+byte ban_mistake_14559945_1;
+unsigned long SerialSpeedSend_14559945_1;
+String OTAUSER;
+String OTAPASSWORD;
+#define OTAPATH "/firmware" // Путь, который будем дописывать после ip адреса в браузере.
+
+ESP8266HTTPUpdateServer httpUpdater;
+#define OTAUSER "login"
+
+#define OTAPASSWORD "pass"
+bool En_inputrebut;
+String inputString_crc;
+bool Print_term_142387099_2;
+bool en_ic2_18571967_1;
+String textdev_18571967_1;
+String detectedDevices_18571967_1= ""; // здесь будут храниться найденные устройства
+bool en_factory;
+os_timer_t watchDogTimer;
+int _PWDC = 0;
+int ESP8266_AnalogInputValue;
+unsigned long ESP8266_AnalogInputValue_StR;
+bool ESPControllerWifiClient_status = 1;
+char ESPControllerWifiAP_SSID[40] = "VendingWifi";
+char ESPControllerWifiAP_password[40] = "VendingAdmin";
+bool ESPControllerWifiAP_IsNeedReconect = 0;
+bool ESPControllerWifiAP_workStatus = 1;
+IPAddress ESPControllerWifiAP_ip(192, 168, 4, 1);
+ IPAddress  ESPControllerWifiAP_dns (192, 168, 4, 1);
+ IPAddress  ESPControllerWifiAP_gateway (192, 168, 4, 1);
+IPAddress ESPControllerWifiAP_subnet (255, 255, 255, 0);
+ uint8_t ESPControllerWifiAP_mac[6] = {0x0, 0x0, 0x0, 0x0, 0x0, 0x0};
+WiFiMode _ESPCurrentWifiMode = WIFI_AP_STA;
+bool  ESPControllerWifi_isNeededRestsrt= 0;
+byte ESP8266_freeParam_198022797 = 0 ;
+byte ESP8266_freeParam_246427857 = 1 ;
+int ESP8266_freeParam_2908715 = 10 ;
+int ESP8266_freeParam_27795835 = 100 ;
+int ESP8266_freeParam_112257373 = 110 ;
+int ESP8266_freeParam_254951221 = 120 ;
+int ESP8266_freeParam_167036645 = 20 ;
+int ESP8266_freeParam_198065769 = 30 ;
+int ESP8266_freeParam_109304058 = 40 ;
+int ESP8266_freeParam_84774238 = 50 ;
+int ESP8266_freeParam_41571615 = 60 ;
+int ESP8266_freeParam_197729979 = 70 ;
+int ESP8266_freeParam_90309138 = 80 ;
+int ESP8266_freeParam_133909782 = 90 ;
+unsigned long ESP8266_freeParam_19552900 = 115200 ;
+byte ESP8266_freeParam_216885967 = 0 ;
+byte ESP8266_freeParam_79724050 = 0 ;
+byte ESP8266_freeParam_191929235 = 0 ;
+byte ESP8266_freeParam_46230415 = 0 ;
+byte ESP8266_freeParam_60439466 = 0 ;
+byte ESP8266_freeParam_111047777 = 0 ;
+byte ESP8266_freeParam_260883057 = 0 ;
+byte ESP8266_freeParam_80199000 = 0 ;
+byte ESP8266_freeParam_121065562 = 0 ;
+byte ESP8266_freeParam_98951291 = 0 ;
+byte ESP8266_freeParam_182290599 = 0 ;
+byte ESP8266_freeParam_174428203 = 0 ;
+bool ESP8266_freeParam_265280871 = 1 ;
+unsigned long ESP8266_freeParam_190210571 = 60000 ;
+unsigned long ESP8266_freeParam_70184650 = 60000 ;
+unsigned long ESP8266_freeParam_71116216 = 10000 ;
+byte ESP8266_freeParam_152708564 = 3 ;
+bool ESP8266_freeParam_190797778 = 1 ;
+ESP8266WebServer ESPControllerWifi_tspWebServer(80);
+String ESPControllerWifi_tspWebServer_client_buffer="";
+String  webSettingPageCheckBoksOnClickScript = "function chOnC(id,iAs)\n{\nlet c= document.getElementById(id+\"A\");\nlet e=document.getElementById(id);\nif ((c!= null)&&(e!= null))\n{\nblI(id);\nif(c.checked)\n{\ne.value =\"1\";\n}\nelse\n{\ne.value =\"0\";\n}\n}\nif(iAs)\n{\nsED(id);\n}\n}";
+String  webSettingPageComboboxOnChangeScript = " function cbOnC(id, iAs)\n{\nblI(id);\nif(iAs)\n{\nsED(id);\n}\n}";
+String  webSettingPageButtonOnClickScript = " function bOc(id)\n{\nvar x=gX();\nvar r=\"/8f9b8550-fe35-44c1-9f76-2ca4613dac80?id=\"+id;\nif(x.readyState==4){}\nx.open(\"GET\",r,true);\nx.send();\n}";
+char* _ESP8266WebInterfacePagesNamesArray[] = {"Main", "Внести цену", "Управление", "Config", "mistake"}; 
+char* _ESP8266WebInterfacePagesAddressesArray[] = {"", "price", "manage", "config", "mistake"}; 
+bool _webInterfaceMinuItemsVisualMode[] = {1, 1, 1, 1, 1};
+String keyArray202628349[3] = {"9600", "57600", "115200"};
+String valueArray202628349[3] = {"9600 бод", "57600 бод", "115200 бод"};
+String  webSettingPageHeader1 = "<!DOCTYPE HTML><meta charset=\"utf-8\"><meta name=\"viewport\" content=\"width=device-width, initial-scale=1\"><html>";
+String  getXmlHttpFunction = "function gX()\n{\nvar x;\ntry\n{\nx=new ActiveXObject(\"Msxml2.XMLHTTP\");\n}\ncatch (e)\n{\ntry\n{\nx = new ActiveXObject(\"Microsoft.XMLHTTP\");\n}\ncatch (E)\n{\nx=false;\n}\n}\nif(!x && typeof XMLHttpRequest!='undefined')\n{\nx=new XMLHttpRequest();\n}\nreturn x;\n}";
+String  webSettingPageFooterString  = "Добро пожаловать в мир будущего!!! v.6.1 (09.05.25) без наводок";
+String webSettingPageHeaderString = "ВЕНДИНГОВЫЕ АППАРАТЫ";
+struct WebSettingPageWidgetParametrs
+{
+String label;
+String style;
+String id;
+bool isClient;
+bool isIp;
+bool isAutoSave;
+bool hasLabel;
+bool hasCommonDiv;
+String labelStyle;
+byte labelPosition;
+String valueStyle;
+int maximumStringLength;
+};
+ WebSettingPageWidgetParametrs _webSettingPageWidgetParametrs;
+String _ESP8266WebInterfacePageButton_save= "<button class = \"buttonFlp\" onclick=\"sDat()\">Сохранить</button>";
+String _ESP8266WebInterfacePageButton_reset= "<button class = \"buttonFlp\" onclick=\"rCon()\">Перезагрузить</button>";
+String   resetControllerFromWebScript = " function rCon(){var x=gX();\nx.onreadystatechange=function(){if (x.readyState==4){document.location.reload();}}\nx.open(\"GET\",\"/248e715b-f090-46b8-a0e2-86492908135b\",true); x.send(); }";
+
+String webServerSettingPageSaveParametrsScript =" function sDat()\n{\nvar x=gX();\nvar r=\"/ee17ecc2-f0b5-46ad-a9cb-f0c7295f99e9?\";\nfor(let i=0;i<sD.c;i++)\n{\nlet e=document.getElementById(sD.d[i].i);\nsD.d[i].e=false;\nif(e!=null)\n{\nif(i>0)\n{\nr=r+\"&\";\n}\nr=r+sD.d[i].i+\"=\"+e.value;\n}\n}\nx.onreadystatechange=function()\n{\nif(x.readyState==4)\n{\n}\n}\nx.open(\"GET\",r,true);\nx.send();}";
+
+String webServerSettingPageAutoSaveParametrsScript =" function sED(id)\n{\nvar x=gX();\nvar r=\"/ee17ecc2-f0b5-46ad-a9cb-f0c7295f99e9?\";\nvar e=document.getElementById(id);\nif(e!=null)\n{\nr=r+id+\"=\"+e.value;\n}\nfor(let i=0;i<sD.c;i++)\n{\nsD.d[i].e=false;\n}\nx.onreadystatechange=function()\n{\nif(x.readyState==4)\n{}\n}\nx.open(\"GET\",r,true);\nx.send();\n}";
+String webSettingPageMainStyle = "body{font-family:'Roboto', sans-serif;margin:0;padding:0;background-color:#f0f2f5;}.menu{display:inline-flex;flex-direction:column;align-items:center;justify-content:center;padding:1%;margin:1%;width:16%;border:1px solid black;border-radius:8px;}.menuItem{font-weight:600;font-family:'Times New Roman', Times, serif;display:block;margin:5px;width:95%;}.header{padding:10px;left:0px;right:0px;top:0px;background:#00FFFF;text-align:center;font-weight:600;font-family:'Times New Roman', Times, serif;font-size:250%;}.content{float:right;width:78%;}.footer{float:left;padding:1%;width:98%;background:#00FFFF;margin-top:1%;text-align:center;font-weight:600;font-family:'Times New Roman', Times, serif;font-size:150%;}.buttonFlp{width:150px;border-radius:20px;background:#459DE5;color:#fff;font-size:12px;cursor:pointer;float:left;padding:1%;margin:1%;border:none;transition:background 0.3s ease;}.buttonFlp:hover{background:#358DE5;}.buttonFlp:focus{outline:none;}.stLab{margin:5px 0;}.stBtn{margin:5px;}.stLig{margin:5px;width:50px;height:50px;border-radius:20%;display:inline-flex;align-items:center;justify-content:center;}.stText{margin:5px 0;}.stIF{margin:5px 0;width:calc(100% - 10px);/* Ширина поля ввода, чтобы оно адаптировалось к контейнеру */    padding:10px;/* Добавьте немного отступа для лучшего восприятия */    border:1px solid #ccc;/* Граница для поля ввода */    border-radius:4px;/* Скругленные углы */    font-size:16px;/* Размер шрифта */}.stIF:focus{border-color:#459DE5;outline:none;}.stWL{height:100px;width:400px;overflow:auto;margin:5px 0;}.stChb, .stRb, .stCB{margin:5px 0;}";
+String parseWebServerResponseScript ="  function pRD(x){\ntry {var r=JSON.parse(x.responseText);}\ncatch (e) {setTimeout(gND(),1000); return;}\nif(r.r < 1){setTimeout(gND(),1000); return;}\nfor(let i=0;i<r.c;i++){uCE(i,r);}\nsetTimeout(gND(),1000);\n}\nfunction uCE(i,r){\nlet e=document.getElementById(r.d[i].i);\nif(e==null){return;}\nif(r.d[i].t==\"T\") { e.innerHTML=r.d[i].v; return;}\nif(r.d[i].t==\"L\") {e.style.backgroundColor=r.d[i].v; return;}\nif(!(cND(r.d[i].i))){return;}\ne.value=r.d[i].v;\nif(r.d[i].t==\"H\")\n{\ne=document.getElementById(r.d[i].i+\"A\");\nif(e!=null){e.checked=(r.d[i].v==\"1\");}\n}\nif(r.d[i].t==\"R\"){\ne=document.getElementsByName(r.d[i].i);\nif(e==null){return;}\nfor(let i1=0;i1<e.length;i1++){\nif(e[i1].value ==r.d[i].v){\ne[i1].checked=true;\n}\nelse {\ne[i1].checked=false;\n}\n}\n}\n}\nfunction cND(id){\nfor(let i=0;i<sD.c;i++){\nif(sD.d[i].i == id){return !sD.d[i].e;}\n}\nreturn false;\n}\nfunction blI(id){\nfor(let i=0;i<sD.c;i++){\nif(sD.d[i].i == id){sD.d[i].e=true; return; }\n}\n}";
+String sendWebServerResponseScriptPart1 =" function gND(){\nlet x=gX();\nx.onreadystatechange=function()\n{\nif(x.readyState==4)\n{pRD(x);\n}\n};\nlet r=\"/7a2677ef-dafe-405a-89a1-be6d0547dfbf?page=";
+String sendWebServerResponseScriptPart2 ="\";\nx.open(\"GET\",r,true);\nx.send();\n}";
+bool isNeededCommitESP8266EEprom = 0;
+bool _gtv74 = 0;
+bool _gtv25;
+unsigned long _gtv12 = 0; //Таймер длительности работы двигателя Stop_Gate1
+unsigned long _gtv13 = 9900; //Возврат значения таймера длительности работы двигателя после датчика выдачи Stop_Gatemain
+unsigned long _gtv36 = 0; //ожидание платежа _wait_payment _gtv36
+bool _gtv38 = 0; //тестовый режим
+unsigned long _gtv52 = 30000; //ожидание платежа обнуление
+bool _gtv62 = 1; //использовать датчик выдачи
+bool _gtv1 = 0; //Buttons_enable _gtv1
+byte _gtv64 = 0;
+bool _gtv69 = 1; //LED_ON bool _gtv69
+byte _gtv73 = 0; //Рабочий вывод кнопки
+bool _gtv85 = 0;
+bool _gtv49 = 0; //выберите товар
+bool _gtv50 = 0; //перезагрузка терминала
+bool _gtv4 = 0;
+bool _gtv24 = 0; //Payment_on_motor
+bool _gtv45 = 0;
+int _gtv37 = 0;
+bool _gtv39 = 0; //CoinWork _gtv39
+String _gtv3 = "myStringLog111";
+int _gtv23 = 0;
+String _gtv26;
+bool _gtv27;
+bool _gtv28 = 0;
+bool _gtv29; //ADCcheck
+String _gtv2;
+byte _gtv7 = 0;
+byte _gtv8;
+byte _gtv9 = 0;
+byte _gtv10 = 0;
+unsigned long _gtv11 = 0;
+bool _gtv15 = 0; //Выдача товара
+int _gtv17 = 0; //Внесено денег через монетоприемник _gtv17
+int _gtv19 = 180;
+byte _gtv40 = 0; //ErrorMotor
+bool _gtv42 = 0;
+bool _gtv43 = 0; //ожидание следующего платежа
+int _gtv44 = 10000;
+bool _gtv21 = 0;
+bool _gtv22 = 0; //Mistake_reset
+bool _gtv5 = 0;
+byte _gtv6 = 76;
+byte _gtv14 = 15;
+byte _gtv16 = 125;
+byte _gtv18 = 25;
+int _gtv20 = 7000; //задержка на включение
+bool _changeNumber6_Out = 0;
+int _changeNumber6_OLV;
+bool Out_252737640_64898756;
+bool Out_212107519_64898756;
+bool Out_41003547_64898756;
+bool Out_180223957_64898756;
+bool Out_168098897_64898756;
+bool Out_156530867_64898756;
+bool Out_64081572_64898756;
+bool Out_82526732_64898756;
+bool Out_222591363_64898756;
+bool Out_266261047_64898756;
+bool Out_256030093_64898756;
+bool Out_72626539_64898756;
+bool Out_18163133_64898756;
+bool Out_178917983_64898756;
+bool Out_263886047_64898756;
+bool Out_258998927_64898756;
+bool _tim7I = 0;
+bool _tim7O = 0;
+unsigned long _tim7P = 0UL;
+bool _SysParSave_13_OldSt = 0;
+bool _trgrt9 = 0;
+bool _trgrt9I = 0;
+bool _SysParSave_46_OldSt = 0;
+bool _tim15I = 0;
+bool _tim15O = 0;
+unsigned long _tim15P = 0UL;
+bool _changeNumber19_Out = 0;
+byte _changeNumber19_OLV;
+bool _tim14I = 0;
+bool _tim14O = 0;
+unsigned long _tim14P = 0UL;
+bool _SysParSave_23_OldSt = 0;
+bool _SysParSave_6_OldSt = 0;
+bool _tim19I = 0;
+bool _tim19O = 0;
+unsigned long _tim19P = 0UL;
+bool _changeNumber21_Out = 0;
+byte _changeNumber21_OLV;
+bool _SysParSave_49_OldSt = 0;
+bool _changeNumber8_Out = 0;
+int _changeNumber8_OLV;
+bool _trgrt15 = 0;
+bool _trgrt15I = 0;
+bool _tim17I = 0;
+bool _tim17O = 0;
+unsigned long _tim17P = 0UL;
+bool _changeNumber24_Out = 0;
+int _changeNumber24_OLV;
+bool FTrig_1_Out = 0;
+bool FTrig_1_OldStat = 0;
+bool _SysParSave_32_OldSt = 0;
+bool _changeNumber10_Out = 0;
+int _changeNumber10_OLV;
+int _mux5;
+bool _trgrt7 = 0;
+bool _trgrt7I = 0;
+bool _trgrt10 = 0;
+bool _trgrt10I = 0;
+bool _SysParSave_36_OldSt = 0;
+bool _changeNumber14_Out = 0;
+byte _changeNumber14_OLV;
+bool FTrig_7_Out = 0;
+bool FTrig_7_OldStat = 0;
+bool _tim21I = 0;
+bool _tim21O = 0;
+unsigned long _tim21P = 0UL;
+bool _SysParSave_39_OldSt = 0;
+bool FTrig_2_Out = 0;
+bool FTrig_2_OldStat = 0;
+bool FTrig_4_Out = 0;
+bool FTrig_4_OldStat = 0;
+bool _trgrt3 = 0;
+bool _trgrt3I = 0;
+bool _SysParSave_25_OldSt = 0;
+bool _changeNumber3_Out = 0;
+int _changeNumber3_OLV;
+bool _SysParSave_42_OldSt = 0;
+bool FTrig_6_Out = 0;
+bool FTrig_6_OldStat = 0;
+bool _trgrt20 = 0;
+bool _trgrt20I = 0;
+bool _SysParSave_37_OldSt = 0;
+bool _SysParSave_27_OldSt = 0;
+bool _mux2;
+bool _SysParSave_3_OldSt = 0;
+bool _changeNumber26_Out = 0;
+byte _changeNumber26_OLV;
+bool _changeNumber18_Out = 0;
+byte _changeNumber18_OLV;
+bool _changeNumber12_Out = 0;
+byte _changeNumber12_OLV;
+bool _changeNumber5_Out = 0;
+int _changeNumber5_OLV;
+bool _tim20I = 0;
+bool _tim20O = 0;
+unsigned long _tim20P = 0UL;
+bool _dms3Q0 = 0;
+bool _dms3Q1 = 0;
+bool _dms3Q2 = 0;
+bool _dms3Q3 = 0;
+bool _dms3Q4 = 0;
+bool _dms3Q5 = 0;
+bool _dms3Q6 = 0;
+bool _dms3Q7 = 0;
+bool _dms3Q8 = 0;
+bool _dms3Q9 = 0;
+bool _dms3Q10 = 0;
+bool _dms3Q11 = 0;
+bool _trgrt12 = 0;
+bool _trgrt12I = 0;
+unsigned long Out_13271937_175210106;
+unsigned long Out_202750331_175210106;
+bool _tim13I = 0;
+bool _tim13O = 0;
+unsigned long _tim13P = 0UL;
+bool _SysParSave_29_OldSt = 0;
+bool _changeNumber7_Out = 0;
+int _changeNumber7_OLV;
+bool _SysParSave_10_OldSt = 0;
+bool _Terminal_105251992;
+bool _SysParSave_41_OldSt = 0;
+bool _SysParSave_31_OldSt = 0;
+bool _SysParSave_43_OldSt = 0;
+bool _SysParSave_4_OldSt = 0;
+bool _SysParSave_18_OldSt = 0;
+bool _tim2I = 0;
+bool _tim2O = 0;
+unsigned long _tim2P = 0UL;
+bool _tim10I = 0;
+bool _tim10O = 0;
+unsigned long _tim10P = 0UL;
+bool _SysParSave_35_OldSt = 0;
+bool _SysParSave_45_OldSt = 0;
+bool _SysParSave_2_OldSt = 0;
+int _SCT_2_CPOP = 0;
+bool _changeNumber16_Out = 0;
+byte _changeNumber16_OLV;
+bool _changeNumber9_Out = 0;
+int _changeNumber9_OLV;
+bool _gen1I = 0;
+bool _gen1O = 0;
+unsigned long _gen1P = 0UL;
+bool _tim9I = 0;
+bool _tim9O = 0;
+unsigned long _tim9P = 0UL;
+bool _gen5I = 0;
+bool _gen5O = 0;
+unsigned long _gen5P = 0UL;
+bool _gen4I = 0;
+bool _gen4O = 0;
+unsigned long _gen4P = 0UL;
+bool _SysParSave_33_OldSt = 0;
+bool _changeNumber11_Out = 0;
+int _changeNumber11_OLV;
+bool _trgrt5 = 0;
+bool _trgrt5I = 0;
+bool _trgrt2 = 0;
+bool _trgrt2I = 0;
+bool _tim12I = 0;
+bool _tim12O = 0;
+unsigned long _tim12P = 0UL;
+bool _SysParSave_20_OldSt = 0;
+bool _changeNumber22_Out = 0;
+byte _changeNumber22_OLV;
+bool _FreeLog4_Q1 = 0;
+bool _tim18I = 0;
+bool _tim18O = 0;
+unsigned long _tim18P = 0UL;
+bool _SysParSave_22_OldSt = 0;
+bool _changeNumber25_Out = 0;
+byte _changeNumber25_OLV;
+bool _dms1Q0 = 0;
+bool _dms1Q1 = 0;
+bool _dms1Q2 = 0;
+bool _dms1Q3 = 0;
+bool _dms1Q4 = 0;
+bool _dms1Q5 = 0;
+bool _dms1Q6 = 0;
+bool _dms1Q7 = 0;
+bool _dms1Q8 = 0;
+bool _dms1Q9 = 0;
+bool _dms1Q10 = 0;
+bool _dms1Q11 = 0;
+bool _dms1Q12 = 0;
+bool FTrig_3_Out = 0;
+bool FTrig_3_OldStat = 0;
+bool _changeNumber20_Out = 0;
+byte _changeNumber20_OLV;
+bool _changeNumber1_Out = 0;
+byte _changeNumber1_OLV;
+bool _SysParSave_26_OldSt = 0;
+bool _tim4I = 0;
+bool _tim4O = 0;
+unsigned long _tim4P = 0UL;
+bool _trgrt16 = 0;
+bool _trgrt16I = 0;
+bool _tim5I = 0;
+bool _tim5O = 0;
+unsigned long _tim5P = 0UL;
+bool FTrig_5_Out = 0;
+bool FTrig_5_OldStat = 0;
+bool _SysParSave_8_OldSt = 0;
+bool _tim23I = 0;
+bool _tim23O = 0;
+unsigned long _tim23P = 0UL;
+bool _changeNumber23_Out = 0;
+int _changeNumber23_OLV;
+bool _SysParSave_28_OldSt = 0;
+bool _tim6I = 0;
+bool _tim6O = 0;
+unsigned long _tim6P = 0UL;
+bool _trgrt1 = 0;
+bool _trgrt1I = 0;
+bool _SysParSave_24_OldSt = 0;
+bool _tim22I = 0;
+bool _tim22O = 0;
+unsigned long _tim22P = 0UL;
+bool _gen6I = 0;
+bool _gen6O = 0;
+unsigned long _gen6P = 0UL;
+bool _SysParSave_40_OldSt = 0;
+bool FTrig_10_Out = 0;
+bool FTrig_10_OldStat = 0;
+bool _changeNumber13_Out = 0;
+byte _changeNumber13_OLV;
+bool _SysParSave_16_OldSt = 0;
+bool _SysParSave_17_OldSt = 0;
+bool _gen3I = 0;
+bool _gen3O = 0;
+unsigned long _gen3P = 0UL;
+bool _SysParSave_11_OldSt = 0;
+bool _trgrt11 = 0;
+bool _trgrt11I = 0;
+bool _SysParSave_38_OldSt = 0;
+bool _SysParSave_30_OldSt = 0;
+bool _SysParSave_5_OldSt = 0;
+bool _trgrt18 = 0;
+bool _trgrt18I = 0;
+bool _SysParSave_14_OldSt = 0;
+bool _changeNumber2_Out = 0;
+int _changeNumber2_OLV;
+bool _trgrt4 = 0;
+bool _trgrt4I = 0;
+bool _count1I = 0;
+int _count1_Value = 0;
+bool _changeNumber27_Out = 0;
+int _changeNumber27_OLV;
+bool _tim11I = 0;
+bool _tim11O = 0;
+unsigned long _tim11P = 0UL;
+bool _SysParSave_7_OldSt = 0;
+bool _tim1I = 0;
+bool _tim1O = 0;
+unsigned long _tim1P = 0UL;
+bool _SysParSave_47_OldSt = 0;
+bool _changeNumber15_Out = 0;
+byte _changeNumber15_OLV;
+bool _SysParSave_19_OldSt = 0;
+bool FTrig_8_Out = 0;
+bool FTrig_8_OldStat = 0;
+bool _SysParSave_12_OldSt = 0;
+bool _tim8I = 0;
+bool _tim8O = 0;
+unsigned long _tim8P = 0UL;
+bool _trgrt6 = 0;
+bool _trgrt6I = 0;
+bool _SysParSave_50_OldSt = 0;
+bool _changeNumber17_Out = 0;
+byte _changeNumber17_OLV;
+bool _SysParSave_21_OldSt = 0;
+bool _SysParSave_9_OldSt = 0;
+bool _trgrt17 = 0;
+bool _trgrt17I = 0;
+bool _tim16I = 0;
+bool _tim16O = 0;
+unsigned long _tim16P = 0UL;
+bool _SysParSave_15_OldSt = 0;
+bool _changeNumber4_Out = 0;
+int _changeNumber4_OLV;
+bool _trgrt14 = 0;
+bool _trgrt14I = 0;
+bool _tim3I = 0;
+bool _tim3O = 0;
+unsigned long _tim3P = 0UL;
+bool _changeNumber28_Out = 0;
+byte _changeNumber28_OLV;
+bool _SysParSave_34_OldSt = 0;
+bool _SysParSave_44_OldSt = 0;
+bool _SysParSave_1_OldSt = 0;
+bool FTrig_11_Out = 0;
+bool FTrig_11_OldStat = 0;
+bool _SysParSave_48_OldSt = 0;
+RT_HW_PCF8575_DEV dvPCF8575_64898756; RT_HW_STRUCT_SHED_TASK shPCF8575in_64898756,shPCF8575out_64898756;
+uint8_t extEN_64898756=1;
+uint8_t periodLimit_in_64898756=0;   uint16_t period_in_64898756=50;   uint16_t Period_in_64898756=200;
+uint8_t periodLimit_out_64898756=0; uint16_t period_out_64898756=50; uint16_t Period_out_64898756=200;
+uint8_t i2cAdr_64898756=0x20; uint8_t bus_64898756=0;
+RT_HW_PCF8575_DEV dvPCF8575_96214439; RT_HW_STRUCT_SHED_TASK shPCF8575in_96214439,shPCF8575out_96214439;
+uint8_t extEN_96214439=1;
+uint8_t periodLimit_in_96214439=0;   uint16_t period_in_96214439=50;   uint16_t Period_in_96214439=200;
+uint8_t periodLimit_out_96214439=0; uint16_t period_out_96214439=50; uint16_t Period_out_96214439=200;
+uint8_t i2cAdr_96214439=0x20; uint8_t bus_96214439=0;
+RT_HW_FILTER_RING_AVERAGE<uint32_t,5> filterSpeed_175210106;
+
+byte _tempVariable_byte;
+int _tempVariable_int;
+#ifdef FLPROG_SENSOR_CRC_ERROR 
+#else
+namespace flprog {
+uint32_t difference32(uint32_t start, uint32_t end) {
+    if (end >= start) {
+        return end - start;
+       }
+    return (0xfFFFFFFF - start) + end;
+   } 
+bool isTimer(uint32_t startTime, uint32_t period) {
+    return (difference32(startTime, (millis()))) >= period;
+   }
+
+bool isTimerMicros(unsigned long startTime, unsigned long period) {
+    return (difference32(startTime, (micros()))) >= period;
+   }
+}
+#endif
+void setup()
+{
+
+pinMode(14, INPUT_PULLUP); 
+pinMode(0, OUTPUT); 
+digitalWrite(0, 0); 
+pinMode(16, OUTPUT); 
+digitalWrite(16, 0); 
+pinMode(2, OUTPUT); 
+digitalWrite(2, 0); 
+pinMode(15, OUTPUT); 
+digitalWrite(15, 0); 
+
+
+ EEPROM.begin(141);
+if(((readByteFromEEPROM(0, 0, 0x0))) != 68) {
+(updateByteToEEPROM(0, 0, 0x0, (68)));
+(updateBooleanToEEPROM(1, 0, 0x0, (1)));
+(updateBooleanToEEPROM(1, 1, 0x0, (1)));
+(updateUnsignedLongToEEPROM(2, 0, 0x0, (10000)));
+(updateUnsignedLongToEEPROM(6, 0, 0x0, (60000)));
+(updateIntegerToEEPROM(10, 0, 0x0, (10)));
+(updateIntegerToEEPROM(12, 0, 0x0, (20)));
+(updateIntegerToEEPROM(14, 0, 0x0, (30)));
+(updateIntegerToEEPROM(16, 0, 0x0, (40)));
+(updateIntegerToEEPROM(18, 0, 0x0, (50)));
+(updateIntegerToEEPROM(20, 0, 0x0, (60)));
+(updateIntegerToEEPROM(22, 0, 0x0, (70)));
+(updateIntegerToEEPROM(24, 0, 0x0, (80)));
+(updateIntegerToEEPROM(26, 0, 0x0, (90)));
+(updateIntegerToEEPROM(28, 0, 0x0, (100)));
+(updateByteToEEPROM(30, 0, 0x0, (0)));
+(updateByteToEEPROM(31, 0, 0x0, (0)));
+(updateByteToEEPROM(32, 0, 0x0, (0)));
+(updateByteToEEPROM(33, 0, 0x0, (0)));
+(updateByteToEEPROM(34, 0, 0x0, (0)));
+(updateByteToEEPROM(35, 0, 0x0, (0)));
+(updateByteToEEPROM(36, 0, 0x0, (0)));
+(updateByteToEEPROM(37, 0, 0x0, (0)));
+(updateByteToEEPROM(38, 0, 0x0, (0)));
+(updateByteToEEPROM(39, 0, 0x0, (0)));
+(updateByteToEEPROM(40, 0, 0x0, (3)));
+(updateIntegerToEEPROM(41, 0, 0x0, (110)));
+(updateIntegerToEEPROM(43, 0, 0x0, (120)));
+(updateByteToEEPROM(45, 0, 0x0, (0)));
+(updateByteToEEPROM(46, 0, 0x0, (0)));
+(updateUnsignedLongToEEPROM(47, 0, 0x0, (115200)));
+(updateByteToEEPROM(51, 0, 0x0, (0)));
+(updateByteToEEPROM(52, 0, 0x0, (1)));
+(updateUnsignedLongToEEPROM(53, 0, 0x0, (17082560)));
+(updateStringToEEPROM(57, 40, 0x0, ("VendingWifi")));
+(updateStringToEEPROM(97, 40, 0x0, ("VendingAdmin")));
+(updateUnsignedLongToEEPROM(137, 0, 0x0, (60000)));
+ EEPROM.commit();
+}
+ESP8266_freeParam_265280871 = readBooleanFromEEPROM(1, 0, 0x0);
+ESP8266_freeParam_190797778 = readBooleanFromEEPROM(1, 1, 0x0);
+ESP8266_freeParam_71116216 = readUnsignedLongFromEEPROM(2,0,0x0);
+ESP8266_freeParam_70184650 = readUnsignedLongFromEEPROM(6,0,0x0);
+ESP8266_freeParam_2908715 = readIntegerFromEEPROM(10,0,0x0);
+ESP8266_freeParam_167036645 = readIntegerFromEEPROM(12,0,0x0);
+ESP8266_freeParam_198065769 = readIntegerFromEEPROM(14,0,0x0);
+ESP8266_freeParam_109304058 = readIntegerFromEEPROM(16,0,0x0);
+ESP8266_freeParam_84774238 = readIntegerFromEEPROM(18,0,0x0);
+ESP8266_freeParam_41571615 = readIntegerFromEEPROM(20,0,0x0);
+ESP8266_freeParam_197729979 = readIntegerFromEEPROM(22,0,0x0);
+ESP8266_freeParam_90309138 = readIntegerFromEEPROM(24,0,0x0);
+ESP8266_freeParam_133909782 = readIntegerFromEEPROM(26,0,0x0);
+ESP8266_freeParam_27795835 = readIntegerFromEEPROM(28,0,0x0);
+ESP8266_freeParam_216885967 = readByteFromEEPROM(30,0,0x0);
+ESP8266_freeParam_60439466 = readByteFromEEPROM(31,0,0x0);
+ESP8266_freeParam_111047777 = readByteFromEEPROM(32,0,0x0);
+ESP8266_freeParam_260883057 = readByteFromEEPROM(33,0,0x0);
+ESP8266_freeParam_80199000 = readByteFromEEPROM(34,0,0x0);
+ESP8266_freeParam_121065562 = readByteFromEEPROM(35,0,0x0);
+ESP8266_freeParam_98951291 = readByteFromEEPROM(36,0,0x0);
+ESP8266_freeParam_182290599 = readByteFromEEPROM(37,0,0x0);
+ESP8266_freeParam_174428203 = readByteFromEEPROM(38,0,0x0);
+ESP8266_freeParam_79724050 = readByteFromEEPROM(39,0,0x0);
+ESP8266_freeParam_152708564 = readByteFromEEPROM(40,0,0x0);
+ESP8266_freeParam_112257373 = readIntegerFromEEPROM(41,0,0x0);
+ESP8266_freeParam_254951221 = readIntegerFromEEPROM(43,0,0x0);
+ESP8266_freeParam_191929235 = readByteFromEEPROM(45,0,0x0);
+ESP8266_freeParam_46230415 = readByteFromEEPROM(46,0,0x0);
+ESP8266_freeParam_19552900 = readUnsignedLongFromEEPROM(47,0,0x0);
+ESP8266_freeParam_198022797 = readByteFromEEPROM(51,0,0x0);
+ESP8266_freeParam_246427857 = readByteFromEEPROM(52,0,0x0);
+ESPControllerWifiAP_ip = _ipAddressFromUnsignetLong(readUnsignedLongFromEEPROM(53, 0, 0x0));
+(readStingFromEEPROM(57, 40, 0x0)).toCharArray(ESPControllerWifiAP_SSID,  40);
+(readStingFromEEPROM(97,  40, 0x0)).toCharArray(ESPControllerWifiAP_password,  40);
+ESP8266_freeParam_190210571 = readUnsignedLongFromEEPROM(137,0,0x0);
+ESP8266_AnalogInputValue_StR = millis() + 500 ;
+WiFi.mode(WIFI_AP);
+ _esp8266WifiModuleApReconnect();
+ESPControllerWifi_tspWebServer.on("/", _sendWebServerPage1);
+ESPControllerWifi_tspWebServer.on("/price", _sendWebServerPage2);
+ESPControllerWifi_tspWebServer.on("/manage", _sendWebServerPage3);
+ESPControllerWifi_tspWebServer.on("/config", _sendWebServerPage4);
+ESPControllerWifi_tspWebServer.on("/mistake", _sendWebServerPage5);
+ESPControllerWifi_tspWebServer.on("/248e715b-f090-46b8-a0e2-86492908135b", _resetControllerFromWebPage);
+ESPControllerWifi_tspWebServer.on("/ee17ecc2-f0b5-46ad-a9cb-f0c7295f99e9", _parseChangedDataFromWebPage);
+ESPControllerWifi_tspWebServer.on("/7a2677ef-dafe-405a-89a1-be6d0547dfbf", _newDataReqestForWebPage);
+ESPControllerWifi_tspWebServer.on("/8f9b8550-fe35-44c1-9f76-2ca4613dac80", _newButoonClickEvent);
+ESPControllerWifi_tspWebServer.onNotFound(_sendWebServerSend404Page);
+ESPControllerWifi_tspWebServer.begin();
+satrtWachDogTimer();
+pinMode(12, INPUT_PULLUP);
+attachInterrupt(digitalPinToInterrupt (12), _SCT_2positiveCoutFunction, RISING );
+
+
+
+
+
+
+    mySerial.begin(ESP8266_freeParam_19552900);
+
+    delay(500);
+    MakeCRC16Table();
+
+
+
+
+
+
+
+  pinMode(INPUT_PIN, INPUT_PULLUP);                  // Никаких внутренних подтяжек – у вас внешний «прижим» к GND
+  attachInterrupt(digitalPinToInterrupt(INPUT_PIN), ISR_Pin14, CHANGE);
+  pin14_waiting = false;
+  term = 0;
+
+
+
+
+
+
+
+
+
+ 
+ 
+
+
+
+
+
+
+
+
+
+ // Устанавливаем частоту ШИМ для управления сервоприводом (50 Гц)
+  analogWriteFreq(50);  // Настройка частоты ШИМ на 50 Гц (подходит для сервоприводов)
+  
+  // Устанавливаем разрешение ШИМ (например, 0-1023 для 10-битного ШИМ)
+  analogWriteRange(1023);
+
+
+
+httpUpdater.setup(&ESPControllerWifi_tspWebServer,  OTAPATH ,  OTAUSER ,   OTAPASSWORD );  
+ESPControllerWifi_tspWebServer.begin();
+
+
+Wire.begin();  // Инициализация I2C
+
+
+RT_HW_Base.shed.quick.qnt=5;
+RT_HW_Base.shed.fast.qnt=2; 
+RT_HW_Base.shed.slow.qnt=4;
+RT_HW_Base.shed.back.qnt=5;
+RT_HW_Base.shed.frdm.qnt=6;
+
+}
+void loop()
+{
+
+
+_PWDC = 0;
+ESPControllerWifi_tspWebServer.handleClient();
+if (isNeededCommitESP8266EEprom) { EEPROM.commit(); isNeededCommitESP8266EEprom=0; }
+if(ESPControllerWifi_isNeededRestsrt) {ESP.restart();}
+if(ESPControllerWifiAP_IsNeedReconect) {_esp8266WifiModuleApReconnect(); ESPControllerWifiAP_IsNeedReconect = 0; }
+if(flprog::isTimer(ESP8266_AnalogInputValue_StR, 500))
+{
+ESP8266_AnalogInputValue_StR = millis();
+ESP8266_AnalogInputValue = analogRead(A0);
+ }
+
+
+
+
+
+//Плата:1
+//Наименование:Диспечер задач
+//=================================Диспетчер задач====================================
+RT_HW_Base.shed.quick.qnt=5;  //--Кол-во срочных   задач (период  10мс);
+RT_HW_Base.shed.fast.qnt=2;        //--Кол-во быстрых   задач (период  25мс);
+RT_HW_Base.shed.slow.qnt=4;  //--Кол-во медленных задач (период 250мс);
+RT_HW_Base.shed.back.qnt=5;     //--Кол-во фоновых   задач (период 100мс);
+RT_HW_Base.shed.frdm.qnt=6;  //--Кол-во свободных задач (период loop()-когда нет вызванных задач);
+RT_HW_Base.sheduler(); 
+if(RT_HW_Base.shed.eventSec){
+filterSpeed_175210106.filtered(RT_HW_Base.shed.cycle);
+Out_13271937_175210106=RT_HW_Base.shed.cntSec;
+Out_202750331_175210106=filterSpeed_175210106.vr;
+}
+_gtv11 = Out_202750331_175210106;
+time_work_30209440_1 = Out_13271937_175210106;
+if (time_work_30209440_1 >= 40) {
+
+if (WiFi.status() == 7 && WiFi.softAPgetStationNum() == 0) {
+    WiFi.persistent(false);
+    WiFi.softAPdisconnect(true);
+    WiFi.disconnect();
+    WiFi.mode(WIFI_STA);}
+}
+
+time_w_167663691_1 = Out_13271937_175210106;
+if  (time_w_167663691_1 >= 5 && screen_start_167663691_1 == 0)  { 
+  delay(500);   
+  uint8_t sendData[] = {0x02, 0x00, 0xFD, 0xF5, 0x03, 0x02};
+  mySerial.write(sendData, sizeof(sendData));
+  screen_start_167663691_1 = 1;
+  }
+
+
+_gtv10 = (RT_HW_Base.shed.frdm.num);
+_gtv9 = (RT_HW_Base.shed.slow.num);
+_gtv8 = (RT_HW_Base.shed.fast.num);
+_gtv7 = (RT_HW_Base.shed.quick.num);
+
+//Плата:2
+//Наименование:Часы,Led
+if (_gtv10 == 1) {
+_gtv13 = ESP8266_freeParam_71116216;
+_gtv52 = ESP8266_freeParam_70184650;
+}
+
+//Плата:3
+if (_gtv10 == 2) {
+En_UART_T = _Terminal_105251992;
+  if (En_UART_T > 0) {
+
+_gtv1 = 1;
+ 
+if (_gtv73 > 0) {
+_gtv73=0; 
+}
+  if (reboot > 0) {
+     ESP.restart();
+  }
+
+
+    // Проверяем, если сообщение началось и последний символ '}'
+
+    if (messageStarted && inputIndex > 0 && inputStringUART[inputIndex - 1] == '}') {
+
+
+
+      // Завершаем строку нулевым символом
+
+      inputStringUART[inputIndex] = '\0';
+
+
+
+      // Извлекаем данные между '{' и '}'
+
+      char data[256];
+
+      int dataLength = inputIndex - 2; // Исключаем '{' и '}'
+
+
+
+      if (dataLength > 0 && dataLength < sizeof(data)) {
+
+        strncpy(data, inputStringUART + 1, dataLength);
+
+        data[dataLength] = '\0'; // Завершаем строку
+
+
+
+        parseData(data);
+        NewDataReceived = 1;
+      }
+
+
+
+      // Сбрасываем буфер и индексы для следующего сообщения
+
+      inputIndex = 0;
+
+      inputStringUART[0] = '\0';
+
+      messageStarted = false;
+
+    }
+
+
+
+    while (mySerial.available()) {
+
+      char inChar = (char)mySerial.read();
+
+  //  Serial.print(inChar);
+//      myStringLog += inChar;
+      if (inChar == '{') {
+//        myStringLog = "*";
+        messageStarted = true;
+
+        gm = 0;
+
+        inputIndex = 0;
+
+        inputStringUART[0] = '\0'; // Очищаем буфер
+
+        if (inputIndex < sizeof(inputStringUART) - 1) {
+
+          inputStringUART[inputIndex++] = inChar; // Добавляем '{' в буфер
+
+        }
+
+      } else if (messageStarted) {
+
+        if (inputIndex < sizeof(inputStringUART) - 1) { // Проверяем, чтобы не переполнить буфер
+
+          inputStringUART[inputIndex++] = inChar;
+
+        } else {
+
+          // Обработка переполнения буфера
+
+          messageStarted = false;
+
+          inputIndex = 0;
+
+          inputStringUART[0] = '\0';
+
+//        Serial.println("Error: Buffer overflow");
+//          myStringLog = "Error: Buffer overflow";
+        }
+
+      }
+
+    }
+
+  } else {
+
+    inputStringUART[0] = '\0'; // Очищаем буфер, если En_UART_T <= 0
+
+    inputIndex = 0;
+
+  }
+if (NewDataReceived )
+{ if (_tim7I) { if (flprog::isTimer(_tim7P, 2000)) {_tim7O = 1;}} else {_tim7I =1; _tim7P = millis();}} else {_tim7O = 0; _tim7I = 0;}
+_gtv45 = _tim7O;
+if (_changeNumber28_Out) {_changeNumber28_Out = 0;} else {_tempVariable_byte = gm;
+if (_tempVariable_byte != _changeNumber28_OLV) {_changeNumber28_OLV = _tempVariable_byte; _changeNumber28_Out = 1;}
+}
+if(_changeNumber28_Out) {_tim17O = 1; _tim17I = 1;} else { if(_tim17I) {_tim17I = 0; _tim17P = millis();} else { if (_tim17O) {if ( flprog::isTimer(_tim17P, 1000)) _tim17O = 0;}}}
+if (_tim17O) {
+_gtv73 = gm;
+}
+if (_changeNumber27_Out) {_changeNumber27_Out = 0;} else {_tempVariable_int = ss;
+if (_tempVariable_int != _changeNumber27_OLV) {_changeNumber27_OLV = _tempVariable_int; _changeNumber27_Out = 1;}
+}
+if(_changeNumber27_Out) {
+if( ! _SysParSave_42_OldSt) {
+_SysParSave_42_OldSt = 1;
+ESP8266_freeParam_19552900 = ss;
+
+ updateUnsignedLongToEEPROM(47,0 , 0x0,( ESP8266_freeParam_19552900));
+}} else {
+_SysParSave_42_OldSt = 0;}
+if (_changeNumber22_Out) {_changeNumber22_Out = 0;} else {_tempVariable_byte = bm;
+if (_tempVariable_byte != _changeNumber22_OLV) {_changeNumber22_OLV = _tempVariable_byte; _changeNumber22_Out = 1;}
+}
+if(_changeNumber22_Out) {
+if( ! _SysParSave_37_OldSt) {
+_SysParSave_37_OldSt = 1;
+ESP8266_freeParam_152708564 = bm;
+
+ updateByteToEEPROM(40,0 , 0x0,( ESP8266_freeParam_152708564));
+}} else {
+_SysParSave_37_OldSt = 0;}
+if (_changeNumber26_Out) {_changeNumber26_Out = 0;} else {_tempVariable_byte = b12;
+if (_tempVariable_byte != _changeNumber26_OLV) {_changeNumber26_OLV = _tempVariable_byte; _changeNumber26_Out = 1;}
+}
+if(_changeNumber26_Out) {
+if( ! _SysParSave_41_OldSt) {
+_SysParSave_41_OldSt = 1;
+ESP8266_freeParam_46230415 = b12;
+
+ updateByteToEEPROM(46,0 , 0x0,( ESP8266_freeParam_46230415));
+}} else {
+_SysParSave_41_OldSt = 0;}
+if (_changeNumber25_Out) {_changeNumber25_Out = 0;} else {_tempVariable_byte = b11;
+if (_tempVariable_byte != _changeNumber25_OLV) {_changeNumber25_OLV = _tempVariable_byte; _changeNumber25_Out = 1;}
+}
+if(_changeNumber25_Out) {
+if( ! _SysParSave_40_OldSt) {
+_SysParSave_40_OldSt = 1;
+ESP8266_freeParam_191929235 = b11;
+
+ updateByteToEEPROM(45,0 , 0x0,( ESP8266_freeParam_191929235));
+}} else {
+_SysParSave_40_OldSt = 0;}
+if (_changeNumber21_Out) {_changeNumber21_Out = 0;} else {_tempVariable_byte = b10;
+if (_tempVariable_byte != _changeNumber21_OLV) {_changeNumber21_OLV = _tempVariable_byte; _changeNumber21_Out = 1;}
+}
+if(_changeNumber21_Out) {
+if( ! _SysParSave_36_OldSt) {
+_SysParSave_36_OldSt = 1;
+ESP8266_freeParam_79724050 = b10;
+
+ updateByteToEEPROM(39,0 , 0x0,( ESP8266_freeParam_79724050));
+}} else {
+_SysParSave_36_OldSt = 0;}
+if (_changeNumber20_Out) {_changeNumber20_Out = 0;} else {_tempVariable_byte = b9;
+if (_tempVariable_byte != _changeNumber20_OLV) {_changeNumber20_OLV = _tempVariable_byte; _changeNumber20_Out = 1;}
+}
+if(_changeNumber20_Out) {
+if( ! _SysParSave_35_OldSt) {
+_SysParSave_35_OldSt = 1;
+ESP8266_freeParam_174428203 = b9;
+
+ updateByteToEEPROM(38,0 , 0x0,( ESP8266_freeParam_174428203));
+}} else {
+_SysParSave_35_OldSt = 0;}
+if (_changeNumber19_Out) {_changeNumber19_Out = 0;} else {_tempVariable_byte = b8;
+if (_tempVariable_byte != _changeNumber19_OLV) {_changeNumber19_OLV = _tempVariable_byte; _changeNumber19_Out = 1;}
+}
+if(_changeNumber19_Out) {
+if( ! _SysParSave_34_OldSt) {
+_SysParSave_34_OldSt = 1;
+ESP8266_freeParam_182290599 = b8;
+
+ updateByteToEEPROM(37,0 , 0x0,( ESP8266_freeParam_182290599));
+}} else {
+_SysParSave_34_OldSt = 0;}
+if (_changeNumber18_Out) {_changeNumber18_Out = 0;} else {_tempVariable_byte = b7;
+if (_tempVariable_byte != _changeNumber18_OLV) {_changeNumber18_OLV = _tempVariable_byte; _changeNumber18_Out = 1;}
+}
+if(_changeNumber18_Out) {
+if( ! _SysParSave_33_OldSt) {
+_SysParSave_33_OldSt = 1;
+ESP8266_freeParam_98951291 = b7;
+
+ updateByteToEEPROM(36,0 , 0x0,( ESP8266_freeParam_98951291));
+}} else {
+_SysParSave_33_OldSt = 0;}
+if (_changeNumber17_Out) {_changeNumber17_Out = 0;} else {_tempVariable_byte = b6;
+if (_tempVariable_byte != _changeNumber17_OLV) {_changeNumber17_OLV = _tempVariable_byte; _changeNumber17_Out = 1;}
+}
+if(_changeNumber17_Out) {
+if( ! _SysParSave_32_OldSt) {
+_SysParSave_32_OldSt = 1;
+ESP8266_freeParam_121065562 = b6;
+
+ updateByteToEEPROM(35,0 , 0x0,( ESP8266_freeParam_121065562));
+}} else {
+_SysParSave_32_OldSt = 0;}
+if (_changeNumber16_Out) {_changeNumber16_Out = 0;} else {_tempVariable_byte = b5;
+if (_tempVariable_byte != _changeNumber16_OLV) {_changeNumber16_OLV = _tempVariable_byte; _changeNumber16_Out = 1;}
+}
+if(_changeNumber16_Out) {
+if( ! _SysParSave_31_OldSt) {
+_SysParSave_31_OldSt = 1;
+ESP8266_freeParam_80199000 = b5;
+
+ updateByteToEEPROM(34,0 , 0x0,( ESP8266_freeParam_80199000));
+}} else {
+_SysParSave_31_OldSt = 0;}
+if (_changeNumber15_Out) {_changeNumber15_Out = 0;} else {_tempVariable_byte = b4;
+if (_tempVariable_byte != _changeNumber15_OLV) {_changeNumber15_OLV = _tempVariable_byte; _changeNumber15_Out = 1;}
+}
+if(_changeNumber15_Out) {
+if( ! _SysParSave_30_OldSt) {
+_SysParSave_30_OldSt = 1;
+ESP8266_freeParam_260883057 = b4;
+
+ updateByteToEEPROM(33,0 , 0x0,( ESP8266_freeParam_260883057));
+}} else {
+_SysParSave_30_OldSt = 0;}
+if (_changeNumber14_Out) {_changeNumber14_Out = 0;} else {_tempVariable_byte = b3;
+if (_tempVariable_byte != _changeNumber14_OLV) {_changeNumber14_OLV = _tempVariable_byte; _changeNumber14_Out = 1;}
+}
+if(_changeNumber14_Out) {
+if( ! _SysParSave_29_OldSt) {
+_SysParSave_29_OldSt = 1;
+ESP8266_freeParam_111047777 = b3;
+
+ updateByteToEEPROM(32,0 , 0x0,( ESP8266_freeParam_111047777));
+}} else {
+_SysParSave_29_OldSt = 0;}
+if (_changeNumber13_Out) {_changeNumber13_Out = 0;} else {_tempVariable_byte = b2;
+if (_tempVariable_byte != _changeNumber13_OLV) {_changeNumber13_OLV = _tempVariable_byte; _changeNumber13_Out = 1;}
+}
+if(_changeNumber13_Out) {
+if( ! _SysParSave_28_OldSt) {
+_SysParSave_28_OldSt = 1;
+ESP8266_freeParam_60439466 = b2;
+
+ updateByteToEEPROM(31,0 , 0x0,( ESP8266_freeParam_60439466));
+}} else {
+_SysParSave_28_OldSt = 0;}
+if (_changeNumber12_Out) {_changeNumber12_Out = 0;} else {_tempVariable_byte = b1;
+if (_tempVariable_byte != _changeNumber12_OLV) {_changeNumber12_OLV = _tempVariable_byte; _changeNumber12_Out = 1;}
+}
+if(_changeNumber12_Out) {
+if( ! _SysParSave_27_OldSt) {
+_SysParSave_27_OldSt = 1;
+ESP8266_freeParam_216885967 = b1;
+
+ updateByteToEEPROM(30,0 , 0x0,( ESP8266_freeParam_216885967));
+}} else {
+_SysParSave_27_OldSt = 0;}
+if (_changeNumber24_Out) {_changeNumber24_Out = 0;} else {_tempVariable_int = p12;
+if (_tempVariable_int != _changeNumber24_OLV) {_changeNumber24_OLV = _tempVariable_int; _changeNumber24_Out = 1;}
+}
+if(_changeNumber24_Out) {
+if( ! _SysParSave_39_OldSt) {
+_SysParSave_39_OldSt = 1;
+ESP8266_freeParam_254951221 = p12;
+ updateIntegerToEEPROM(43,0 , 0x0,( ESP8266_freeParam_254951221));
+}} else {
+_SysParSave_39_OldSt = 0;}
+if (_changeNumber23_Out) {_changeNumber23_Out = 0;} else {_tempVariable_int = p11;
+if (_tempVariable_int != _changeNumber23_OLV) {_changeNumber23_OLV = _tempVariable_int; _changeNumber23_Out = 1;}
+}
+if(_changeNumber23_Out) {
+if( ! _SysParSave_38_OldSt) {
+_SysParSave_38_OldSt = 1;
+ESP8266_freeParam_112257373 = p11;
+ updateIntegerToEEPROM(41,0 , 0x0,( ESP8266_freeParam_112257373));
+}} else {
+_SysParSave_38_OldSt = 0;}
+if (_changeNumber11_Out) {_changeNumber11_Out = 0;} else {_tempVariable_int = p10;
+if (_tempVariable_int != _changeNumber11_OLV) {_changeNumber11_OLV = _tempVariable_int; _changeNumber11_Out = 1;}
+}
+if(_changeNumber11_Out) {
+if( ! _SysParSave_26_OldSt) {
+_SysParSave_26_OldSt = 1;
+ESP8266_freeParam_27795835 = p10;
+ updateIntegerToEEPROM(28,0 , 0x0,( ESP8266_freeParam_27795835));
+}} else {
+_SysParSave_26_OldSt = 0;}
+if (_changeNumber10_Out) {_changeNumber10_Out = 0;} else {_tempVariable_int = p9;
+if (_tempVariable_int != _changeNumber10_OLV) {_changeNumber10_OLV = _tempVariable_int; _changeNumber10_Out = 1;}
+}
+if(_changeNumber10_Out) {
+if( ! _SysParSave_25_OldSt) {
+_SysParSave_25_OldSt = 1;
+ESP8266_freeParam_133909782 = p9;
+ updateIntegerToEEPROM(26,0 , 0x0,( ESP8266_freeParam_133909782));
+}} else {
+_SysParSave_25_OldSt = 0;}
+if (_changeNumber9_Out) {_changeNumber9_Out = 0;} else {_tempVariable_int = p8;
+if (_tempVariable_int != _changeNumber9_OLV) {_changeNumber9_OLV = _tempVariable_int; _changeNumber9_Out = 1;}
+}
+if(_changeNumber9_Out) {
+if( ! _SysParSave_24_OldSt) {
+_SysParSave_24_OldSt = 1;
+ESP8266_freeParam_90309138 = p8;
+ updateIntegerToEEPROM(24,0 , 0x0,( ESP8266_freeParam_90309138));
+}} else {
+_SysParSave_24_OldSt = 0;}
+if (_changeNumber8_Out) {_changeNumber8_Out = 0;} else {_tempVariable_int = p7;
+if (_tempVariable_int != _changeNumber8_OLV) {_changeNumber8_OLV = _tempVariable_int; _changeNumber8_Out = 1;}
+}
+if(_changeNumber8_Out) {
+if( ! _SysParSave_23_OldSt) {
+_SysParSave_23_OldSt = 1;
+ESP8266_freeParam_197729979 = p7;
+ updateIntegerToEEPROM(22,0 , 0x0,( ESP8266_freeParam_197729979));
+}} else {
+_SysParSave_23_OldSt = 0;}
+if (_changeNumber7_Out) {_changeNumber7_Out = 0;} else {_tempVariable_int = p6;
+if (_tempVariable_int != _changeNumber7_OLV) {_changeNumber7_OLV = _tempVariable_int; _changeNumber7_Out = 1;}
+}
+if(_changeNumber7_Out) {
+if( ! _SysParSave_22_OldSt) {
+_SysParSave_22_OldSt = 1;
+ESP8266_freeParam_41571615 = p6;
+ updateIntegerToEEPROM(20,0 , 0x0,( ESP8266_freeParam_41571615));
+}} else {
+_SysParSave_22_OldSt = 0;}
+if (_changeNumber6_Out) {_changeNumber6_Out = 0;} else {_tempVariable_int = p5;
+if (_tempVariable_int != _changeNumber6_OLV) {_changeNumber6_OLV = _tempVariable_int; _changeNumber6_Out = 1;}
+}
+if(_changeNumber6_Out) {
+if( ! _SysParSave_21_OldSt) {
+_SysParSave_21_OldSt = 1;
+ESP8266_freeParam_84774238 = p5;
+ updateIntegerToEEPROM(18,0 , 0x0,( ESP8266_freeParam_84774238));
+}} else {
+_SysParSave_21_OldSt = 0;}
+if (_changeNumber5_Out) {_changeNumber5_Out = 0;} else {_tempVariable_int = p4;
+if (_tempVariable_int != _changeNumber5_OLV) {_changeNumber5_OLV = _tempVariable_int; _changeNumber5_Out = 1;}
+}
+if(_changeNumber5_Out) {
+if( ! _SysParSave_20_OldSt) {
+_SysParSave_20_OldSt = 1;
+ESP8266_freeParam_109304058 = p4;
+ updateIntegerToEEPROM(16,0 , 0x0,( ESP8266_freeParam_109304058));
+}} else {
+_SysParSave_20_OldSt = 0;}
+if (_changeNumber4_Out) {_changeNumber4_Out = 0;} else {_tempVariable_int = p3;
+if (_tempVariable_int != _changeNumber4_OLV) {_changeNumber4_OLV = _tempVariable_int; _changeNumber4_Out = 1;}
+}
+if(_changeNumber4_Out) {
+if( ! _SysParSave_19_OldSt) {
+_SysParSave_19_OldSt = 1;
+ESP8266_freeParam_198065769 = p3;
+ updateIntegerToEEPROM(14,0 , 0x0,( ESP8266_freeParam_198065769));
+}} else {
+_SysParSave_19_OldSt = 0;}
+if (_changeNumber3_Out) {_changeNumber3_Out = 0;} else {_tempVariable_int = p2;
+if (_tempVariable_int != _changeNumber3_OLV) {_changeNumber3_OLV = _tempVariable_int; _changeNumber3_Out = 1;}
+}
+if(_changeNumber3_Out) {
+if( ! _SysParSave_18_OldSt) {
+_SysParSave_18_OldSt = 1;
+ESP8266_freeParam_167036645 = p2;
+ updateIntegerToEEPROM(12,0 , 0x0,( ESP8266_freeParam_167036645));
+}} else {
+_SysParSave_18_OldSt = 0;}
+if (_changeNumber2_Out) {_changeNumber2_Out = 0;} else {_tempVariable_int = p1;
+if (_tempVariable_int != _changeNumber2_OLV) {_changeNumber2_OLV = _tempVariable_int; _changeNumber2_Out = 1;}
+}
+if(_changeNumber2_Out) {
+if( ! _SysParSave_16_OldSt) {
+_SysParSave_16_OldSt = 1;
+ESP8266_freeParam_2908715 = p1;
+ updateIntegerToEEPROM(10,0 , 0x0,( ESP8266_freeParam_2908715));
+}} else {
+_SysParSave_16_OldSt = 0;}
+if (wifion >0) {
+
+      // Отключаем режим точки доступа
+      WiFi.softAPdisconnect(true);
+  
+      // Отключаем режим клиента
+      WiFi.disconnect(true);
+}
+}
+
+//Плата:4
+if (_gtv27 == 0) {
+//===============================PCF8575()====================================================
+shPCF8575in_64898756.extEN=shPCF8575out_64898756.extEN=(_gtv1); //--get ext EN;
+if(dvPCF8575_64898756.custom==0){
+i2cAdr_64898756=91; if(i2cAdr_64898756<=7) {i2cAdr_64898756+=0x20;}
+i2cAdr_64898756=(ESP8266_freeParam_198022797); if(i2cAdr_64898756<=7) {i2cAdr_64898756+=0x20;}
+dvPCF8575_64898756.custom=RT_HW_Base.i2cSetParam(dvPCF8575_64898756.dvI,i2cAdr_64898756,bus_64898756,100000);
+dvPCF8575_64898756.mi='I';
+if(0){dvPCF8575_64898756.invInA=0x00; dvPCF8575_64898756.invInB=0x00;} 
+else {dvPCF8575_64898756.invInA=0xFF; dvPCF8575_64898756.invInB=0xFF;}
+shPCF8575in_64898756.periodLimit=100;
+RT_HW_Base.setTaskID(shPCF8575in_64898756,'P',period_in_64898756);
+}
+RT_HW_Base.directTask(shPCF8575in_64898756);
+RT_HW_pcf8575.direct(dvPCF8575_64898756,shPCF8575in_64898756.run,shPCF8575out_64898756.run);
+if(dvPCF8575_64898756.fresh){dvPCF8575_64898756.fresh=0;  //--check fresh parameters;
+Out_252737640_64898756=bitRead(dvPCF8575_64898756.inA,0);
+Out_212107519_64898756=bitRead(dvPCF8575_64898756.inA,1);
+Out_41003547_64898756=bitRead(dvPCF8575_64898756.inA,2);
+Out_180223957_64898756=bitRead(dvPCF8575_64898756.inA,3);
+Out_168098897_64898756=bitRead(dvPCF8575_64898756.inA,4);
+Out_156530867_64898756=bitRead(dvPCF8575_64898756.inA,5);
+Out_64081572_64898756=bitRead(dvPCF8575_64898756.inA,6);
+Out_82526732_64898756=bitRead(dvPCF8575_64898756.inA,7);
+Out_222591363_64898756=bitRead(dvPCF8575_64898756.inB,0);
+Out_266261047_64898756=bitRead(dvPCF8575_64898756.inB,1);
+Out_256030093_64898756=bitRead(dvPCF8575_64898756.inB,2);
+Out_72626539_64898756=bitRead(dvPCF8575_64898756.inB,3);
+Out_18163133_64898756=bitRead(dvPCF8575_64898756.inB,4);
+Out_178917983_64898756=bitRead(dvPCF8575_64898756.inB,5);
+Out_263886047_64898756=bitRead(dvPCF8575_64898756.inB,6);
+Out_258998927_64898756=bitRead(dvPCF8575_64898756.inB,7);
+}
+if (Out_72626539_64898756) {
+_gtv64 = 12;
+}
+if (Out_256030093_64898756) {
+_gtv64 = 11;
+}
+if (Out_266261047_64898756) {
+_gtv64 = 10;
+}
+if (Out_222591363_64898756) {
+_gtv64 = 9;
+}
+if (Out_82526732_64898756) {
+_gtv64 = 8;
+}
+if (Out_64081572_64898756) {
+_gtv64 = 7;
+}
+if (Out_156530867_64898756) {
+_gtv64 = 6;
+}
+if (Out_168098897_64898756) {
+_gtv64 = 5;
+}
+if (Out_180223957_64898756) {
+_gtv64 = 4;
+}
+if (Out_41003547_64898756) {
+_gtv64 = 3;
+}
+if (Out_212107519_64898756) {
+_gtv64 = 2;
+}
+if (Out_252737640_64898756) {
+_gtv64 = 1;
+}
+if (( (_gtv69) && (!(_gtv39)) && (!(_gtv24)) && (!(_tim14O)) )) { if (! _gen5I) { _gen5I = 1; _gen5O = 1; _gen5P = millis(); } } else { _gen5I = 0 ; _gen5O= 0;}
+ if (_gen5I) {  if ( flprog::isTimer ( _gen5P , 150000 )) { _gen5P = millis(); _gen5O = ! _gen5O;}}
+if (_gen5O) { if (_trgrt14I) { _trgrt14 = 0;} else {_trgrt14 = 1; _trgrt14I = 1;} } else {_trgrt14 = 0; _trgrt14I = 0;}; 
+ Print_term_264093668_1 = _trgrt14;
+if (Print_term_264093668_1 > 0) { 
+      
+  uint8_t sendData[] = {0x02, 0x00, 0xFD, 0xF5, 0x03, 0x02};
+  mySerial.write(sendData, sizeof(sendData));
+
+  }
+
+else { Print_term_264093668_1 = 0; } // садим выход En на лог. "0"  // Не обязательно
+
+_Terminal_105251992 = ( (_gtv69) && (!(_gtv39)) && (!(_gtv24)) && (!(_tim14O)) );
+if (( (_gtv69) && (!(_gtv39)) && (!(_gtv24)) && (!(_tim14O)) ))
+{ if (_tim15I) { if (flprog::isTimer(_tim15P, 1000)) {_tim15O = 1;}} else {_tim15I =1; _tim15P = millis();}} else {_tim15O = 0; _tim15I = 0;}
+if (_tim15O) { if (_trgrt6I) { _trgrt6 = 0;} else {_trgrt6 = 1; _trgrt6I = 1;} } else {_trgrt6 = 0; _trgrt6I = 0;}; 
+ if (_trgrt6) {
+_gtv73 = 0;
+}
+if(( (_gtv69) && (!(_gtv39)) && (!(_gtv24)) && (!(_tim14O)) )) {_tim1O = 1; _tim1I = 1;} else { if(_tim1I) {_tim1I = 0; _tim1P = millis();} else { if (_tim1O) {if ( flprog::isTimer(_tim1P, 1000)) _tim1O = 0;}}}
+if (( (_gtv69) && (!(_gtv39)) && (!(_gtv24)) && (!(_tim14O)) )) {if (! _gen6I) { _gen6I = 1; _gen6O = 1; _gen6P =  millis(); } } else { _gen6I = 0 ;  _gen6O= 0;  } if (_gen6I ) { if (_gen6O) { if (  flprog::isTimer( _gen6P , 1000 )) { _gen6P = millis(); _gen6O = 0; } } else  { if (  flprog::isTimer( _gen6P , 2000 )) {  _gen6P = millis(); _gen6O = 1;  } } }
+//===============================PCF8575()====================================================
+shPCF8575in_96214439.extEN=shPCF8575out_96214439.extEN=(_tim1O); //--get ext EN;
+if(dvPCF8575_96214439.custom==0){
+i2cAdr_96214439=91; if(i2cAdr_96214439<=7) {i2cAdr_96214439+=0x20;}
+i2cAdr_96214439=(ESP8266_freeParam_246427857); if(i2cAdr_96214439<=7) {i2cAdr_96214439+=0x20;}
+dvPCF8575_96214439.custom=RT_HW_Base.i2cSetParam(dvPCF8575_96214439.dvI,i2cAdr_96214439,bus_96214439,0);
+dvPCF8575_96214439.mi='I';
+if(0){dvPCF8575_96214439.invOutA=0x00; dvPCF8575_96214439.invOutB=0x00;} 
+else {dvPCF8575_96214439.invOutA=0xFF; dvPCF8575_96214439.invOutB=0xFF;}
+bitClear(dvPCF8575_96214439.cnfgA,0);  //--config PA.bit0 as out;
+bitClear(dvPCF8575_96214439.cnfgA,1);  //--config PA.bit0 as out;
+bitClear(dvPCF8575_96214439.cnfgA,2);  //--config PA.bit2 as out;
+bitClear(dvPCF8575_96214439.cnfgA,3);  //--config PA.bit3 as out;
+bitClear(dvPCF8575_96214439.cnfgA,4);  //--config PA.bit4 as out;
+bitClear(dvPCF8575_96214439.cnfgA,5);  //--config PA.bit5 as out;
+bitClear(dvPCF8575_96214439.cnfgA,6);  //--config PA.bit6 as out;
+bitClear(dvPCF8575_96214439.cnfgA,7);  //--config PA.bit7 as out;
+bitClear(dvPCF8575_96214439.cnfgB,0);  //--config PB.bit0 as out;
+bitClear(dvPCF8575_96214439.cnfgB,1);  //--config PB.bit1 as out;
+bitClear(dvPCF8575_96214439.cnfgB,2);  //--config PB.bit2 as out;
+bitClear(dvPCF8575_96214439.cnfgB,3);  //--config PB.bit3 as out;
+bitClear(dvPCF8575_96214439.cnfgB,4);  //--config PB.bit4 as out;
+bitClear(dvPCF8575_96214439.cnfgB,5);  //--config PB.bit5 as out;
+bitClear(dvPCF8575_96214439.cnfgB,6);  //--config PB.bit6 as out;
+bitClear(dvPCF8575_96214439.cnfgB,7);  //--config PB.bit7 as out;
+shPCF8575out_96214439.periodLimit=0;
+RT_HW_Base.setTaskID(shPCF8575out_96214439,'C',period_out_96214439,Period_out_96214439);
+}
+RT_HW_Base.directTask(shPCF8575out_96214439);
+
+if(shPCF8575out_96214439.run){
+bitWrite(dvPCF8575_96214439.extA,0,(( (_gen6O) && (!((ESP8266_freeParam_216885967) >= (ESP8266_freeParam_152708564))) )));
+bitWrite(dvPCF8575_96214439.extA,1,(( (_gen6O) && (!((ESP8266_freeParam_60439466) >= (ESP8266_freeParam_152708564))) )));
+bitWrite(dvPCF8575_96214439.extA,2,(( (_gen6O) && (!((ESP8266_freeParam_111047777) >= (ESP8266_freeParam_152708564))) )));
+bitWrite(dvPCF8575_96214439.extA,3,(( (_gen6O) && (!((ESP8266_freeParam_260883057) >= (ESP8266_freeParam_152708564))) )));
+bitWrite(dvPCF8575_96214439.extA,4,(( (_gen6O) && (!((ESP8266_freeParam_80199000) >= (ESP8266_freeParam_152708564))) )));
+bitWrite(dvPCF8575_96214439.extA,5,(( (_gen6O) && (!((ESP8266_freeParam_121065562) >= (ESP8266_freeParam_152708564))) )));
+bitWrite(dvPCF8575_96214439.extA,6,(( (_gen6O) && (!((ESP8266_freeParam_98951291) >= (ESP8266_freeParam_152708564))) )));
+bitWrite(dvPCF8575_96214439.extA,7,(( (_gen6O) && (!((ESP8266_freeParam_182290599) >= (ESP8266_freeParam_152708564))) )));
+bitWrite(dvPCF8575_96214439.extB,0,(( (_gen6O) && (!((ESP8266_freeParam_174428203) >= (ESP8266_freeParam_152708564))) )));
+bitWrite(dvPCF8575_96214439.extB,1,(( (_gen6O) && (!((ESP8266_freeParam_79724050) >= (ESP8266_freeParam_152708564))) )));
+bitWrite(dvPCF8575_96214439.extB,2,(( (_gen6O) && (!((ESP8266_freeParam_191929235) >= (ESP8266_freeParam_152708564))) )));
+bitWrite(dvPCF8575_96214439.extB,3,(( (_gen6O) && (!((ESP8266_freeParam_46230415) >= (ESP8266_freeParam_152708564))) )));
+bitWrite(dvPCF8575_96214439.extB,4,(0));
+bitWrite(dvPCF8575_96214439.extB,5,(0));
+bitWrite(dvPCF8575_96214439.extB,6,(0));
+bitWrite(dvPCF8575_96214439.extB,7,(0));
+}
+RT_HW_pcf8575.direct(dvPCF8575_96214439,shPCF8575in_96214439.run,shPCF8575out_96214439.run);
+if ((0) != (_gtv64)) {
+_gtv73 = _gtv64;
+}
+}
+
+//Плата:5
+if (_gtv27 == 0) {
+if(((_gtv73)-(1)) == 0) {_mux5 = ESP8266_freeParam_2908715;}
+if(((_gtv73)-(1)) == 1) {_mux5 = ESP8266_freeParam_167036645;}
+if(((_gtv73)-(1)) == 2) {_mux5 = ESP8266_freeParam_198065769;}
+if(((_gtv73)-(1)) == 3) {_mux5 = ESP8266_freeParam_109304058;}
+if(((_gtv73)-(1)) == 4) {_mux5 = ESP8266_freeParam_84774238;}
+if(((_gtv73)-(1)) == 5) {_mux5 = ESP8266_freeParam_41571615;}
+if(((_gtv73)-(1)) == 6) {_mux5 = ESP8266_freeParam_197729979;}
+if(((_gtv73)-(1)) == 7) {_mux5 = ESP8266_freeParam_90309138;}
+if(((_gtv73)-(1)) == 8) {_mux5 = ESP8266_freeParam_133909782;}
+if(((_gtv73)-(1)) == 9) {_mux5 = ESP8266_freeParam_27795835;}
+if(((_gtv73)-(1)) == 10) {_mux5 = ESP8266_freeParam_112257373;}
+if(((_gtv73)-(1)) == 11) {_mux5 = ESP8266_freeParam_254951221;}
+if(((_gtv73)-(1)) == 0) {_mux2 = (ESP8266_freeParam_216885967) >= (ESP8266_freeParam_152708564);}
+if(((_gtv73)-(1)) == 1) {_mux2 = (ESP8266_freeParam_60439466) >= (ESP8266_freeParam_152708564);}
+if(((_gtv73)-(1)) == 2) {_mux2 = (ESP8266_freeParam_111047777) >= (ESP8266_freeParam_152708564);}
+if(((_gtv73)-(1)) == 3) {_mux2 = (ESP8266_freeParam_260883057) >= (ESP8266_freeParam_152708564);}
+if(((_gtv73)-(1)) == 4) {_mux2 = (ESP8266_freeParam_80199000) >= (ESP8266_freeParam_152708564);}
+if(((_gtv73)-(1)) == 5) {_mux2 = (ESP8266_freeParam_121065562) >= (ESP8266_freeParam_152708564);}
+if(((_gtv73)-(1)) == 6) {_mux2 = (ESP8266_freeParam_98951291) >= (ESP8266_freeParam_152708564);}
+if(((_gtv73)-(1)) == 7) {_mux2 = (ESP8266_freeParam_182290599) >= (ESP8266_freeParam_152708564);}
+if(((_gtv73)-(1)) == 8) {_mux2 = (ESP8266_freeParam_174428203) >= (ESP8266_freeParam_152708564);}
+if(((_gtv73)-(1)) == 9) {_mux2 = (ESP8266_freeParam_79724050) >= (ESP8266_freeParam_152708564);}
+if(((_gtv73)-(1)) == 10) {_mux2 = (ESP8266_freeParam_191929235) >= (ESP8266_freeParam_152708564);}
+if(((_gtv73)-(1)) == 11) {_mux2 = (ESP8266_freeParam_46230415) >= (ESP8266_freeParam_152708564);}
+if (_mux2) {
+_gtv73 = 0;
+}
+if (_changeNumber1_Out) {_changeNumber1_Out = 0;} else {_tempVariable_byte = _gtv64;
+if (_tempVariable_byte != _changeNumber1_OLV) {_changeNumber1_OLV = _tempVariable_byte; _changeNumber1_Out = 1;}
+}
+if (( (!(_mux2)) && (_changeNumber1_Out) && ((0) != (_gtv64)) && ((_gtv17) == (0)) )) { if (_trgrt16I) { _trgrt16 = 0;} else {_trgrt16 = 1; _trgrt16I = 1;} } else {_trgrt16 = 0; _trgrt16I = 0;}; 
+ if (_trgrt16) {
+_gtv36 = _gtv52;
+}
+if (_gtv38)
+{ if (_tim13I) { if (flprog::isTimer(_tim13P, 600000)) {_tim13O = 1;}} else {_tim13I =1; _tim13P = millis();}} else {_tim13O = 0; _tim13I = 0;}
+if (_tim13O) {
+_gtv38 = 0;
+}
+ price_0 = _mux5;
+En_Price = _trgrt16;
+if (En_Price > 0) { 
+
+  Permission = 0;
+  price_0 *= 100;
+  uint8_t pricecont[4];
+  pricecont[3] = (price_0 >> 24);
+  pricecont[2] = (price_0 >> 16);
+  pricecont[1] = (price_0 >> 8);
+  pricecont[0] = price_0 & 0xFF;
+
+  uint8_t message[] = {0x01, pricecont[0], pricecont[1], pricecont[2], pricecont[3], 0x06, 0x43, 0x00, 0x00, 0x00, 0x00, 0x01};
+  
+  uint16_t crcResult = GetCRC16(message, sizeof(message));
+  byte crccont1 = crcResult >> 8;
+  byte crccont2 = crcResult & 0xFF;
+
+  uint8_t sendData[] = {0x0C, 0x00, crccont2, crccont1, 0x01, pricecont[0], pricecont[1], pricecont[2], pricecont[3], 0x06, 0x43, 0x00, 0x00, 0x00, 0x00, 0x01};
+  if (!_gtv38) {  // если тестовый режим не включен
+  mySerial.write(sendData, sizeof(sendData)); }
+
+     delay(1000);
+
+     while (mySerial.available() > 0) {
+     uint8_t msg_Hight = mySerial.read();
+     if (msg_Hight == crccont2) {
+    uint8_t msg_Low = mySerial.read();
+    if (msg_Low == crccont1) {
+    Permission = 1; 
+    } 
+
+    }}
+   
+    if (Permission == 0) {
+    uint8_t Cancel_Card[] = {0x01, 0x00, 0xCE, 0x82 ,0x08};
+    mySerial.write(Cancel_Card, sizeof(Cancel_Card)); 
+    delay(500);
+    uint8_t screen[] = {0x02, 0x00, 0xFD, 0xF5, 0x03, 0x02};
+    mySerial.write(screen, sizeof(screen));     
+    }
+
+
+  }
+
+
+if(( (Permission) || (( (_trgrt16) && (_gtv38) )) )) {_tim14O = 1; _tim14I = 1;} else { if(_tim14I) {_tim14I = 0; _tim14P = millis();} else { if (_tim14O) {if ( flprog::isTimer(_tim14P, _gtv36)) _tim14O = 0;}}}
+if (_tim14O) { if (_trgrt1I) { _trgrt1 = 0;} else {_trgrt1 = 1; _trgrt1I = 1;} } else {_trgrt1 = 0; _trgrt1I = 0;}; 
+ en_reset_165983470_1 = _trgrt1;
+if (en_reset_165983470_1) {
+    pin14_waiting = false; // Сбрасываем флаг до следующего сигнала
+  } 
+En_Payment = _tim14O;
+Test_mode1 = _gtv38;
+if (En_Payment > 0 ) {
+  Permission = 0;
+  paymant_result = 0;
+   if (Test_mode1 > 0 && price_0 > 0 )  {
+     paymant_result = 1;
+    _gtv36 = 0; //ожидание платежа _wait_payment _gtv36
+    delay(500);
+
+  }
+
+ if (mySerial.available() && Test_mode1 == 0) {
+  char msg = mySerial.read();
+  uint8_t msgValue = msg;
+    if (msgValue == 0x13) { //Результат поиска и чтения карты
+    _gtv1 = 0; 
+      uint8_t result1 = mySerial.read();
+      if (result1 == 0x02) {  //0x02 - карта считана успешно
+       _gtv1 = 0; //блокировка кнопок
+      }
+      if (result1 == 0x01 || result1 == 0x00) { //0x00 - карта не обнаружена, 0x01 - карта обнаружена, но не считана
+        _gtv36 = 0; //ожидание платежа _wait_payment _gtv36
+      }
+    }
+    if (msgValue == 0x14) {
+      uint8_t resultpayment = mySerial.read();
+      if (resultpayment == 0x01) {
+          _gtv1 = 0;
+        _gtv36 = 0;  //ожидание платежа _wait_payment
+  //      paymant_result = 1;
+        }
+        else if (resultpayment == 0x00) {
+          _gtv36 = 0;  //ожидание платежа _wait_payment
+      }
+    }
+
+    if (msgValue == 0xF2) {
+      byte result = mySerial.read();
+      if (result == 0x6A) {
+        _gtv36 = 0;  //ожидание платежа _wait_payment
+      }
+    }
+  }
+}
+
+
+if (paymant_result) { if (_trgrt20I) { _trgrt20 = 0;} else {_trgrt20 = 1; _trgrt20I = 1;} } else {_trgrt20 = 0; _trgrt20I = 0;}; 
+ if(_tim14O) {_tim23O = 1; _tim23I = 1;} else { if(_tim23I) {_tim23I = 0; _tim23P = millis();} else { if (_tim23O) {if ( flprog::isTimer(_tim23P, 500)) _tim23O = 0;}}}
+en_triggered_bank = _tim23O;
+ const unsigned long DEBOUNCE_TIME_US = 300000;   // 1 секунда
+ _gtv29 = pin14_waiting;
+  if (en_triggered_bank) {               // Ваш внешний «разрешающий» флаг
+    if (pin14_waiting) {                 // Уже идёт проверка длительности
+      if (digitalRead(INPUT_PIN) == HIGH) {
+        if (micros() - pin14_startUs >= DEBOUNCE_TIME_US) {
+          term = 1;                      // Удержание подтверждено
+          pin14_waiting = false;         // Проверка завершена
+        }
+      } else {                           // Отпустили раньше времени – сброс
+        pin14_waiting = false;
+       term = 0;
+      }
+    } else {
+      term = 0;                          // Пока фронта не было – «0»
+    }
+  } else {
+    term = 0;                            // Банк не разрешён
+  }
+_gtv25 = term;
+FTrig_10_Out = 0;
+if ((!(( (!(_gtv27)) && (term) )))&&(FTrig_10_OldStat)){FTrig_10_Out = 1;}
+FTrig_10_OldStat = ( (!(_gtv27)) && (term) );
+if (( ((_gtv73) >= (1)) && (( (FTrig_10_Out) || (_trgrt20) )) )) {
+_gtv14 = (_gtv73)-(1);
+}
+if (( (FTrig_10_Out) || (_trgrt20) )) {
+_gtv36 = 0UL;
+}
+if (( (FTrig_10_Out) || (_trgrt20) )) {
+_gtv24 = 1;
+}
+_gtv42 = ( (FTrig_10_Out) || (_trgrt20) );
+FTrig_11_Out = 0;
+if ((!(_tim14O))&&(FTrig_11_OldStat)){FTrig_11_Out = 1;}
+FTrig_11_OldStat = _tim14O;
+Print_term_20992536_3 = ( (FTrig_11_Out) && (!(_gtv39)) && (!(_gtv24)) );
+if (Print_term_20992536_3 > 0) { 
+  delay(500);   
+  uint8_t wait_off[] = {0x01, 0x00, 0xCE, 0x82, 0x08};
+  mySerial.write(wait_off, sizeof(wait_off));
+  delay(500);   
+  uint8_t sendData[] = {0x02, 0x00, 0xFD, 0xF5, 0x03, 0x02};
+  mySerial.write(sendData, sizeof(sendData));
+  delay(500); 
+ _gtv1 = 1; //блокировка кнопок
+
+  }
+
+else { Print_term_20992536_3 = 0; } // садим выход En на лог. "0"  // Не обязательно
+
+if (!(_mux2)) {
+_gtv37 = _mux5;
+}
+if ((_gtv73) == (0)) {
+_gtv37 = 0;
+}
+}
+
+//Плата:6
+if (_gtv27 == 0) {
+if (( (_tim14O) && (( ((_SCT_2_CPOP) > (0)) && (!(_gtv43)) && (!(_gtv24)) && (!(_mux2)) )) )) { if (_trgrt11I) { _trgrt11 = 0;} else {_trgrt11 = 1; _trgrt11I = 1;} } else {_trgrt11 = 0; _trgrt11I = 0;}; 
+ Cashless_off_231853876_1 = _trgrt11;
+if (Cashless_off_231853876_1 > 0) { 
+  delay(500);   
+  uint8_t Cashless_off_231853876_1[] = {0x01, 0x00, 0xCE, 0x82, 0x08}; //при поступлении денег через монетоприемник
+  mySerial.write(Cashless_off_231853876_1, sizeof(Cashless_off_231853876_1));
+  delay(500);   
+  check_COINMODE = 0;
+  }
+
+// else { Cashless_off_231853876_1 = 0; } // садим выход En на лог. "0"  // Не обязательно
+
+if (( ((_SCT_2_CPOP) > (0)) && (!(_gtv43)) && (!(_gtv24)) && (!(_mux2)) )) {
+_gtv36 = 0UL;
+}
+_gtv39 = ( ((_SCT_2_CPOP) > (0)) && (!(_gtv43)) && (!(_gtv24)) && (!(_mux2)) );
+if (( ((_SCT_2_CPOP) > (0)) && (!(_gtv43)) && (!(_gtv24)) && (!(_mux2)) )) { if (_trgrt4I) { _trgrt4 = 0;} else {_trgrt4 = 1; _trgrt4I = 1;} } else {_trgrt4 = 0; _trgrt4I = 0;}; 
+ if (1) {if (! _gen4I) { _gen4I = 1; _gen4O = 1; _gen4P =  millis(); } } else { _gen4I = 0 ;  _gen4O= 0;  } if (_gen4I ) { if (_gen4O) { if (  flprog::isTimer( _gen4P , 50 )) { _gen4P = millis(); _gen4O = 0; } } else  { if (  flprog::isTimer( _gen4P , 850 )) {  _gen4P = millis(); _gen4O = 1;  } } }
+if (_trgrt4){
+_count1_Value = _gtv19;
+} else {
+if (_gen4O){
+if ( ! _count1I) { 
+_count1I = 1;
+if(_count1_Value > 0) {_count1_Value = _count1_Value - 1;
+}}} else {
+_count1I = 0;}
+}
+En_Coin_once = ( ((_SCT_2_CPOP) > (0)) && (!(_gtv43)) && (!(_gtv24)) && (!(_mux2)) );
+
+if (En_Coin_once > 0 && check_COINMODE == 0)  {
+
+
+
+   inputString_crc = "30 01 00 00 00 00 EF 00 3F 01 00 00 00";
+
+    // Переводим всё в верхний регистр, если нужно
+    inputString_crc.toUpperCase();
+
+    // -------------------------
+    // Дальше формируем пакет, отправляем в порт и ждём ack
+    // -------------------------
+
+    // 4) Убираем пробелы и т.д.
+    inputString_crc.replace("0X", "");
+    inputString_crc.replace("0x", "");
+    inputString_crc.replace(",", "");
+    inputString_crc.replace(" ", "");
+
+    // 5) Переводим строку в массив байт
+    int byteLength = inputString_crc.length() / 2;
+    byte packet[byteLength];
+    for (int i = 0; i < byteLength; i++) {
+      String hexPair = inputString_crc.substring(i * 2, i * 2 + 2);
+      packet[i] = (byte)strtol(hexPair.c_str(), NULL, 16);
+    }
+
+    // 6) Вычисляем CRC16
+    uint16_t bodyLength = byteLength;
+    uint16_t crc = GetCRC16(packet, bodyLength);
+
+    // 7) Формируем finalPacket = [длина(2 байта), CRC16(2 байта), тело]
+    byte finalPacket[bodyLength + 4];
+    finalPacket[0] = lowByte(bodyLength);
+    finalPacket[1] = highByte(bodyLength);
+    finalPacket[2] = lowByte(crc);
+    finalPacket[3] = highByte(crc);
+    for (int i = 0; i < bodyLength; i++) {
+      finalPacket[4 + i] = packet[i];
+    }
+
+    // Сохраняем CRC, чтобы сверить с ack
+    byte crcLow  = finalPacket[2];
+    byte crcHigh = finalPacket[3];
+
+    // 8) Пытаемся отправить и дождаться подтверждения (3 секунд)
+    unsigned long startTime = millis();
+    bool isDelivered = false;
+
+    while (!isDelivered) {
+      if (millis() - startTime > 3000UL) {
+        // Превысили таймаут 3 сек
+        break;
+      }
+
+      // Отправляем пакет
+      mySerial.write(finalPacket, bodyLength + 4);
+      delay(100);
+
+      // Читаем входные байты, если пришёл ack (2 байта = наш CRC)
+      while (mySerial.available() > 0) {
+        byte ackLow = mySerial.read();
+        // Сначала сверяем ackLow
+        if (ackLow == crcLow && mySerial.available() > 0) {
+          byte ackHigh = mySerial.read();
+          if (ackHigh == crcHigh) {
+            // Подтверждение есть
+            isDelivered = true;
+            break;
+          }
+        }
+      }
+
+      if (!isDelivered) {
+        delay(50);
+      }
+    }
+
+    // 9) Формируем лог send_date
+ //   send_date = "";
+    if (isDelivered) {
+//      send_date += "Получили подтверждение ";
+      coin_screen=1;
+      check_COINMODE = 1;
+    } 
+
+  
+
+
+}
+if (En_Coin_once == 0)  { 
+  coin_screen = 0;
+  check_COINMODE = 0;
+}
+if (coin_screen)
+{ if (_tim3I) { if (flprog::isTimer(_tim3P, 500)) {_tim3O = 1;}} else {_tim3I =1; _tim3P = millis();}} else {_tim3O = 0; _tim3I = 0;}
+En_Coin = _tim3O;
+En_Coin_changeTime = 0;
+coin_price_int = _gtv17;
+coin_price_button = _gtv37;
+coin_rest_time_int = _count1_Value;
+coin_buttons_work = _gtv73;
+
+  // Если какие-то условия не выполняются, сбрасываем CoinGetGoods
+  if (coin_buttons_work == 0 || _SCT_2_CPOP == 0 || _gtv39 == 0) {
+    CoinGetGoods = 0;
+  }
+
+  // Запускаем блок кода, только если En_Coin > 0
+  if (En_Coin > 0 && CoinGetGoods == 0) {
+
+    unsigned long currentMillis = millis();
+    // Выполняем не чаще 1 раза в 1000 мс
+    if (currentMillis - lastCoinCheckTime >= 1000) {
+      lastCoinCheckTime = currentMillis;
+
+      int16_t coin_price_rest = coin_price_button - coin_price_int;
+      if (coin_price_button <= coin_price_int ) {
+       coin_price_rest =0;
+       }
+
+      if (coin_price_rest <= 0 && coin_buttons_work > 0 && _gtv39 == 1 && _gtv43 == 0 && _gtv24 == 0) {
+        _gtv1 = 0;
+        CoinGetGoods = 1;
+      }
+
+      if (coin_buttons_work == 0) {  
+        // coin_price_goods = 0; // (при необходимости, если нужно сбрасывать)
+        coin_price_rest = 0;
+      }
+
+      // Формируем строки на основе переменных
+      String date1Str = String(coin_price_button);   // цена товара
+      String date2Str = String(coin_price_int);      // оплачено
+      String date3Str = String(coin_price_rest);     // внесите ещё
+      String date4Str = String(coin_rest_time_int);  // осталось
+
+      // -------------------------------
+      // Если монетные кнопки НЕ активны
+      // -------------------------------
+      if (coin_buttons_work == 0) {
+
+        // Сбрасываем флаг, чтобы при следующем coin_buttons_work>0 вставить нужные блоки заново
+        coinButtonsWasActive = false;
+        lastDate1Len = -1;
+        lastDate2Len = -1;
+        lastDate3Len = -1;
+
+        // ---- Ваш исходный код ----
+        String inputString_crc = 
+          "30 02 15 00 0A 00 01 FF FF FF 00 00 00 0E C2 DB C1 C5 D0 C8 D2 C5 20 D2 CE C2 C0 D0";
+
+        // Дописываем кусок
+        inputString_crc += 
+          "02 39 00 7A 00 01 FF FF FF 00 00 00 09 CE CF CB C0 D7 C5 CD CE 3A 02";
+        if (date2Str.length() == 1) {
+          inputString_crc += "70 00 96 00 04 FF FF FF 00 00 00 ";
+        }
+        else if (date2Str.length() == 2) {
+          inputString_crc += "60 00 96 00 04 FF FF FF 00 00 00 ";
+        }
+        else if (date2Str.length() == 3) {
+          inputString_crc += "54 00 96 00 04 FF FF FF 00 00 00 ";
+        }
+
+        // Добавляем дату2
+        AppendAsciiString(inputString_crc, date2Str);
+
+        // Дописываем ещё кусок
+        inputString_crc += 
+          "02 28 00 27 01 00 FF FF FF 00 00 00 15 CE D1 D2 C0 CB CE D1 DC 20 20";
+        if (date4Str.length() == 1) {
+          inputString_crc += "20 20 20 ";
+        }
+        else if (date4Str.length() == 2) {
+          inputString_crc += "20 20 ";
+        }
+        else if (date4Str.length() == 3) {
+          inputString_crc += "20 ";
+        }
+
+        // Добавляем дату4
+        AppendAsciiString(inputString_crc, date4Str);
+
+        // Финальный кусок
+        inputString_crc += "20 F1 E5 EA 2E 20 2E";
+
+        // Переводим всё в верхний регистр
+        inputString_crc.toUpperCase();
+
+        // Убираем "лишние" символы
+        inputString_crc.replace("0X", "");
+        inputString_crc.replace("0x", "");
+        inputString_crc.replace(",", "");
+        inputString_crc.replace(" ", "");
+
+        // Формируем массив байт
+        int byteLength = inputString_crc.length() / 2;
+        byte packet[byteLength];
+        for (int i = 0; i < byteLength; i++) {
+          String hexPair = inputString_crc.substring(i * 2, i * 2 + 2);
+          packet[i] = (byte)strtol(hexPair.c_str(), NULL, 16);
+        }
+
+        // Вычисляем CRC
+        uint16_t bodyLength = byteLength;
+        uint16_t crc = GetCRC16(packet, bodyLength);
+
+        // Итоговый пакет
+        byte finalPacket[bodyLength + 4];
+        finalPacket[0] = lowByte(bodyLength);
+        finalPacket[1] = highByte(bodyLength);
+        finalPacket[2] = lowByte(crc);
+        finalPacket[3] = highByte(crc);
+        for (int i = 0; i < bodyLength; i++) {
+          finalPacket[4 + i] = packet[i];
+        }
+
+        // Отправляем пакет
+        mySerial.write(finalPacket, bodyLength + 4);
+        delay(100);
+
+    
+      }
+
+      // -------------------------------
+      // Если монетные кнопки АКТИВНЫ (>0)
+      // -------------------------------
+      if (coin_buttons_work > 0) {
+
+        // firstCycle будет true, если только что перешли coin_buttons_work с 0 на >0
+        bool firstCycle = false;
+        if (!coinButtonsWasActive) {
+          firstCycle = true;  
+        }
+        coinButtonsWasActive = true;  // Запоминаем, что мы в состоянии "активно"
+
+        // Начинаем формировать строку:
+        // Раньше было "30 02 29 00 32...", теперь сперва "30"
+        String inputString_crc = "30";
+
+        // 1) Если это первый цикл после 0→>0, добавляем "01 00 00 00 00 EF 00 20 00 00 00 00"
+        if (firstCycle) {
+          inputString_crc += "01 00 00 00 00 EF 00 20 00 00 00 00";
+        }
+
+        // 2) Если длина date1Str изменилась — вставляем соответствующий блок
+        if (lastDate1Len >= 0 && (date1Str.length() != lastDate1Len)) {
+          // "01 00 00 45 00 EF 00 75 00 00 00 00"
+          inputString_crc += "01 00 00 45 00 EF 00 75 00 00 00 00";
+        }
+        lastDate1Len = date1Str.length();
+
+        // 3) Если длина date2Str изменилась — вставляем
+        if (lastDate2Len >= 0 && (date2Str.length() != lastDate2Len)) {
+          // "01 00 00 93 00 EF 00 B4 00 00 00 00"
+          inputString_crc += "01 00 00 93 00 EF 00 B4 00 00 00 00";
+        }
+        lastDate2Len = date2Str.length();
+
+        // 4) Если длина date3Str изменилась — вставляем
+        if (lastDate3Len >= 0 && (date3Str.length() != lastDate3Len)) {
+          // "01 00 00 F0 00 EF 00 18 01 00 00 00"
+          inputString_crc += "01 00 00 F0 00 EF 00 18 01 00 00 00";
+        }
+        lastDate3Len = date3Str.length();
+
+        // 5) Далее тот кусок, который у вас раньше был изначально:
+        inputString_crc +=
+          "02 29 00 32 00 01 FF FF FF 00 00 00 0C D6 C5 CD C0 20 D2 CE C2 C0 D0 C0 3A 02";
+
+        // Вот ваш прежний код, где вы добавляли условные куски в зависимости от длины date1Str:
+        if (date1Str.length() == 1) {
+          inputString_crc += "70 00 50 00 04 FF FF FF 00 00 00 ";
+        }
+        else if (date1Str.length() == 2) {
+          inputString_crc += "60 00 50 00 04 FF FF FF 00 00 00 ";
+        }
+        else if (date1Str.length() == 3) {
+          inputString_crc += "54 00 50 00 04 FF FF FF 00 00 00 ";
+        }
+
+        // Добавляем дату1
+        AppendAsciiString(inputString_crc, date1Str);
+
+        // Дополняем
+        inputString_crc += 
+          "02 39 00 7A 00 01 FF FF FF 00 00 00 09 CE CF CB C0 D7 C5 CD CE 3A 02";
+        if (date2Str.length() == 1) {
+          inputString_crc += "70 00 96 00 04 FF FF FF 00 00 00 ";
+        }
+        else if (date2Str.length() == 2) {
+          inputString_crc += "60 00 96 00 04 FF FF FF 00 00 00 ";
+        }
+        else if (date2Str.length() == 3) {
+          inputString_crc += "54 00 96 00 04 FF FF FF 00 00 00 ";
+        }
+
+        // Добавляем дату2
+        AppendAsciiString(inputString_crc, date2Str);
+
+        // Ещё часть
+        inputString_crc += 
+          "02 20 00 B9 00 00 FF FF FF 00 00 00 14 C4 CB DF 20 CF CE CB D3 D7 C5 CD C8 DF 20 D2 CE C2 C0 D0 C0 "
+          "02 13 00 CD 00 00 FF FF FF 00 00 00 17 E2 ED E5 F1 E8 F2 E5 20 EF EE E6 E0 EB F3 E9 F1 F2 E0 20 E5 F9 B8 3A 02";
+        if (date3Str.length() == 1) {
+          inputString_crc += "70 00 FA 00 04 FF FF FF 00 00 00 ";
+        }
+        else if (date3Str.length() == 2) {
+          inputString_crc += "60 00 FA 00 04 FF FF FF 00 00 00 ";
+        }
+        else if (date3Str.length() == 3) {
+          inputString_crc += "54 00 FA 00 04 FF FF FF 00 00 00 ";
+        }
+
+        // Добавляем дату3
+        AppendAsciiString(inputString_crc, date3Str);
+
+        // Дописываем ещё кусок
+        inputString_crc += "02 28 00 27 01 00 FF FF FF 00 00 00 15 CE D1 D2 C0 CB CE D1 DC 20 20";
+        if (date4Str.length() == 1) {
+          inputString_crc += "20 20 20 ";
+        }
+        else if (date4Str.length() == 2) {
+          inputString_crc += "20 20 ";
+        }
+        else if (date4Str.length() == 3) {
+          inputString_crc += "20 ";
+        }
+
+        // Добавляем дату4
+        AppendAsciiString(inputString_crc, date4Str);
+
+        // Финальный кусок
+        inputString_crc += "20 F1 E5 EA 2E 20 2E";
+
+        // Приводим к верхнему регистру
+        inputString_crc.toUpperCase();
+
+        // Убираем пробелы и т.д.
+        inputString_crc.replace("0X", "");
+        inputString_crc.replace("0x", "");
+        inputString_crc.replace(",", "");
+        inputString_crc.replace(" ", "");
+
+        // Переводим строку в массив байт
+        int byteLength = inputString_crc.length() / 2;
+        byte packet[byteLength];
+        for (int i = 0; i < byteLength; i++) {
+          String hexPair = inputString_crc.substring(i * 2, i * 2 + 2);
+          packet[i] = (byte)strtol(hexPair.c_str(), NULL, 16);
+        }
+
+        // Вычисляем CRC16
+        uint16_t bodyLength = byteLength;
+        uint16_t crc = GetCRC16(packet, bodyLength);
+
+        // Формируем finalPacket = [длина(2 байта), CRC16(2 байта), тело]
+        byte finalPacket[bodyLength + 4];
+        finalPacket[0] = lowByte(bodyLength);
+        finalPacket[1] = highByte(bodyLength);
+        finalPacket[2] = lowByte(crc);
+        finalPacket[3] = highByte(crc);
+        for (int i = 0; i < bodyLength; i++) {
+          finalPacket[4 + i] = packet[i];
+        }
+
+        // Отправляем пакет
+        mySerial.write(finalPacket, bodyLength + 4);
+        delay(100);
+
+    
+      } // if (coin_buttons_work > 0)
+
+    } // if (currentMillis - lastCoinCheckTime >= 1000)
+  }
+  else {
+    // Если En_Coin <= 0, сбрасываем, чтобы при следующем En_Coin>0 всё отработало заново
+    coinButtonsWasActive = false;
+    lastDate1Len = -1;
+    lastDate2Len = -1;
+    lastDate3Len = -1;
+  }
+
+if (CoinGetGoods)
+{ if (_tim5I) { if (flprog::isTimer(_tim5P, 1000)) {_tim5O = 1;}} else {_tim5I =1; _tim5P = millis();}} else {_tim5O = 0; _tim5I = 0;}
+if (( ((_gtv73) >= (1)) && (_tim5O) )) {
+_gtv14 = (_gtv73)-(1);
+}
+if (_tim5O)
+{ if (_tim20I) { if (flprog::isTimer(_tim20P, 1000)) {_tim20O = 1;}} else {_tim20I =1; _tim20P = millis();}} else {_tim20O = 0; _tim20I = 0;}
+_gtv15 = _tim20O;
+if (_tim5O) { if (_trgrt17I) { _trgrt17 = 0;} else {_trgrt17 = 1; _trgrt17I = 1;} } else {_trgrt17 = 0; _trgrt17I = 0;}; 
+ En_Price1_187797143_2 = ( ((_gtv17) > (_gtv37)) && (_trgrt17) );
+goods_number_187797143_2 = _gtv73;
+if (En_Price1_187797143_2 > 0) { 
+  price_0 = (_gtv17 - _mux5);
+  price_0 *= 100;
+  uint8_t pricecont[4];
+  pricecont[3] = (price_0 >> 24);
+  pricecont[2] = (price_0 >> 16);
+  pricecont[1] = (price_0 >> 8);
+  pricecont[0] = price_0 & 0xFF;
+
+ uint8_t message[] = {0x0E, 0x04, pricecont[0], pricecont[1], 0x21};
+  
+  uint16_t crcResult = GetCRC16(message, sizeof(message));
+  byte crccont1 = crcResult >> 8;
+  byte crccont2 = crcResult & 0xFF;
+
+  uint8_t sendData[] = {0x05, 0x00, crccont2, crccont1, 0x0E, 0x04, pricecont[0], pricecont[1], 0x21};
+  mySerial.write(sendData, sizeof(sendData));
+
+
+}
+
+
+if (( ((_count1_Value) == (0)) && (_gtv39) ))
+{ if (_tim2I) { if (flprog::isTimer(_tim2P, 2000)) {_tim2O = 1;}} else {_tim2I =1; _tim2P = millis();}} else {_tim2O = 0; _tim2I = 0;}
+if (_tim2O) { if (_trgrt15I) { _trgrt15 = 0;} else {_trgrt15 = 1; _trgrt15I = 1;} } else {_trgrt15 = 0; _trgrt15I = 0;}; 
+ En_Price1_149139899_1 = _trgrt15;
+goods_number_149139899_1 = _gtv73;
+if (En_Price1_149139899_1 > 0) { 
+  price_0 = _gtv17;
+  price_0 *= 100;
+  uint8_t pricecont[4];
+  pricecont[3] = (price_0 >> 24);
+  pricecont[2] = (price_0 >> 16);
+  pricecont[1] = (price_0 >> 8);
+  pricecont[0] = price_0 & 0xFF;
+
+  uint8_t message[] = {0x0E, 0x04, pricecont[0], pricecont[1], 0x64};
+  
+  uint16_t crcResult = GetCRC16(message, sizeof(message));
+  byte crccont1 = crcResult >> 8;
+  byte crccont2 = crcResult & 0xFF;
+
+  uint8_t sendData[] = {0x05, 0x00, crccont2, crccont1, 0x0E, 0x04, pricecont[0], pricecont[1], 0x64};
+  mySerial.write(sendData, sizeof(sendData));
+  
+
+}
+
+
+if (_tim2O) { if (_trgrt10I) { _trgrt10 = 0;} else {_trgrt10 = 1; _trgrt10I = 1;} } else {_trgrt10 = 0; _trgrt10I = 0;}; 
+ Print_term_47651352_1 = _trgrt10;
+if (Print_term_47651352_1 > 0) { 
+   _SCT_2_CPOP = 0;
+    delay(2000);
+
+  uint8_t sendData[] = {0x02, 0x00, 0xFD, 0xF5, 0x03, 0x02};
+  mySerial.write(sendData, sizeof(sendData));
+
+  }
+
+else { Print_term_47651352_1 = 0; } // садим выход En на лог. "0"  // Не обязательно
+
+_gtv17 = _SCT_2_CPOP;
+}
+
+//Плата:7
+UB_182885883_ubi_234709184 = _gtv14;
+_func_UB_182885883(&UB_182885883_Instance1, UB_182885883_ubi_234709184);
+digitalWrite(16, UB_182885883_Instance1.ubo_233133022);
+digitalWrite(0, UB_182885883_Instance1.ubo_5266079);
+digitalWrite(2, UB_182885883_Instance1.ubo_74323408);
+digitalWrite(15, UB_182885883_Instance1.ubo_64046820);
+if (( (_gtv15) || (_gtv42) || (_tim17O) )) { if (_trgrt3I) { _trgrt3 = 0;} else {_trgrt3 = 1; _trgrt3I = 1;} } else {_trgrt3 = 0; _trgrt3I = 0;}; 
+ if (_trgrt3) {
+_gtv40 = 0;
+}
+if (_trgrt3) {
+_gtv6 = _gtv16;
+}
+if (_trgrt3) {
+_gtv12 = _gtv13;
+}
+if (_trgrt3) {
+_gtv1 = 0;
+}
+if(_trgrt3) {_tim4O = 1; _tim4I = 1;} else { if(_tim4I) {_tim4I = 0; _tim4P = millis();} else { if (_tim4O) {if ( flprog::isTimer(_tim4P, _gtv12)) _tim4O = 0;}}}
+if (( ((_gtv73) >= (1)) && (_tim4O) )) {
+_gtv14 = (_gtv73)-(1);
+}
+_gtv27 = _tim4O;
+if (_tim4O)
+{ if (_tim19I) { if (flprog::isTimer(_tim19P, _gtv20)) {_tim19O = 1;}} else {_tim19I =1; _tim19P = millis();}} else {_tim19O = 0; _tim19I = 0;}
+if (_tim19O) { if (_trgrt5I) { _trgrt5 = 0;} else {_trgrt5 = 1; _trgrt5I = 1;} } else {_trgrt5 = 0; _trgrt5I = 0;}; 
+ if (_trgrt5) {
+_gtv6 = 76;
+}
+if (_tim19O)
+{ if (_tim22I) { if (flprog::isTimer(_tim22P, 300)) {_tim22O = 1;}} else {_tim22I =1; _tim22P = millis();}} else {_tim22O = 0; _tim22I = 0;}
+if (_tim22O) {
+_gtv6 = _gtv18;
+}
+FTrig_4_Out = 0;
+if ((!(_tim4O))&&(FTrig_4_OldStat)){FTrig_4_Out = 1;}
+FTrig_4_OldStat = _tim4O;
+if (FTrig_4_Out) {
+_gtv6 = 76;
+}
+reset_coin_236455121_1 = _tim4O;
+if (reset_coin_236455121_1 >0) {
+
+    _SCT_2_CPOP = 0;
+}
+if (_tim4O)
+{ if (_tim9I) { if (flprog::isTimer(_tim9P, 100)) {_tim9O = 1;}} else {_tim9I =1; _tim9P = millis();}} else {_tim9O = 0; _tim9I = 0;}
+if (_tim9O) { if (_trgrt9I) { _trgrt9 = 0;} else {_trgrt9 = 1; _trgrt9I = 1;} } else {_trgrt9 = 0; _trgrt9I = 0;}; 
+ en_reset_1425741_2 = _trgrt9;
+if (en_reset_1425741_2) {
+    pin14_waiting = false; // Сбрасываем флаг до следующего сигнала
+  } 
+if(_trgrt9) {_tim10O = 1; _tim10I = 1;} else { if(_tim10I) {_tim10I = 0; _tim10P = millis();} else { if (_tim10O) {if ( flprog::isTimer(_tim10P, 500)) _tim10O = 0;}}}
+_FreeLog4_IArr[0] = !( (digitalRead (14)));
+_FreeLog4_IArr[1] = _tim10O;
+_FreeLog4_Q1 = _checkFreeLogicBlockOutput(_FreeLog4_IArr, 2, _FreeLog4_Q1_StArr, 2); 
+if (_FreeLog4_Q1) {
+_gtv40 = (_gtv40)+(1);
+}
+servoPin = 13;
+Servo_En = ( (_gtv5) || (( (_tim4O) && ((_gtv12) != (0)) && (!( (digitalRead (14)))) )) );
+ServoMove = _gtv6;
+if (Servo_En == 1) {
+    ServoPinExit = 0;
+    // Отключаем Serial и используем пины TX и RX как GPIO
+    if (serialActive) {
+//      Serial.end();  // Останавливаем Serial
+      serialActive = false;  // Обновляем флаг
+//      pinMode(1, OUTPUT);  // Переводим TX (GPIO1) в режим цифрового выхода
+//      pinMode(3, OUTPUT);  // Переводим RX (GPIO3) в режим цифрового выхода
+    }
+
+ 
+    // Управляем ШИМ на уровне железа (без задержек программы)
+    analogWrite(servoPin, ServoMove);  // Устанавливаем ширину импульса
+
+  } else {
+    // Отключаем ШИМ, если сервопривод выключен
+    analogWrite(servoPin, 0);  // Отключаем сигнал на пине 13 (серво останавливается)
+    ServoPinExit = 1;
+  }
+
+if (ServoPinExit) {
+_gtv14 = 15;
+}
+if (_tim4O) { if (! _gen1I) { _gen1I = 1; _gen1O = 1; _gen1P = millis(); } } else { _gen1I = 0 ; _gen1O= 0;}
+ if (_gen1I) {  if ( flprog::isTimer ( _gen1P , 100 )) { _gen1P = millis(); _gen1O = ! _gen1O;}}
+if (( (( (_gtv39) || (_tim14O) || (_tim17O) )) && (!(_tim4O)) )) {if (! _gen3I) { _gen3I = 1; _gen3O = 1; _gen3P =  millis(); } } else { _gen3I = 0 ;  _gen3O= 0;  } if (_gen3I ) { if (_gen3O) { if (  flprog::isTimer( _gen3P , 1000 )) { _gen3P = millis(); _gen3O = 0; } } else  { if (  flprog::isTimer( _gen3P , 10 )) {  _gen3P = millis(); _gen3O = 1;  } } }
+en_pcf8575_82056555_1 = 1;
+device_address_pcf_82056555_1 = ESP8266_freeParam_246427857;
+pin1_en_82056555_1 = ( (_gen3O) || (_gen1O) );
+pin_out1_82056555_1 = (_gtv73)-(1);
+pin2_en_82056555_1 = 0;
+pin_out2_82056555_1 = 0;
+if (en_pcf8575_82056555_1) {
+
+uint16_t config = 0xFFFF; // Все пины по умолчанию входы (1 - вход, 0 - выход)
+uint16_t output = 0xFFFF; // Все пины по умолчанию в состоянии лог.1 (высокий уровень)
+
+if (pin1_en_82056555_1 == 1) {
+
+    config &= ~(1 << pin_out1_82056555_1); // Устанавливаем pin_out1_82056555_1 как выход
+    output &= ~(1 << pin_out1_82056555_1); // Подавать низкий уровень на pin_out1_82056555_1
+
+  }
+
+  if (pin2_en_82056555_1 == 1) {
+
+    config &= ~(1 << pin_out2_82056555_1); // Устанавливаем pin_out2_82056555_1 как выход
+    output &= ~(1 << pin_out2_82056555_1); // Подавать низкий уровень на pin_out2_82056555_1
+
+  }
+
+   // Если конфигурация или состояние изменилось, отправляем данные на устройство
+
+    if (config != previousConfig_82056555_1 || output != previousOutput_82056555_1) {
+
+      Wire.beginTransmission(PCF8575_BASE_ADDR_82056555_1 + device_address_pcf_82056555_1);
+      Wire.write(output & config & 0xFF);
+      Wire.write((output & config) >> 8 & 0xFF);
+      Wire.endTransmission();
+
+      // Обновляем предыдущие состояния
+
+      previousConfig_82056555_1 = config;
+      previousOutput_82056555_1 = output;
+
+    }}
+if(( (_tim14O) || (_tim4O) )) {_tim18O = 1; _tim18I = 1;} else { if(_tim18I) {_tim18I = 0; _tim18P = millis();} else { if (_tim18O) {if ( flprog::isTimer(_tim18P, 5000)) _tim18O = 0;}}}
+_gtv69 = !(_tim18O);
+FTrig_2_Out = 0;
+if ((!(_tim4O))&&(FTrig_2_OldStat)){FTrig_2_Out = 1;}
+FTrig_2_OldStat = _tim4O;
+en_trigged = ( (_tim4O) || (_gtv74) );
+if (en_trigged) {
+if (pin14_waiting) {
+    term1 = 0; // задаём переменную, когда зафиксирован сигнал
+//    pin15_triggered = false; // Сбрасываем флаг до следующего сигнала
+  }  else {
+    term1 = 1; // В остальное время term = 0
+  }
+}
+FTrig_1_Out = 0;
+if ((!(term1))&&(FTrig_1_OldStat)){FTrig_1_Out = 1;}
+FTrig_1_OldStat = term1;
+if (_tim4O)
+{ if (_tim21I) { if (flprog::isTimer(_tim21P, 500)) {_tim21O = 1;}} else {_tim21I =1; _tim21P = millis();}} else {_tim21O = 0; _tim21I = 0;}
+En_success_goods_11519465_1 = ( (_tim21O) && (FTrig_1_Out) && ((_gtv40) == (0)) );
+Payment_on_motor_11519465_1 = _gtv24;
+if (En_success_goods_11519465_1 > 0) { 
+
+_gtv12 = 0; // Stop_Gate1_gtv12
+_gtv22 = 1; // Mistake_reset_gtv22
+_SCT_2_CPOP = 0;
+
+Exit_Screen_11519465_1 = 1;
+Fiscal_11519465_1 = Payment_on_motor_11519465_1;
+
+
+}
+else {
+Exit_Screen_11519465_1 = 0;
+Fiscal_11519465_1 = 0;
+}
+
+FTrig_8_Out = 0;
+if ((!(Exit_Screen_11519465_1))&&(FTrig_8_OldStat)){FTrig_8_Out = 1;}
+FTrig_8_OldStat = Exit_Screen_11519465_1;
+if(FTrig_8_Out) {_tim12O = 1; _tim12I = 1;} else { if(_tim12I) {_tim12I = 0; _tim12P = millis();} else { if (_tim12O) {if ( flprog::isTimer(_tim12P, 2000)) _tim12O = 0;}}}
+FTrig_5_Out = 0;
+if ((!(_tim12O))&&(FTrig_5_OldStat)){FTrig_5_Out = 1;}
+FTrig_5_OldStat = _tim12O;
+Print_term_102479269_1 = FTrig_5_Out;
+if (Print_term_102479269_1 > 0) { 
+      
+  uint8_t sendData[] = {0x02, 0x00, 0xFD, 0xF5, 0x03, 0x02};
+  mySerial.write(sendData, sizeof(sendData));
+
+  }
+
+else { Print_term_102479269_1 = 0; } // садим выход En на лог. "0"  // Не обязательно
+
+if (( (( (FTrig_2_Out) && (term1) )) || ((_gtv40) == (1)) )) { if (_trgrt18I) { _trgrt18 = 0;} else {_trgrt18 = 1; _trgrt18I = 1;} } else {_trgrt18 = 0; _trgrt18I = 0;}; 
+ if (( (_trgrt18) && (ESP8266_freeParam_190797778) )) {
+_gtv21 = 1;
+}
+En_mistake_goods = _trgrt18;
+Payment_on_motor = _gtv24;
+if (En_mistake_goods > 0) { 
+_gtv12 = 0; // Stop_Gate1_gtv12
+_SCT_2_CPOP = 0;
+
+Exit_Screen = 1;
+Fiscal = Payment_on_motor;
+
+
+
+}
+else {
+Exit_Screen = 0;
+Fiscal = 0;
+
+}
+
+if(Fiscal) {_tim11O = 1; _tim11I = 1;} else { if(_tim11I) {_tim11I = 0; _tim11P = millis();} else { if (_tim11O) {if ( flprog::isTimer(_tim11P, 5000)) _tim11O = 0;}}}
+FTrig_6_Out = 0;
+if ((!(( (_tim11O) && (ESP8266_freeParam_265280871) )))&&(FTrig_6_OldStat)){FTrig_6_Out = 1;}
+FTrig_6_OldStat = ( (_tim11O) && (ESP8266_freeParam_265280871) );
+EN_MONEY = ( (FTrig_6_Out) && (ESP8266_freeParam_265280871) && (!(_gtv38)) );
+if (EN_MONEY > 0) { 
+   _gtv24 = 0; //Payment_on_motor
+   _gtv1 = 1;   
+ //mySerial.flush();
+//  while (mySerial.available() > 0) {
+//  mySerial.read(); }   
+  uint8_t sendData[] = {0x01, 0x00, 0xEC, 0x82, 0x07};
+  mySerial.write(sendData, sizeof(sendData));
+  delay(5000);
+  mySerial.write(sendData, sizeof(sendData));
+  delay(5000);
+  uint8_t sendDat[] = {0x02, 0x00, 0xFD, 0xF5, 0x03, 0x02};
+  mySerial.write(sendDat, sizeof(sendDat));
+
+
+ }
+else { EN_MONEY = 0; } // садим выход En на лог. "0"  // Не обязательно
+
+Print_term_259698074_1 = Exit_Screen;
+if (Print_term_259698074_1 > 0) { 
+      
+  uint8_t sendData[] = {0x02, 0x00, 0xC1, 0xF5, 0x03, 0x08};
+  mySerial.write(sendData, sizeof(sendData));
+  Exit_comscr_259698074_1 = 1;
+
+  }
+
+else { 
+Print_term_259698074_1 = 0; 
+Exit_comscr_259698074_1 = 0;
+} // садим выход En на лог. "0"  // Не обязательно
+
+if(Exit_comscr_259698074_1) {_tim6O = 1; _tim6I = 1;} else { if(_tim6I) {_tim6I = 0; _tim6P = millis();} else { if (_tim6O) {if ( flprog::isTimer(_tim6P, 13000)) _tim6O = 0;}}}
+FTrig_3_Out = 0;
+if ((!(_tim6O))&&(FTrig_3_OldStat)){FTrig_3_Out = 1;}
+FTrig_3_OldStat = _tim6O;
+Print_term_85678555_2 = FTrig_3_Out;
+if (Print_term_85678555_2 > 0) { 
+_gtv24 = 0; //Payment_on_motor
+_gtv12 = 0; // Stop_Gate1_gtv12
+_gtv1 = 1;
+_gtv40 = 0;
+_gtv69 = 1;
+
+uint8_t sendData[] = {0x02, 0x00, 0xFD, 0xF5, 0x03, 0x02};
+mySerial.write(sendData, sizeof(sendData));
+
+}
+
+else { Print_term_85678555_2 = 0; } // садим выход En на лог. "0"  // Не обязательно
+
+if(( (_trgrt18) || (FTrig_8_Out) )) {_tim16O = 1; _tim16I = 1;} else { if(_tim16I) {_tim16I = 0; _tim16P = millis();} else { if (_tim16O) {if ( flprog::isTimer(_tim16P, _gtv44)) _tim16O = 0;}}}
+_gtv43 = _tim16O;
+if (( (!(_gtv24)) && (FTrig_8_Out) && (!(_gtv38)) )) { if (_trgrt7I) { _trgrt7 = 0;} else {_trgrt7 = 1; _trgrt7I = 1;} } else {_trgrt7 = 0; _trgrt7I = 0;}; 
+ En_Price1_95158574_2 = _trgrt7;
+goods_number_95158574_2 = _gtv73;
+if (En_Price1_95158574_2 > 0) { 
+  _gtv24 = 0; //Payment_on_motor
+  _gtv1 = 1;
+//  uint32_t price_1 = 1;
+  price_0 = _mux5;
+  price_0 *= 100;
+  uint8_t pricecont[4];
+  pricecont[3] = (price_0 >> 24);
+  pricecont[2] = (price_0 >> 16);
+  pricecont[1] = (price_0 >> 8);
+  pricecont[0] = price_0 & 0xFF;
+
+  uint8_t message[] = {0x0E, 0x01, pricecont[0], pricecont[1], goods_number_95158574_2};
+  
+  uint16_t crcResult = GetCRC16(message, sizeof(message));
+  byte crccont1 = crcResult >> 8;
+  byte crccont2 = crcResult & 0xFF;
+
+  uint8_t sendData[] = {0x05, 0x00, crccont2, crccont1, 0x0E, 0x01, pricecont[0], pricecont[1], goods_number_95158574_2};
+  mySerial.write(sendData, sizeof(sendData));
+  
+
+}
+
+
+if(Fiscal_11519465_1) {_tim8O = 1; _tim8I = 1;} else { if(_tim8I) {_tim8I = 0; _tim8P = millis();} else { if (_tim8O) {if ( flprog::isTimer(_tim8P, 3000)) _tim8O = 0;}}}
+FTrig_7_Out = 0;
+if ((!(( (_tim8O) && (!(_gtv38)) )))&&(FTrig_7_OldStat)){FTrig_7_Out = 1;}
+FTrig_7_OldStat = ( (_tim8O) && (!(_gtv38)) );
+En_Price1_219376631_1 = FTrig_7_Out;
+goods_number_219376631_1 = _gtv73;
+if (En_Price1_219376631_1 > 0) { 
+   _gtv24 = 0; //Payment_on_motor
+   _gtv1 = 1;
+  price_0 = _mux5;
+  price_0 *= 100;
+  uint8_t pricecont[4];
+  pricecont[3] = (price_0 >> 24);
+  pricecont[2] = (price_0 >> 16);
+  pricecont[1] = (price_0 >> 8);
+  pricecont[0] = price_0 & 0xFF;
+
+  uint8_t message[] = {0x0E, 0x02, pricecont[0], pricecont[1], goods_number_219376631_1};
+  
+  uint16_t crcResult = GetCRC16(message, sizeof(message));
+  byte crccont1 = crcResult >> 8;
+  byte crccont2 = crcResult & 0xFF;
+
+  uint8_t sendData[] = {0x05, 0x00, crccont2, crccont1, 0x0E, 0x02, pricecont[0], pricecont[1], goods_number_219376631_1};
+  mySerial.write(sendData, sizeof(sendData));
+
+
+}
+
+
+if (( (_gtv38) && (( (_tim21O) && (FTrig_1_Out) && ((_gtv40) == (0)) )) )) {
+_gtv24 = 0;
+}
+
+//Плата:8
+//Наименование:Запрет на работу
+if (_gtv10 == 3) {
+if(((_gtv73)-(1) == 0)){_dms3Q0 = _gtv21;}
+if(((_gtv73)-(1) == 1)){_dms3Q1 = _gtv21;}
+if(((_gtv73)-(1) == 2)){_dms3Q2 = _gtv21;}
+if(((_gtv73)-(1) == 3)){_dms3Q3 = _gtv21;}
+if(((_gtv73)-(1) == 4)){_dms3Q4 = _gtv21;}
+if(((_gtv73)-(1) == 5)){_dms3Q5 = _gtv21;}
+if(((_gtv73)-(1) == 6)){_dms3Q6 = _gtv21;}
+if(((_gtv73)-(1) == 7)){_dms3Q7 = _gtv21;}
+if(((_gtv73)-(1) == 8)){_dms3Q8 = _gtv21;}
+if(((_gtv73)-(1) == 9)){_dms3Q9 = _gtv21;}
+if(((_gtv73)-(1) == 10)){_dms3Q10 = _gtv21;}
+if(((_gtv73)-(1) == 11)){_dms3Q11 = _gtv21;}
+if(_dms3Q11) {
+if( ! _SysParSave_46_OldSt) {
+_SysParSave_46_OldSt = 1;
+ESP8266_freeParam_46230415 = (1)+(ESP8266_freeParam_182290599);
+
+ updateByteToEEPROM(46,0 , 0x0,( ESP8266_freeParam_46230415));
+}} else {
+_SysParSave_46_OldSt = 0;}
+if(_dms3Q10) {
+if( ! _SysParSave_45_OldSt) {
+_SysParSave_45_OldSt = 1;
+ESP8266_freeParam_191929235 = (1)+(ESP8266_freeParam_98951291);
+
+ updateByteToEEPROM(45,0 , 0x0,( ESP8266_freeParam_191929235));
+}} else {
+_SysParSave_45_OldSt = 0;}
+if(_dms3Q9) {
+if( ! _SysParSave_44_OldSt) {
+_SysParSave_44_OldSt = 1;
+ESP8266_freeParam_79724050 = (1)+(ESP8266_freeParam_121065562);
+
+ updateByteToEEPROM(39,0 , 0x0,( ESP8266_freeParam_79724050));
+}} else {
+_SysParSave_44_OldSt = 0;}
+if(_dms3Q8) {
+if( ! _SysParSave_43_OldSt) {
+_SysParSave_43_OldSt = 1;
+ESP8266_freeParam_174428203 = (1)+(ESP8266_freeParam_80199000);
+
+ updateByteToEEPROM(38,0 , 0x0,( ESP8266_freeParam_174428203));
+}} else {
+_SysParSave_43_OldSt = 0;}
+if(_dms3Q7) {
+if( ! _SysParSave_5_OldSt) {
+_SysParSave_5_OldSt = 1;
+ESP8266_freeParam_182290599 = (1)+(ESP8266_freeParam_182290599);
+
+ updateByteToEEPROM(37,0 , 0x0,( ESP8266_freeParam_182290599));
+}} else {
+_SysParSave_5_OldSt = 0;}
+if(_dms3Q6) {
+if( ! _SysParSave_3_OldSt) {
+_SysParSave_3_OldSt = 1;
+ESP8266_freeParam_98951291 = (1)+(ESP8266_freeParam_98951291);
+
+ updateByteToEEPROM(36,0 , 0x0,( ESP8266_freeParam_98951291));
+}} else {
+_SysParSave_3_OldSt = 0;}
+if(_dms3Q5) {
+if( ! _SysParSave_2_OldSt) {
+_SysParSave_2_OldSt = 1;
+ESP8266_freeParam_121065562 = (1)+(ESP8266_freeParam_121065562);
+
+ updateByteToEEPROM(35,0 , 0x0,( ESP8266_freeParam_121065562));
+}} else {
+_SysParSave_2_OldSt = 0;}
+if(_dms3Q4) {
+if( ! _SysParSave_1_OldSt) {
+_SysParSave_1_OldSt = 1;
+ESP8266_freeParam_80199000 = (1)+(ESP8266_freeParam_80199000);
+
+ updateByteToEEPROM(34,0 , 0x0,( ESP8266_freeParam_80199000));
+}} else {
+_SysParSave_1_OldSt = 0;}
+if(_dms3Q3) {
+if( ! _SysParSave_4_OldSt) {
+_SysParSave_4_OldSt = 1;
+ESP8266_freeParam_260883057 = (1)+(ESP8266_freeParam_260883057);
+
+ updateByteToEEPROM(33,0 , 0x0,( ESP8266_freeParam_260883057));
+}} else {
+_SysParSave_4_OldSt = 0;}
+if(_dms3Q2) {
+if( ! _SysParSave_9_OldSt) {
+_SysParSave_9_OldSt = 1;
+ESP8266_freeParam_111047777 = (1)+(ESP8266_freeParam_111047777);
+
+ updateByteToEEPROM(32,0 , 0x0,( ESP8266_freeParam_111047777));
+}} else {
+_SysParSave_9_OldSt = 0;}
+if(_dms3Q1) {
+if( ! _SysParSave_10_OldSt) {
+_SysParSave_10_OldSt = 1;
+ESP8266_freeParam_60439466 = (1)+(ESP8266_freeParam_60439466);
+
+ updateByteToEEPROM(31,0 , 0x0,( ESP8266_freeParam_60439466));
+}} else {
+_SysParSave_10_OldSt = 0;}
+if(_dms3Q0) {
+if( ! _SysParSave_17_OldSt) {
+_SysParSave_17_OldSt = 1;
+ESP8266_freeParam_216885967 = (1)+(ESP8266_freeParam_216885967);
+
+ updateByteToEEPROM(30,0 , 0x0,( ESP8266_freeParam_216885967));
+}} else {
+_SysParSave_17_OldSt = 0;}
+_gtv21 = 0;
+}
+
+//Плата:9
+//Наименование:Сброс ошибки
+if (_gtv10 == 4) {
+if((_gtv73 == 0)){_dms1Q0 = _gtv22;}
+if((_gtv73 == 1)){_dms1Q1 = _gtv22;}
+if((_gtv73 == 2)){_dms1Q2 = _gtv22;}
+if((_gtv73 == 3)){_dms1Q3 = _gtv22;}
+if((_gtv73 == 4)){_dms1Q4 = _gtv22;}
+if((_gtv73 == 5)){_dms1Q5 = _gtv22;}
+if((_gtv73 == 6)){_dms1Q6 = _gtv22;}
+if((_gtv73 == 7)){_dms1Q7 = _gtv22;}
+if((_gtv73 == 8)){_dms1Q8 = _gtv22;}
+if((_gtv73 == 9)){_dms1Q9 = _gtv22;}
+if((_gtv73 == 10)){_dms1Q10 = _gtv22;}
+if((_gtv73 == 11)){_dms1Q11 = _gtv22;}
+if((_gtv73 == 12)){_dms1Q12 = _gtv22;}
+if(( (_dms1Q12) && ((ESP8266_freeParam_46230415) > (0)) )) {
+if( ! _SysParSave_50_OldSt) {
+_SysParSave_50_OldSt = 1;
+ESP8266_freeParam_46230415 = 0;
+
+ updateByteToEEPROM(46,0 , 0x0,( ESP8266_freeParam_46230415));
+}} else {
+_SysParSave_50_OldSt = 0;}
+if(( (_dms1Q11) && ((ESP8266_freeParam_191929235) > (0)) )) {
+if( ! _SysParSave_49_OldSt) {
+_SysParSave_49_OldSt = 1;
+ESP8266_freeParam_191929235 = 0;
+
+ updateByteToEEPROM(45,0 , 0x0,( ESP8266_freeParam_191929235));
+}} else {
+_SysParSave_49_OldSt = 0;}
+if(( (_dms1Q10) && ((ESP8266_freeParam_79724050) > (0)) )) {
+if( ! _SysParSave_48_OldSt) {
+_SysParSave_48_OldSt = 1;
+ESP8266_freeParam_79724050 = 0;
+
+ updateByteToEEPROM(39,0 , 0x0,( ESP8266_freeParam_79724050));
+}} else {
+_SysParSave_48_OldSt = 0;}
+if(( (_dms1Q9) && ((ESP8266_freeParam_174428203) > (0)) )) {
+if( ! _SysParSave_47_OldSt) {
+_SysParSave_47_OldSt = 1;
+ESP8266_freeParam_174428203 = 0;
+
+ updateByteToEEPROM(38,0 , 0x0,( ESP8266_freeParam_174428203));
+}} else {
+_SysParSave_47_OldSt = 0;}
+if(( (_dms1Q8) && ((ESP8266_freeParam_182290599) > (0)) )) {
+if( ! _SysParSave_15_OldSt) {
+_SysParSave_15_OldSt = 1;
+ESP8266_freeParam_182290599 = 0;
+
+ updateByteToEEPROM(37,0 , 0x0,( ESP8266_freeParam_182290599));
+}} else {
+_SysParSave_15_OldSt = 0;}
+if(( (_dms1Q7) && ((ESP8266_freeParam_98951291) > (0)) )) {
+if( ! _SysParSave_14_OldSt) {
+_SysParSave_14_OldSt = 1;
+ESP8266_freeParam_98951291 = 0;
+
+ updateByteToEEPROM(36,0 , 0x0,( ESP8266_freeParam_98951291));
+}} else {
+_SysParSave_14_OldSt = 0;}
+if(( (_dms1Q6) && ((ESP8266_freeParam_121065562) > (0)) )) {
+if( ! _SysParSave_13_OldSt) {
+_SysParSave_13_OldSt = 1;
+ESP8266_freeParam_121065562 = 0;
+
+ updateByteToEEPROM(35,0 , 0x0,( ESP8266_freeParam_121065562));
+}} else {
+_SysParSave_13_OldSt = 0;}
+if(( (_dms1Q5) && ((ESP8266_freeParam_80199000) > (0)) )) {
+if( ! _SysParSave_12_OldSt) {
+_SysParSave_12_OldSt = 1;
+ESP8266_freeParam_80199000 = 0;
+
+ updateByteToEEPROM(34,0 , 0x0,( ESP8266_freeParam_80199000));
+}} else {
+_SysParSave_12_OldSt = 0;}
+if(( (_dms1Q4) && ((ESP8266_freeParam_260883057) > (0)) )) {
+if( ! _SysParSave_11_OldSt) {
+_SysParSave_11_OldSt = 1;
+ESP8266_freeParam_260883057 = 0;
+
+ updateByteToEEPROM(33,0 , 0x0,( ESP8266_freeParam_260883057));
+}} else {
+_SysParSave_11_OldSt = 0;}
+if(( (_dms1Q3) && ((ESP8266_freeParam_111047777) > (0)) )) {
+if( ! _SysParSave_8_OldSt) {
+_SysParSave_8_OldSt = 1;
+ESP8266_freeParam_111047777 = 0;
+
+ updateByteToEEPROM(32,0 , 0x0,( ESP8266_freeParam_111047777));
+}} else {
+_SysParSave_8_OldSt = 0;}
+if(( (_dms1Q2) && ((ESP8266_freeParam_60439466) > (0)) )) {
+if( ! _SysParSave_7_OldSt) {
+_SysParSave_7_OldSt = 1;
+ESP8266_freeParam_60439466 = 0;
+
+ updateByteToEEPROM(31,0 , 0x0,( ESP8266_freeParam_60439466));
+}} else {
+_SysParSave_7_OldSt = 0;}
+if(( (_dms1Q1) && ((ESP8266_freeParam_216885967) > (0)) )) {
+if( ! _SysParSave_6_OldSt) {
+_SysParSave_6_OldSt = 1;
+ESP8266_freeParam_216885967 = 0;
+
+ updateByteToEEPROM(30,0 , 0x0,( ESP8266_freeParam_216885967));
+}} else {
+_SysParSave_6_OldSt = 0;}
+_gtv22 = 0;
+}
+
+//Плата:10
+if (_gtv10 == 5) {
+if (_gtv45) { if (_trgrt12I) { _trgrt12 = 0;} else {_trgrt12 = 1; _trgrt12I = 1;} } else {_trgrt12 = 0; _trgrt12I = 0;}; 
+ En_SendStatus_14559945_1 = _trgrt12;
+price1_14559945_1 = ESP8266_freeParam_2908715;
+price2_14559945_1 = ESP8266_freeParam_167036645;
+price3_14559945_1 = ESP8266_freeParam_198065769;
+price4_14559945_1 = ESP8266_freeParam_109304058;
+price5_14559945_1 = ESP8266_freeParam_84774238;
+price6_14559945_1 = ESP8266_freeParam_41571615;
+price7_14559945_1 = ESP8266_freeParam_197729979;
+price8_14559945_1 = ESP8266_freeParam_90309138;
+price9_14559945_1 = ESP8266_freeParam_133909782;
+price10_14559945_1 = ESP8266_freeParam_27795835;
+price11_14559945_1 = ESP8266_freeParam_112257373;
+price12_14559945_1 = ESP8266_freeParam_254951221;
+ban1_14559945_1 = ESP8266_freeParam_216885967;
+ban2_14559945_1 = ESP8266_freeParam_60439466;
+ban3_14559945_1 = ESP8266_freeParam_111047777;
+ban4_14559945_1 = ESP8266_freeParam_260883057;
+ban5_14559945_1 = ESP8266_freeParam_80199000;
+ban6_14559945_1 = ESP8266_freeParam_121065562;
+ban7_14559945_1 = ESP8266_freeParam_98951291;
+ban8_14559945_1 = ESP8266_freeParam_182290599;
+ban9_14559945_1 = ESP8266_freeParam_174428203;
+ban10_14559945_1 = ESP8266_freeParam_79724050;
+ban11_14559945_1 = ESP8266_freeParam_191929235;
+ban12_14559945_1 = ESP8266_freeParam_46230415;
+ban_mistake_14559945_1 = ESP8266_freeParam_152708564;
+SerialSpeedSend_14559945_1 = ESP8266_freeParam_19552900;
+if (En_SendStatus_14559945_1 > 0) {
+
+    // Функция для разбивки числа в BCD (для цен и SerialSpeedSend_14559945_1)
+    auto splitPriceToBCD = [](uint32_t price, uint8_t* buffer) {
+        // Первый разряд (десятки тысяч)
+        buffer[0] = ((price / 10000) % 10) & 0x0F;
+
+        // Следующие два разряда (тысячи и сотни), упакованные в BCD
+        uint8_t digit1 = ((price / 1000) % 10) & 0x0F;
+        uint8_t digit2 = ((price / 100) % 10) & 0x0F;
+        buffer[1] = (digit1 << 4) | digit2;
+
+        // Последние два разряда (десятки и единицы), упакованные в BCD
+        digit1 = ((price / 10) % 10) & 0x0F;
+        digit2 = (price % 10) & 0x0F;
+        buffer[2] = (digit1 << 4) | digit2;
+    };
+
+    // Функция для преобразования значений ban в BCD
+    auto banToBCD = [](uint8_t banValue) {
+        uint8_t digit1 = (banValue / 10) & 0x0F;
+        uint8_t digit2 = (banValue % 10) & 0x0F;
+        return (digit1 << 4) | digit2;
+    };
+
+    // Преобразование цен
+    uint8_t pricecont1[3]; splitPriceToBCD(price1_14559945_1, pricecont1);
+    uint8_t pricecont2[3]; splitPriceToBCD(price2_14559945_1, pricecont2);
+    uint8_t pricecont3[3]; splitPriceToBCD(price3_14559945_1, pricecont3);
+    uint8_t pricecont4[3]; splitPriceToBCD(price4_14559945_1, pricecont4);
+    uint8_t pricecont5[3]; splitPriceToBCD(price5_14559945_1, pricecont5);
+    uint8_t pricecont6[3]; splitPriceToBCD(price6_14559945_1, pricecont6);
+    uint8_t pricecont7[3]; splitPriceToBCD(price7_14559945_1, pricecont7);
+    uint8_t pricecont8[3]; splitPriceToBCD(price8_14559945_1, pricecont8);
+    uint8_t pricecont9[3]; splitPriceToBCD(price9_14559945_1, pricecont9);
+    uint8_t pricecont10[3]; splitPriceToBCD(price10_14559945_1, pricecont10);
+    uint8_t pricecont11[3]; splitPriceToBCD(price11_14559945_1, pricecont11);
+    uint8_t pricecont12[3]; splitPriceToBCD(price12_14559945_1, pricecont12);
+
+    // Преобразование банов в BCD
+    uint8_t bancont[12];
+    bancont[0] = banToBCD(ban1_14559945_1);
+    bancont[1] = banToBCD(ban2_14559945_1);
+    bancont[2] = banToBCD(ban3_14559945_1);
+    bancont[3] = banToBCD(ban4_14559945_1);
+    bancont[4] = banToBCD(ban5_14559945_1);
+    bancont[5] = banToBCD(ban6_14559945_1);
+    bancont[6] = banToBCD(ban7_14559945_1);
+    bancont[7] = banToBCD(ban8_14559945_1);
+    bancont[8] = banToBCD(ban9_14559945_1);
+    bancont[9] = banToBCD(ban10_14559945_1);
+    bancont[10] = banToBCD(ban11_14559945_1);
+    bancont[11] = banToBCD(ban12_14559945_1);
+
+    // Преобразование ban_mistake_14559945_1 в BCD
+    uint8_t banmistakecont = banToBCD(ban_mistake_14559945_1);
+
+    // Преобразование SerialSpeedSend_14559945_1
+    uint8_t serialspeedcont[3];
+    splitPriceToBCD(SerialSpeedSend_14559945_1, serialspeedcont);
+
+    // Формирование сообщения
+    uint8_t message[1 + 3 * 12 + 12 + 1 + 3]; // 1 байт команды + цены + баны + ban_mistake_14559945_1 + SerialSpeedSend_14559945_1
+    int messageIndex = 0;
+
+    // Добавляем байт команды
+    message[messageIndex++] = 0x0F;
+
+    // Добавляем цены
+    for (int i = 0; i < 3; ++i) message[messageIndex++] = pricecont1[i];
+    for (int i = 0; i < 3; ++i) message[messageIndex++] = pricecont2[i];
+    for (int i = 0; i < 3; ++i) message[messageIndex++] = pricecont3[i];
+    for (int i = 0; i < 3; ++i) message[messageIndex++] = pricecont4[i];
+    for (int i = 0; i < 3; ++i) message[messageIndex++] = pricecont5[i];
+    for (int i = 0; i < 3; ++i) message[messageIndex++] = pricecont6[i];
+    for (int i = 0; i < 3; ++i) message[messageIndex++] = pricecont7[i];
+    for (int i = 0; i < 3; ++i) message[messageIndex++] = pricecont8[i];
+    for (int i = 0; i < 3; ++i) message[messageIndex++] = pricecont9[i];
+    for (int i = 0; i < 3; ++i) message[messageIndex++] = pricecont10[i];
+    for (int i = 0; i < 3; ++i) message[messageIndex++] = pricecont11[i];
+    for (int i = 0; i < 3; ++i) message[messageIndex++] = pricecont12[i];
+
+    // Добавляем баны
+    for (int i = 0; i < 12; ++i) {
+        message[messageIndex++] = bancont[i];
+    }
+
+    // Добавляем ban_mistake_14559945_1
+    message[messageIndex++] = banmistakecont;
+
+    // Добавляем SerialSpeedSend_14559945_1
+    for (int i = 0; i < 3; ++i) message[messageIndex++] = serialspeedcont[i];
+
+    // Пересчет длины сообщения
+    uint16_t messageLength = messageIndex + 4; // 4 байта: 2 байта длины и 2 байта CRC
+
+    // Обновление первых двух байт длины сообщения
+    uint8_t lengthByte1 = messageIndex & 0xFF;
+    uint8_t lengthByte2 = (messageIndex >> 8) & 0xFF;
+
+    // Вычисление CRC
+    uint16_t crcResult = GetCRC16(message, messageIndex);
+    uint8_t crccont1 = (crcResult >> 8) & 0xFF;
+    uint8_t crccont2 = crcResult & 0xFF;
+
+    // Формирование окончательного массива для отправки
+    uint8_t sendData[messageLength];
+    sendData[0] = lengthByte1; // или фиксированное значение 0x29, если требуется
+    sendData[1] = lengthByte2; // или 0x00
+    sendData[2] = crccont2;
+    sendData[3] = crccont1;
+
+    // Копирование message в sendData начиная с 4-й позиции
+    memcpy(&sendData[4], message, messageIndex);
+
+    // Отправка данных
+    mySerial.write(sendData, messageLength);
+
+    // Формирование строки для проверки
+
+
+    NewDataReceived = 0;
+}
+
+
+_gtv45 = 0;
+}
+
+//Плата:11
+if (_gtv27 == 0) {
+Print_term_142387099_2 = _gtv49;
+paymant_result = 0;
+if (Print_term_142387099_2 > 0) { 
+      
+  uint8_t sendData[] = {0x02, 0x00, 0xFD, 0xF5, 0x03, 0x02};
+  mySerial.write(sendData, sizeof(sendData));
+
+
+  }
+
+else { Print_term_142387099_2 = 0; } // садим выход En на лог. "0"  // Не обязательно
+
+if (_gtv50) { if (_trgrt2I) { _trgrt2 = 0;} else {_trgrt2 = 1; _trgrt2I = 1;} } else {_trgrt2 = 0; _trgrt2I = 0;}; 
+ En_inputrebut = _trgrt2;
+inputString_crc = _gtv2;
+  if (En_inputrebut > 0) {
+ 
+    inputString_crc.toUpperCase();
+
+    // -------------------------
+    // Дальше формируем пакет, отправляем в порт и ждём ack
+    // -------------------------
+
+    // 4) Убираем пробелы и т.д.
+    inputString_crc.replace("0X", "");
+    inputString_crc.replace("0x", "");
+    inputString_crc.replace(",", "");
+    inputString_crc.replace(" ", "");
+
+    // 5) Переводим строку в массив байт
+    int byteLength = inputString_crc.length() / 2;
+    byte packet[byteLength];
+    for (int i = 0; i < byteLength; i++) {
+      String hexPair = inputString_crc.substring(i * 2, i * 2 + 2);
+      packet[i] = (byte)strtol(hexPair.c_str(), NULL, 16);
+    }
+
+    // 6) Вычисляем CRC16
+    uint16_t bodyLength = byteLength;
+    uint16_t crc = GetCRC16(packet, bodyLength);
+
+    // 7) Формируем finalPacket = [длина(2 байта), CRC16(2 байта), тело]
+    byte finalPacket[bodyLength + 4];
+    finalPacket[0] = lowByte(bodyLength);
+    finalPacket[1] = highByte(bodyLength);
+    finalPacket[2] = lowByte(crc);
+    finalPacket[3] = highByte(crc);
+    for (int i = 0; i < bodyLength; i++) {
+      finalPacket[4 + i] = packet[i];
+    }
+
+    // Сохраняем CRC, чтобы сверить с ack
+    byte crcLow  = finalPacket[2];
+    byte crcHigh = finalPacket[3];
+
+    // 8) Пытаемся отправить и дождаться подтверждения (10 секунд)
+    unsigned long startTime = millis();
+    bool isDelivered = false;
+
+    while (!isDelivered) {
+      if (millis() - startTime > 10000UL) {
+        // Превысили таймаут 10 сек
+        break;
+      }
+
+      // Отправляем пакет
+      mySerial.write(finalPacket, bodyLength + 4);
+      delay(100);
+
+      // Читаем входные байты, если пришёл ack (2 байта = наш CRC)
+      while (mySerial.available() > 0) {
+        byte ackLow = mySerial.read();
+        // Сначала сверяем ackLow
+        if (ackLow == crcLow && mySerial.available() > 0) {
+          byte ackHigh = mySerial.read();
+          if (ackHigh == crcHigh) {
+            // Подтверждение есть
+            isDelivered = true;
+            break;
+          }
+        }
+      }
+
+ 
+    }
+
+  
+  }
+_gtv85 = 0;
+ESPControllerWifi_tspWebServer.handleClient();       // Прослушивание HTTP-запросов от клиентов
+_gtv50 = 0;
+_gtv64 = 0;
+_gtv49 = 0;
+en_ic2_18571967_1 = _gtv85;
+  if (en_ic2_18571967_1 > 0) { // Выполняем поиск только если условие выполняется
+   scanI2C_18571967_1();
+   delay(5000);
+}
+textdev_18571967_1 = detectedDevices_18571967_1;
+_gtv3 = detectedDevices_18571967_1;
+_gtv26 = textdev_18571967_1;
+en_factory = _gtv28;
+  if (en_factory > 0) {
+EEPROM.begin(512);
+  for (int i = 0; i < 512; i++) EEPROM.write(i, 0xFF);
+  EEPROM.commit();
+  EEPROM.end();
+
+  // Если используешь LittleFS:
+  // LittleFS.format();
+
+  // После сброса перезапускаем контроллер:
+  ESP.restart();
+}
+}
+
+
+
+
+
+
+
+}
+
+
+void wachDogTimerTick(void *pArg) {
+if (_PWDC >= 300){ ESP.reset(); }else{_PWDC = _PWDC+1;}
+} 
+void satrtWachDogTimer(void ) {
+os_timer_setfn(&watchDogTimer, wachDogTimerTick, NULL);
+os_timer_arm(&watchDogTimer, 100, true);
+} 
+ICACHE_RAM_ATTR   void  _SCT_2positiveCoutFunction()
+{ _SCT_2_CPOP = _SCT_2_CPOP +1;
+} 
+void _sendWebServerSend404Page()
+{
+String  page = "<!DOCTYPE HTML><html><body><p>404 - Page not fond</p></body></html>";
+ESPControllerWifi_tspWebServer.send(400, "text/html", page);
+}
+void _parseChangedDataFromWebPage()
+{
+String id;
+String value;
+for (int i = 0; i < ESPControllerWifi_tspWebServer.args(); i++)
+{
+ id = ESPControllerWifi_tspWebServer.argName(i);
+ value = ESPControllerWifi_tspWebServer.arg(i);
+if (id.equals("P29")){ESP8266_freeParam_198022797 = value.toInt();
+ updateByteToEEPROM(51,0 , 0x0,( value.toInt()));}
+if (id.equals("P45")){_gtv1 = (value=="1");}
+if (id.equals("P26")){_gtv73 = value.toInt();}
+if (id.equals("P31")){ESP8266_freeParam_246427857 = value.toInt();
+ updateByteToEEPROM(52,0 , 0x0,( value.toInt()));}
+if (id.equals("P46")){_gtv69 = (value=="1");}
+if (id.equals("P48")){_gtv24 = (value=="1");}
+if (id.equals("P18")){ESP8266_freeParam_2908715 = value.toInt();
+ updateIntegerToEEPROM(10,0 , 0x0, ESP8266_freeParam_2908715);}
+if (id.equals("P43")){ESP8266_freeParam_27795835 = value.toInt();
+ updateIntegerToEEPROM(28,0 , 0x0, ESP8266_freeParam_27795835);}
+if (id.equals("P44")){ESP8266_freeParam_112257373 = value.toInt();
+ updateIntegerToEEPROM(41,0 , 0x0, ESP8266_freeParam_112257373);}
+if (id.equals("P53")){ESP8266_freeParam_254951221 = value.toInt();
+ updateIntegerToEEPROM(43,0 , 0x0, ESP8266_freeParam_254951221);}
+if (id.equals("P21")){ESP8266_freeParam_167036645 = value.toInt();
+ updateIntegerToEEPROM(12,0 , 0x0, ESP8266_freeParam_167036645);}
+if (id.equals("P22")){ESP8266_freeParam_198065769 = value.toInt();
+ updateIntegerToEEPROM(14,0 , 0x0, ESP8266_freeParam_198065769);}
+if (id.equals("P23")){ESP8266_freeParam_109304058 = value.toInt();
+ updateIntegerToEEPROM(16,0 , 0x0, ESP8266_freeParam_109304058);}
+if (id.equals("P6")){ESP8266_freeParam_84774238 = value.toInt();
+ updateIntegerToEEPROM(18,0 , 0x0, ESP8266_freeParam_84774238);}
+if (id.equals("P7")){ESP8266_freeParam_41571615 = value.toInt();
+ updateIntegerToEEPROM(20,0 , 0x0, ESP8266_freeParam_41571615);}
+if (id.equals("P9")){ESP8266_freeParam_197729979 = value.toInt();
+ updateIntegerToEEPROM(22,0 , 0x0, ESP8266_freeParam_197729979);}
+if (id.equals("P41")){ESP8266_freeParam_90309138 = value.toInt();
+ updateIntegerToEEPROM(24,0 , 0x0, ESP8266_freeParam_90309138);}
+if (id.equals("P42")){ESP8266_freeParam_133909782 = value.toInt();
+ updateIntegerToEEPROM(26,0 , 0x0, ESP8266_freeParam_133909782);}
+if (id.equals("P68")){_gtv74 = (value=="1");}
+if (id.equals("P39")){ESP8266_freeParam_19552900 = value.toInt();
+ updateUnsignedLongToEEPROM(47,0 , 0x0,( value.toInt()));}
+if (id.equals("P19")){_gtv6 = value.toInt();}
+if (id.equals("P25")){_gtv14 = value.toInt();}
+if (id.equals("P14")){ if (checkIPAdressString(value)) {
+ if ((_unsignetLongFromIPAdress(_ipAddressFromString(value))) != (_unsignetLongFromIPAdress(ESPControllerWifiAP_ip))) {
+ESPControllerWifiAP_IsNeedReconect =1;
+ESPControllerWifiAP_ip.fromString(value);
+ updateUnsignedLongToEEPROM(53, 0, 0x0, (_unsignetLongFromIPAdress(ESPControllerWifiAP_ip)));
+}}
+}
+if (id.equals("P11")){if ( ! (value.equals(String(ESPControllerWifiAP_SSID)))) {
+ESPControllerWifiAP_IsNeedReconect =1;
+value.toCharArray(ESPControllerWifiAP_SSID,  40);
+ updateStringToEEPROM(57,  40, 0x0, value);
+}
+}
+if (id.equals("P12")){if ( ! (value.equals(String(ESPControllerWifiAP_password)))) {
+ESPControllerWifiAP_IsNeedReconect =1;
+value.toCharArray(ESPControllerWifiAP_password,  40);
+ updateStringToEEPROM(97,  40, 0x0, value);
+}
+}
+if (id.equals("P15")){ESP8266_freeParam_216885967 = value.toInt();
+ updateByteToEEPROM(30,0 , 0x0,( value.toInt()));}
+if (id.equals("P54")){ESP8266_freeParam_79724050 = value.toInt();
+ updateByteToEEPROM(39,0 , 0x0,( value.toInt()));}
+if (id.equals("P55")){ESP8266_freeParam_191929235 = value.toInt();
+ updateByteToEEPROM(45,0 , 0x0,( value.toInt()));}
+if (id.equals("P56")){ESP8266_freeParam_46230415 = value.toInt();
+ updateByteToEEPROM(46,0 , 0x0,( value.toInt()));}
+if (id.equals("P27")){ESP8266_freeParam_60439466 = value.toInt();
+ updateByteToEEPROM(31,0 , 0x0,( value.toInt()));}
+if (id.equals("P28")){ESP8266_freeParam_111047777 = value.toInt();
+ updateByteToEEPROM(32,0 , 0x0,( value.toInt()));}
+if (id.equals("P30")){ESP8266_freeParam_260883057 = value.toInt();
+ updateByteToEEPROM(33,0 , 0x0,( value.toInt()));}
+if (id.equals("P33")){ESP8266_freeParam_80199000 = value.toInt();
+ updateByteToEEPROM(34,0 , 0x0,( value.toInt()));}
+if (id.equals("P34")){ESP8266_freeParam_121065562 = value.toInt();
+ updateByteToEEPROM(35,0 , 0x0,( value.toInt()));}
+if (id.equals("P35")){ESP8266_freeParam_98951291 = value.toInt();
+ updateByteToEEPROM(36,0 , 0x0,( value.toInt()));}
+if (id.equals("P36")){ESP8266_freeParam_182290599 = value.toInt();
+ updateByteToEEPROM(37,0 , 0x0,( value.toInt()));}
+if (id.equals("P52")){ESP8266_freeParam_174428203 = value.toInt();
+ updateByteToEEPROM(38,0 , 0x0,( value.toInt()));}
+if (id.equals("P73")){_gtv28 = (value=="1");}
+if (id.equals("P32")){_gtv2 = value;}
+if (id.equals("P50")){_gtv16 = value.toInt();}
+if (id.equals("P61")){_gtv18 = value.toInt();}
+if (id.equals("P38")){ESP8266_freeParam_265280871 = value.equals(String("1"));
+ updateBooleanToEEPROM(1, 0, 0x0,( value.equals(String("1"))));}
+if (id.equals("P1")){_gtv19 = value.toInt();}
+if (id.equals("P8")){ESP8266_freeParam_190210571 = value.toInt();
+ updateUnsignedLongToEEPROM(137,0 , 0x0,( value.toInt()));}
+if (id.equals("P20")){ESP8266_freeParam_70184650 = value.toInt();
+ updateUnsignedLongToEEPROM(6,0 , 0x0,( value.toInt()));}
+if (id.equals("P3")){ESP8266_freeParam_71116216 = value.toInt();
+ updateUnsignedLongToEEPROM(2,0 , 0x0,( value.toInt()));}
+if (id.equals("P57")){ESP8266_freeParam_152708564 = value.toInt();
+ updateByteToEEPROM(40,0 , 0x0,( value.toInt()));}
+if (id.equals("P37")){ESP8266_freeParam_190797778 = value.equals(String("1"));
+ updateBooleanToEEPROM(1, 1, 0x0,( value.equals(String("1"))));}
+if (id.equals("P13")){_gtv38 = (value=="1");}
+if (id.equals("P66")){_gtv20 = value.toInt();}
+if (id.equals("P51")){_gtv62 = (value=="1");}
+}
+ESPControllerWifi_tspWebServer.send(200, "text/plain", "ok");
+}
+void _resetControllerFromWebPage()
+{
+ESPControllerWifi_isNeededRestsrt = 1; 
+ ESPControllerWifi_tspWebServer.send(200, "text/plane", "");
+}
+void _sendWebServerPage1()
+{
+String temp ="";
+ESPControllerWifi_tspWebServer.chunkedResponseModeStart(200, "text/html");
+ESPControllerWifi_tspWebServer.sendContent(webSettingPageHeader1);
+ESPControllerWifi_tspWebServer.sendContent("<head>");
+ESPControllerWifi_tspWebServer.sendContent("<style>");
+ESPControllerWifi_tspWebServer.sendContent((String(webSettingPageMainStyle)+" "));
+ESPControllerWifi_tspWebServer.sendContent("\"</style>");
+ESPControllerWifi_tspWebServer.sendContent("</head>");
+
+ESPControllerWifi_tspWebServer.sendContent("<body>");
+ESPControllerWifi_tspWebServer.sendContent("<div class=\"header\">");
+ESPControllerWifi_tspWebServer.sendContent(String(webSettingPageHeaderString));
+ESPControllerWifi_tspWebServer.sendContent("</div>");
+ESPControllerWifi_tspWebServer.sendContent((_eSP8266SettingWebPageCreateMenu(0)));
+ESPControllerWifi_tspWebServer.sendContent("<div class=\"content\">");
+_webSettingPageWidgetParametrs.style = "";
+_webSettingPageWidgetParametrs.label = "Контроллер - Размер памяти ( в байтах)";
+_webSettingPageWidgetParametrs.hasLabel = 1; 
+_webSettingPageWidgetParametrs.hasCommonDiv = 1; 
+_webSettingPageWidgetParametrs.labelStyle = "stLab"; 
+_webSettingPageWidgetParametrs.valueStyle = "stText"; 
+_webSettingPageWidgetParametrs.labelPosition = 0; 
+_webSettingPageWidgetParametrs.id = "P4"; 
+_webSettingPageWidgetParametrs.isIp = 0;
+_webSettingPageWidgetParametrs.isClient = 0;
+ESPControllerWifi_tspWebServer.sendContent(_eSP8266SettingWebPageTextVisualElement() );
+_webSettingPageWidgetParametrs.style = "";
+_webSettingPageWidgetParametrs.label = "количество выполненных задач";
+_webSettingPageWidgetParametrs.hasLabel = 1; 
+_webSettingPageWidgetParametrs.hasCommonDiv = 1; 
+_webSettingPageWidgetParametrs.labelStyle = "stLab"; 
+_webSettingPageWidgetParametrs.valueStyle = "stText"; 
+_webSettingPageWidgetParametrs.labelPosition = 0; 
+_webSettingPageWidgetParametrs.id = "P87"; 
+_webSettingPageWidgetParametrs.isIp = 0;
+_webSettingPageWidgetParametrs.isClient = 0;
+ESPControllerWifi_tspWebServer.sendContent(_eSP8266SettingWebPageTextVisualElement() );
+_webSettingPageWidgetParametrs.style = "";
+_webSettingPageWidgetParametrs.label = "команда выберите товар";
+_webSettingPageWidgetParametrs.hasLabel = 1; 
+_webSettingPageWidgetParametrs.hasCommonDiv = 1; 
+_webSettingPageWidgetParametrs.labelStyle = ""; 
+_webSettingPageWidgetParametrs.valueStyle = "stBtn"; 
+_webSettingPageWidgetParametrs.labelPosition = 1; 
+_webSettingPageWidgetParametrs.id = "P10";
+ESPControllerWifi_tspWebServer.sendContent( _eSP8266SettingWebPageButtonVisualElement());
+_webSettingPageWidgetParametrs.style = "";
+_webSettingPageWidgetParametrs.isAutoSave = 0;
+_webSettingPageWidgetParametrs.label = "inputString";
+_webSettingPageWidgetParametrs.hasLabel = 1; 
+_webSettingPageWidgetParametrs.hasCommonDiv = 1; 
+_webSettingPageWidgetParametrs.labelStyle = "stLab"; 
+_webSettingPageWidgetParametrs.valueStyle = "stIF"; 
+_webSettingPageWidgetParametrs.labelPosition = 0; 
+_webSettingPageWidgetParametrs.id = "P32"; 
+_webSettingPageWidgetParametrs.maximumStringLength = 20;
+_webSettingPageWidgetParametrs.isIp = 0;
+_webSettingPageWidgetParametrs.isClient = 0;
+ESPControllerWifi_tspWebServer.sendContent( _eSP8266SettingWebPageInputFieldVisualElement ());
+_webSettingPageWidgetParametrs.style = "";
+_webSettingPageWidgetParametrs.label = "Отправка команды на терминал";
+_webSettingPageWidgetParametrs.hasLabel = 1; 
+_webSettingPageWidgetParametrs.hasCommonDiv = 1; 
+_webSettingPageWidgetParametrs.labelStyle = ""; 
+_webSettingPageWidgetParametrs.valueStyle = "stBtn"; 
+_webSettingPageWidgetParametrs.labelPosition = 1; 
+_webSettingPageWidgetParametrs.id = "P24";
+ESPControllerWifi_tspWebServer.sendContent( _eSP8266SettingWebPageButtonVisualElement());
+_webSettingPageWidgetParametrs.style = "";
+_webSettingPageWidgetParametrs.label = "ScanIC2";
+_webSettingPageWidgetParametrs.hasLabel = 1; 
+_webSettingPageWidgetParametrs.hasCommonDiv = 1; 
+_webSettingPageWidgetParametrs.labelStyle = ""; 
+_webSettingPageWidgetParametrs.valueStyle = "stBtn"; 
+_webSettingPageWidgetParametrs.labelPosition = 1; 
+_webSettingPageWidgetParametrs.id = "P78";
+ESPControllerWifi_tspWebServer.sendContent( _eSP8266SettingWebPageButtonVisualElement());
+_webSettingPageWidgetParametrs.style = "";
+_webSettingPageWidgetParametrs.label = "ScanIC2";
+_webSettingPageWidgetParametrs.hasLabel = 1; 
+_webSettingPageWidgetParametrs.hasCommonDiv = 1; 
+_webSettingPageWidgetParametrs.labelStyle = "stLab"; 
+_webSettingPageWidgetParametrs.valueStyle = "stText"; 
+_webSettingPageWidgetParametrs.labelPosition = 0; 
+_webSettingPageWidgetParametrs.id = "P71"; 
+_webSettingPageWidgetParametrs.isIp = 0;
+_webSettingPageWidgetParametrs.isClient = 0;
+ESPControllerWifi_tspWebServer.sendContent(_eSP8266SettingWebPageTextVisualElement() );
+_webSettingPageWidgetParametrs.style = "";
+_webSettingPageWidgetParametrs.label = "ОшибкаДв";
+_webSettingPageWidgetParametrs.hasLabel = 1; 
+_webSettingPageWidgetParametrs.hasCommonDiv = 1; 
+_webSettingPageWidgetParametrs.labelStyle = "stLab"; 
+_webSettingPageWidgetParametrs.valueStyle = "stText"; 
+_webSettingPageWidgetParametrs.labelPosition = 0; 
+_webSettingPageWidgetParametrs.id = "P2"; 
+_webSettingPageWidgetParametrs.isIp = 0;
+_webSettingPageWidgetParametrs.isClient = 0;
+ESPControllerWifi_tspWebServer.sendContent(_eSP8266SettingWebPageTextVisualElement() );
+_webSettingPageWidgetParametrs.style = "";
+_webSettingPageWidgetParametrs.label = "ServoEn";
+_webSettingPageWidgetParametrs.hasLabel = 1; 
+_webSettingPageWidgetParametrs.hasCommonDiv = 1; 
+_webSettingPageWidgetParametrs.labelStyle = ""; 
+_webSettingPageWidgetParametrs.valueStyle = "stBtn"; 
+_webSettingPageWidgetParametrs.labelPosition = 1; 
+_webSettingPageWidgetParametrs.id = "P16";
+ESPControllerWifi_tspWebServer.sendContent( _eSP8266SettingWebPageButtonVisualElement());
+_webSettingPageWidgetParametrs.style = "";
+_webSettingPageWidgetParametrs.label = "ServoEn";
+_webSettingPageWidgetParametrs.hasLabel = 1; 
+_webSettingPageWidgetParametrs.hasCommonDiv = 1; 
+_webSettingPageWidgetParametrs.labelStyle = "stLab"; 
+_webSettingPageWidgetParametrs.valueStyle = "stText"; 
+_webSettingPageWidgetParametrs.labelPosition = 0; 
+_webSettingPageWidgetParametrs.id = "P17"; 
+_webSettingPageWidgetParametrs.isIp = 0;
+_webSettingPageWidgetParametrs.isClient = 0;
+ESPControllerWifi_tspWebServer.sendContent(_eSP8266SettingWebPageTextVisualElement() );
+_webSettingPageWidgetParametrs.style = "";
+_webSettingPageWidgetParametrs.isAutoSave = 0;
+_webSettingPageWidgetParametrs.label = "ServoMove";
+_webSettingPageWidgetParametrs.hasLabel = 1; 
+_webSettingPageWidgetParametrs.hasCommonDiv = 1; 
+_webSettingPageWidgetParametrs.labelStyle = "stLab"; 
+_webSettingPageWidgetParametrs.valueStyle = "stIF"; 
+_webSettingPageWidgetParametrs.labelPosition = 0; 
+_webSettingPageWidgetParametrs.id = "P19"; 
+_webSettingPageWidgetParametrs.maximumStringLength = 20;
+_webSettingPageWidgetParametrs.isIp = 0;
+_webSettingPageWidgetParametrs.isClient = 0;
+ESPControllerWifi_tspWebServer.sendContent( _eSP8266SettingWebPageInputFieldVisualElement ());
+_webSettingPageWidgetParametrs.style = "";
+_webSettingPageWidgetParametrs.isAutoSave = 0;
+_webSettingPageWidgetParametrs.label = "ServoPin";
+_webSettingPageWidgetParametrs.hasLabel = 1; 
+_webSettingPageWidgetParametrs.hasCommonDiv = 1; 
+_webSettingPageWidgetParametrs.labelStyle = "stLab"; 
+_webSettingPageWidgetParametrs.valueStyle = "stIF"; 
+_webSettingPageWidgetParametrs.labelPosition = 0; 
+_webSettingPageWidgetParametrs.id = "P25"; 
+_webSettingPageWidgetParametrs.maximumStringLength = 20;
+_webSettingPageWidgetParametrs.isIp = 0;
+_webSettingPageWidgetParametrs.isClient = 0;
+ESPControllerWifi_tspWebServer.sendContent( _eSP8266SettingWebPageInputFieldVisualElement ());
+_webSettingPageWidgetParametrs.style = "";
+_webSettingPageWidgetParametrs.isAutoSave = 0;
+_webSettingPageWidgetParametrs.label = "Buttons_work_gtv73";
+_webSettingPageWidgetParametrs.hasLabel = 1; 
+_webSettingPageWidgetParametrs.hasCommonDiv = 1; 
+_webSettingPageWidgetParametrs.labelStyle = "stLab"; 
+_webSettingPageWidgetParametrs.valueStyle = "stIF"; 
+_webSettingPageWidgetParametrs.labelPosition = 0; 
+_webSettingPageWidgetParametrs.id = "P26"; 
+_webSettingPageWidgetParametrs.maximumStringLength = 20;
+_webSettingPageWidgetParametrs.isIp = 0;
+_webSettingPageWidgetParametrs.isClient = 0;
+ESPControllerWifi_tspWebServer.sendContent( _eSP8266SettingWebPageInputFieldVisualElement ());
+_webSettingPageWidgetParametrs.isAutoSave = 0;
+_webSettingPageWidgetParametrs.label = "Buttons_enable";
+_webSettingPageWidgetParametrs.valueStyle = "stChb"; 
+_webSettingPageWidgetParametrs.id = "P45"; 
+ESPControllerWifi_tspWebServer.sendContent( _eSP8266SettingWebPageCheckBoxVisualElement());
+_webSettingPageWidgetParametrs.isAutoSave = 0;
+_webSettingPageWidgetParametrs.label = "LED_ON";
+_webSettingPageWidgetParametrs.valueStyle = "stChb"; 
+_webSettingPageWidgetParametrs.id = "P46"; 
+ESPControllerWifi_tspWebServer.sendContent( _eSP8266SettingWebPageCheckBoxVisualElement());
+_webSettingPageWidgetParametrs.style = "";
+_webSettingPageWidgetParametrs.label = "CoinWork";
+_webSettingPageWidgetParametrs.hasLabel = 1; 
+_webSettingPageWidgetParametrs.hasCommonDiv = 1; 
+_webSettingPageWidgetParametrs.labelStyle = "stLab"; 
+_webSettingPageWidgetParametrs.valueStyle = "stText"; 
+_webSettingPageWidgetParametrs.labelPosition = 0; 
+_webSettingPageWidgetParametrs.id = "P47"; 
+_webSettingPageWidgetParametrs.isIp = 0;
+_webSettingPageWidgetParametrs.isClient = 0;
+ESPControllerWifi_tspWebServer.sendContent(_eSP8266SettingWebPageTextVisualElement() );
+_webSettingPageWidgetParametrs.isAutoSave = 0;
+_webSettingPageWidgetParametrs.label = "Payment_on_motor_gtv24";
+_webSettingPageWidgetParametrs.valueStyle = "stChb"; 
+_webSettingPageWidgetParametrs.id = "P48"; 
+ESPControllerWifi_tspWebServer.sendContent( _eSP8266SettingWebPageCheckBoxVisualElement());
+_webSettingPageWidgetParametrs.style = "";
+_webSettingPageWidgetParametrs.label = "CoinReceived";
+_webSettingPageWidgetParametrs.hasLabel = 1; 
+_webSettingPageWidgetParametrs.hasCommonDiv = 1; 
+_webSettingPageWidgetParametrs.labelStyle = "stLab"; 
+_webSettingPageWidgetParametrs.valueStyle = "stText"; 
+_webSettingPageWidgetParametrs.labelPosition = 0; 
+_webSettingPageWidgetParametrs.id = "P49"; 
+_webSettingPageWidgetParametrs.isIp = 0;
+_webSettingPageWidgetParametrs.isClient = 0;
+ESPControllerWifi_tspWebServer.sendContent(_eSP8266SettingWebPageTextVisualElement() );
+_webSettingPageWidgetParametrs.style = "";
+_webSettingPageWidgetParametrs.isAutoSave = 0;
+_webSettingPageWidgetParametrs.label = "move_first";
+_webSettingPageWidgetParametrs.hasLabel = 1; 
+_webSettingPageWidgetParametrs.hasCommonDiv = 1; 
+_webSettingPageWidgetParametrs.labelStyle = "stLab"; 
+_webSettingPageWidgetParametrs.valueStyle = "stIF"; 
+_webSettingPageWidgetParametrs.labelPosition = 0; 
+_webSettingPageWidgetParametrs.id = "P50"; 
+_webSettingPageWidgetParametrs.maximumStringLength = 20;
+_webSettingPageWidgetParametrs.isIp = 0;
+_webSettingPageWidgetParametrs.isClient = 0;
+ESPControllerWifi_tspWebServer.sendContent( _eSP8266SettingWebPageInputFieldVisualElement ());
+_webSettingPageWidgetParametrs.style = "";
+_webSettingPageWidgetParametrs.isAutoSave = 0;
+_webSettingPageWidgetParametrs.label = "move_second";
+_webSettingPageWidgetParametrs.hasLabel = 1; 
+_webSettingPageWidgetParametrs.hasCommonDiv = 1; 
+_webSettingPageWidgetParametrs.labelStyle = "stLab"; 
+_webSettingPageWidgetParametrs.valueStyle = "stIF"; 
+_webSettingPageWidgetParametrs.labelPosition = 0; 
+_webSettingPageWidgetParametrs.id = "P61"; 
+_webSettingPageWidgetParametrs.maximumStringLength = 20;
+_webSettingPageWidgetParametrs.isIp = 0;
+_webSettingPageWidgetParametrs.isClient = 0;
+ESPControllerWifi_tspWebServer.sendContent( _eSP8266SettingWebPageInputFieldVisualElement ());
+_webSettingPageWidgetParametrs.style = "";
+_webSettingPageWidgetParametrs.label = "Stop_Gate1_gtv12";
+_webSettingPageWidgetParametrs.hasLabel = 1; 
+_webSettingPageWidgetParametrs.hasCommonDiv = 1; 
+_webSettingPageWidgetParametrs.labelStyle = "stLab"; 
+_webSettingPageWidgetParametrs.valueStyle = "stText"; 
+_webSettingPageWidgetParametrs.labelPosition = 0; 
+_webSettingPageWidgetParametrs.id = "P64"; 
+_webSettingPageWidgetParametrs.isIp = 0;
+_webSettingPageWidgetParametrs.isClient = 0;
+ESPControllerWifi_tspWebServer.sendContent(_eSP8266SettingWebPageTextVisualElement() );
+_webSettingPageWidgetParametrs.style = "";
+_webSettingPageWidgetParametrs.label = "test5";
+_webSettingPageWidgetParametrs.hasLabel = 1; 
+_webSettingPageWidgetParametrs.hasCommonDiv = 1; 
+_webSettingPageWidgetParametrs.labelStyle = ""; 
+_webSettingPageWidgetParametrs.valueStyle = "stBtn"; 
+_webSettingPageWidgetParametrs.labelPosition = 1; 
+_webSettingPageWidgetParametrs.id = "P62";
+ESPControllerWifi_tspWebServer.sendContent( _eSP8266SettingWebPageButtonVisualElement());
+_webSettingPageWidgetParametrs.style = "";
+_webSettingPageWidgetParametrs.label = "_wait_payment";
+_webSettingPageWidgetParametrs.hasLabel = 1; 
+_webSettingPageWidgetParametrs.hasCommonDiv = 1; 
+_webSettingPageWidgetParametrs.labelStyle = "stLab"; 
+_webSettingPageWidgetParametrs.valueStyle = "stText"; 
+_webSettingPageWidgetParametrs.labelPosition = 0; 
+_webSettingPageWidgetParametrs.id = "P65"; 
+_webSettingPageWidgetParametrs.isIp = 0;
+_webSettingPageWidgetParametrs.isClient = 0;
+ESPControllerWifi_tspWebServer.sendContent(_eSP8266SettingWebPageTextVisualElement() );
+_webSettingPageWidgetParametrs.style = "";
+_webSettingPageWidgetParametrs.label = "КонтрольВыдачи";
+_webSettingPageWidgetParametrs.hasLabel = 0; 
+_webSettingPageWidgetParametrs.hasCommonDiv = 1; 
+_webSettingPageWidgetParametrs.labelStyle = ""; 
+_webSettingPageWidgetParametrs.valueStyle = "stLig"; 
+_webSettingPageWidgetParametrs.labelPosition = 1; 
+_webSettingPageWidgetParametrs.id = "P63";
+ESPControllerWifi_tspWebServer.sendContent( _eSP8266SettingWebPageColorIndicatorVisualElement());
+_webSettingPageWidgetParametrs.style = "";
+_webSettingPageWidgetParametrs.isAutoSave = 0;
+_webSettingPageWidgetParametrs.label = "задержка на включение";
+_webSettingPageWidgetParametrs.hasLabel = 1; 
+_webSettingPageWidgetParametrs.hasCommonDiv = 1; 
+_webSettingPageWidgetParametrs.labelStyle = "stLab"; 
+_webSettingPageWidgetParametrs.valueStyle = "stIF"; 
+_webSettingPageWidgetParametrs.labelPosition = 0; 
+_webSettingPageWidgetParametrs.id = "P66"; 
+_webSettingPageWidgetParametrs.maximumStringLength = 20;
+_webSettingPageWidgetParametrs.isIp = 0;
+_webSettingPageWidgetParametrs.isClient = 0;
+ESPControllerWifi_tspWebServer.sendContent( _eSP8266SettingWebPageInputFieldVisualElement ());
+_webSettingPageWidgetParametrs.style = "";
+_webSettingPageWidgetParametrs.label = "проверка выдачи товара";
+_webSettingPageWidgetParametrs.hasLabel = 1; 
+_webSettingPageWidgetParametrs.hasCommonDiv = 1; 
+_webSettingPageWidgetParametrs.labelStyle = "stLab"; 
+_webSettingPageWidgetParametrs.valueStyle = "stText"; 
+_webSettingPageWidgetParametrs.labelPosition = 0; 
+_webSettingPageWidgetParametrs.id = "P67"; 
+_webSettingPageWidgetParametrs.isIp = 0;
+_webSettingPageWidgetParametrs.isClient = 0;
+ESPControllerWifi_tspWebServer.sendContent(_eSP8266SettingWebPageTextVisualElement() );
+_webSettingPageWidgetParametrs.isAutoSave = 0;
+_webSettingPageWidgetParametrs.label = "Sensor_on";
+_webSettingPageWidgetParametrs.valueStyle = "stChb"; 
+_webSettingPageWidgetParametrs.id = "P68"; 
+ESPControllerWifi_tspWebServer.sendContent( _eSP8266SettingWebPageCheckBoxVisualElement());
+_webSettingPageWidgetParametrs.style = "";
+_webSettingPageWidgetParametrs.label = "sensor_light";
+_webSettingPageWidgetParametrs.hasLabel = 1; 
+_webSettingPageWidgetParametrs.hasCommonDiv = 1; 
+_webSettingPageWidgetParametrs.labelStyle = "stLab"; 
+_webSettingPageWidgetParametrs.valueStyle = "stText"; 
+_webSettingPageWidgetParametrs.labelPosition = 0; 
+_webSettingPageWidgetParametrs.id = "P69"; 
+_webSettingPageWidgetParametrs.isIp = 0;
+_webSettingPageWidgetParametrs.isClient = 0;
+ESPControllerWifi_tspWebServer.sendContent(_eSP8266SettingWebPageTextVisualElement() );
+_webSettingPageWidgetParametrs.style = "";
+_webSettingPageWidgetParametrs.label = "myStringLog";
+_webSettingPageWidgetParametrs.hasLabel = 1; 
+_webSettingPageWidgetParametrs.hasCommonDiv = 1; 
+_webSettingPageWidgetParametrs.labelStyle = "stLab"; 
+_webSettingPageWidgetParametrs.valueStyle = "stText"; 
+_webSettingPageWidgetParametrs.labelPosition = 0; 
+_webSettingPageWidgetParametrs.id = "P70"; 
+_webSettingPageWidgetParametrs.isIp = 0;
+_webSettingPageWidgetParametrs.isClient = 0;
+ESPControllerWifi_tspWebServer.sendContent(_eSP8266SettingWebPageTextVisualElement() );
+_webSettingPageWidgetParametrs.style = "";
+_webSettingPageWidgetParametrs.label = "i2cdisp";
+_webSettingPageWidgetParametrs.hasLabel = 1; 
+_webSettingPageWidgetParametrs.hasCommonDiv = 1; 
+_webSettingPageWidgetParametrs.labelStyle = "stLab"; 
+_webSettingPageWidgetParametrs.valueStyle = "stText"; 
+_webSettingPageWidgetParametrs.labelPosition = 0; 
+_webSettingPageWidgetParametrs.id = "P72"; 
+_webSettingPageWidgetParametrs.isIp = 0;
+_webSettingPageWidgetParametrs.isClient = 0;
+ESPControllerWifi_tspWebServer.sendContent(_eSP8266SettingWebPageTextVisualElement() );
+_webSettingPageWidgetParametrs.style = "";
+_webSettingPageWidgetParametrs.label = "14 <Цифровой>";
+_webSettingPageWidgetParametrs.hasLabel = 0; 
+_webSettingPageWidgetParametrs.hasCommonDiv = 1; 
+_webSettingPageWidgetParametrs.labelStyle = ""; 
+_webSettingPageWidgetParametrs.valueStyle = "stLig"; 
+_webSettingPageWidgetParametrs.labelPosition = 1; 
+_webSettingPageWidgetParametrs.id = "P5";
+ESPControllerWifi_tspWebServer.sendContent( _eSP8266SettingWebPageColorIndicatorVisualElement());
+_webSettingPageWidgetParametrs.style = "";
+_webSettingPageWidgetParametrs.label = "adc <Аналоговый>  = ADC";
+_webSettingPageWidgetParametrs.hasLabel = 1; 
+_webSettingPageWidgetParametrs.hasCommonDiv = 1; 
+_webSettingPageWidgetParametrs.labelStyle = "stLab"; 
+_webSettingPageWidgetParametrs.valueStyle = "stText"; 
+_webSettingPageWidgetParametrs.labelPosition = 0; 
+_webSettingPageWidgetParametrs.id = "P58"; 
+_webSettingPageWidgetParametrs.isIp = 0;
+_webSettingPageWidgetParametrs.isClient = 0;
+ESPControllerWifi_tspWebServer.sendContent(_eSP8266SettingWebPageTextVisualElement() );
+_webSettingPageWidgetParametrs.style = "";
+_webSettingPageWidgetParametrs.label = "ADC <Integer>";
+_webSettingPageWidgetParametrs.hasLabel = 1; 
+_webSettingPageWidgetParametrs.hasCommonDiv = 1; 
+_webSettingPageWidgetParametrs.labelStyle = "stLab"; 
+_webSettingPageWidgetParametrs.valueStyle = "stText"; 
+_webSettingPageWidgetParametrs.labelPosition = 0; 
+_webSettingPageWidgetParametrs.id = "P59"; 
+_webSettingPageWidgetParametrs.isIp = 0;
+_webSettingPageWidgetParametrs.isClient = 0;
+ESPControllerWifi_tspWebServer.sendContent(_eSP8266SettingWebPageTextVisualElement() );
+ESPControllerWifi_tspWebServer.sendContent("<div>");
+ESPControllerWifi_tspWebServer.sendContent(String(_ESP8266WebInterfacePageButton_save));
+ESPControllerWifi_tspWebServer.sendContent(_ESP8266WebInterfacePageButton_reset);
+ESPControllerWifi_tspWebServer.sendContent("</div>");
+ESPControllerWifi_tspWebServer.sendContent("</div>");
+ESPControllerWifi_tspWebServer.sendContent("<div class=\"footer\">");
+ESPControllerWifi_tspWebServer.sendContent(String(webSettingPageFooterString));
+ESPControllerWifi_tspWebServer.sendContent("</div>");
+ESPControllerWifi_tspWebServer.sendContent("<script>");
+ESPControllerWifi_tspWebServer.sendContent(getXmlHttpFunction);
+ESPControllerWifi_tspWebServer.sendContent(webSettingPageCheckBoksOnClickScript);
+ESPControllerWifi_tspWebServer.sendContent(webSettingPageButtonOnClickScript);
+ESPControllerWifi_tspWebServer.sendContent(resetControllerFromWebScript);
+ESPControllerWifi_tspWebServer.sendContent("let sD={c:11,d:[{i:\"P32\",e:0,t:\"I\"},{i:\"P19\",e:0,t:\"I\"},{i:\"P25\",e:0,t:\"I\"},{i:\"P26\",e:0,t:\"I\"},{i:\"P45\",e:0,t:\"H\"},{i:\"P46\",e:0,t:\"H\"},{i:\"P48\",e:0,t:\"H\"},{i:\"P50\",e:0,t:\"I\"},{i:\"P61\",e:0,t:\"I\"},{i:\"P66\",e:0,t:\"I\"},{i:\"P68\",e:0,t:\"H\"}]};");
+ESPControllerWifi_tspWebServer.sendContent(webServerSettingPageSaveParametrsScript);
+ESPControllerWifi_tspWebServer.sendContent(sendWebServerResponseScriptPart1); 
+ESPControllerWifi_tspWebServer.sendContent("1");
+ESPControllerWifi_tspWebServer.sendContent(sendWebServerResponseScriptPart2); 
+ESPControllerWifi_tspWebServer.sendContent(parseWebServerResponseScript);
+ESPControllerWifi_tspWebServer.sendContent(" window.onload = function() {gND();");
+ESPControllerWifi_tspWebServer.sendContent("};");
+ESPControllerWifi_tspWebServer.sendContent("</script>");
+ESPControllerWifi_tspWebServer.sendContent("</body></html>");
+ESPControllerWifi_tspWebServer.chunkedResponseFinalize();
+}
+void _sendWebServerPage2()
+{
+ESPControllerWifi_tspWebServer.chunkedResponseModeStart(200, "text/html");
+ESPControllerWifi_tspWebServer.sendContent(webSettingPageHeader1);
+ESPControllerWifi_tspWebServer.sendContent("<head>");
+ESPControllerWifi_tspWebServer.sendContent("<style>");
+ESPControllerWifi_tspWebServer.sendContent((String(webSettingPageMainStyle)+" "));
+ESPControllerWifi_tspWebServer.sendContent("\"</style>");
+ESPControllerWifi_tspWebServer.sendContent("</head>");
+
+ESPControllerWifi_tspWebServer.sendContent("<body>");
+ESPControllerWifi_tspWebServer.sendContent("<div class=\"header\">");
+ESPControllerWifi_tspWebServer.sendContent(String(webSettingPageHeaderString));
+ESPControllerWifi_tspWebServer.sendContent("</div>");
+ESPControllerWifi_tspWebServer.sendContent((_eSP8266SettingWebPageCreateMenu(1)));
+ESPControllerWifi_tspWebServer.sendContent("<div class=\"content\">");
+_webSettingPageWidgetParametrs.style = "";
+_webSettingPageWidgetParametrs.isAutoSave = 0;
+_webSettingPageWidgetParametrs.label = "Price_1";
+_webSettingPageWidgetParametrs.hasLabel = 1; 
+_webSettingPageWidgetParametrs.hasCommonDiv = 1; 
+_webSettingPageWidgetParametrs.labelStyle = "stLab"; 
+_webSettingPageWidgetParametrs.valueStyle = "stIF"; 
+_webSettingPageWidgetParametrs.labelPosition = 0; 
+_webSettingPageWidgetParametrs.id = "P18"; 
+_webSettingPageWidgetParametrs.maximumStringLength = 20;
+_webSettingPageWidgetParametrs.isIp = 0;
+_webSettingPageWidgetParametrs.isClient = 0;
+ESPControllerWifi_tspWebServer.sendContent( _eSP8266SettingWebPageInputFieldVisualElement ());
+_webSettingPageWidgetParametrs.style = "";
+_webSettingPageWidgetParametrs.isAutoSave = 0;
+_webSettingPageWidgetParametrs.label = "Price_2";
+_webSettingPageWidgetParametrs.hasLabel = 1; 
+_webSettingPageWidgetParametrs.hasCommonDiv = 1; 
+_webSettingPageWidgetParametrs.labelStyle = "stLab"; 
+_webSettingPageWidgetParametrs.valueStyle = "stIF"; 
+_webSettingPageWidgetParametrs.labelPosition = 0; 
+_webSettingPageWidgetParametrs.id = "P21"; 
+_webSettingPageWidgetParametrs.maximumStringLength = 20;
+_webSettingPageWidgetParametrs.isIp = 0;
+_webSettingPageWidgetParametrs.isClient = 0;
+ESPControllerWifi_tspWebServer.sendContent( _eSP8266SettingWebPageInputFieldVisualElement ());
+_webSettingPageWidgetParametrs.style = "";
+_webSettingPageWidgetParametrs.isAutoSave = 0;
+_webSettingPageWidgetParametrs.label = "Price_3";
+_webSettingPageWidgetParametrs.hasLabel = 1; 
+_webSettingPageWidgetParametrs.hasCommonDiv = 1; 
+_webSettingPageWidgetParametrs.labelStyle = "stLab"; 
+_webSettingPageWidgetParametrs.valueStyle = "stIF"; 
+_webSettingPageWidgetParametrs.labelPosition = 0; 
+_webSettingPageWidgetParametrs.id = "P22"; 
+_webSettingPageWidgetParametrs.maximumStringLength = 20;
+_webSettingPageWidgetParametrs.isIp = 0;
+_webSettingPageWidgetParametrs.isClient = 0;
+ESPControllerWifi_tspWebServer.sendContent( _eSP8266SettingWebPageInputFieldVisualElement ());
+_webSettingPageWidgetParametrs.style = "";
+_webSettingPageWidgetParametrs.isAutoSave = 0;
+_webSettingPageWidgetParametrs.label = "Price_4";
+_webSettingPageWidgetParametrs.hasLabel = 1; 
+_webSettingPageWidgetParametrs.hasCommonDiv = 1; 
+_webSettingPageWidgetParametrs.labelStyle = "stLab"; 
+_webSettingPageWidgetParametrs.valueStyle = "stIF"; 
+_webSettingPageWidgetParametrs.labelPosition = 0; 
+_webSettingPageWidgetParametrs.id = "P23"; 
+_webSettingPageWidgetParametrs.maximumStringLength = 20;
+_webSettingPageWidgetParametrs.isIp = 0;
+_webSettingPageWidgetParametrs.isClient = 0;
+ESPControllerWifi_tspWebServer.sendContent( _eSP8266SettingWebPageInputFieldVisualElement ());
+_webSettingPageWidgetParametrs.style = "";
+_webSettingPageWidgetParametrs.isAutoSave = 0;
+_webSettingPageWidgetParametrs.label = "Price_5";
+_webSettingPageWidgetParametrs.hasLabel = 1; 
+_webSettingPageWidgetParametrs.hasCommonDiv = 1; 
+_webSettingPageWidgetParametrs.labelStyle = "stLab"; 
+_webSettingPageWidgetParametrs.valueStyle = "stIF"; 
+_webSettingPageWidgetParametrs.labelPosition = 0; 
+_webSettingPageWidgetParametrs.id = "P6"; 
+_webSettingPageWidgetParametrs.maximumStringLength = 20;
+_webSettingPageWidgetParametrs.isIp = 0;
+_webSettingPageWidgetParametrs.isClient = 0;
+ESPControllerWifi_tspWebServer.sendContent( _eSP8266SettingWebPageInputFieldVisualElement ());
+_webSettingPageWidgetParametrs.style = "";
+_webSettingPageWidgetParametrs.isAutoSave = 0;
+_webSettingPageWidgetParametrs.label = "Price_6";
+_webSettingPageWidgetParametrs.hasLabel = 1; 
+_webSettingPageWidgetParametrs.hasCommonDiv = 1; 
+_webSettingPageWidgetParametrs.labelStyle = "stLab"; 
+_webSettingPageWidgetParametrs.valueStyle = "stIF"; 
+_webSettingPageWidgetParametrs.labelPosition = 0; 
+_webSettingPageWidgetParametrs.id = "P7"; 
+_webSettingPageWidgetParametrs.maximumStringLength = 20;
+_webSettingPageWidgetParametrs.isIp = 0;
+_webSettingPageWidgetParametrs.isClient = 0;
+ESPControllerWifi_tspWebServer.sendContent( _eSP8266SettingWebPageInputFieldVisualElement ());
+_webSettingPageWidgetParametrs.style = "";
+_webSettingPageWidgetParametrs.isAutoSave = 0;
+_webSettingPageWidgetParametrs.label = "Price_7";
+_webSettingPageWidgetParametrs.hasLabel = 1; 
+_webSettingPageWidgetParametrs.hasCommonDiv = 1; 
+_webSettingPageWidgetParametrs.labelStyle = "stLab"; 
+_webSettingPageWidgetParametrs.valueStyle = "stIF"; 
+_webSettingPageWidgetParametrs.labelPosition = 0; 
+_webSettingPageWidgetParametrs.id = "P9"; 
+_webSettingPageWidgetParametrs.maximumStringLength = 20;
+_webSettingPageWidgetParametrs.isIp = 0;
+_webSettingPageWidgetParametrs.isClient = 0;
+ESPControllerWifi_tspWebServer.sendContent( _eSP8266SettingWebPageInputFieldVisualElement ());
+_webSettingPageWidgetParametrs.style = "";
+_webSettingPageWidgetParametrs.isAutoSave = 0;
+_webSettingPageWidgetParametrs.label = "Price_8";
+_webSettingPageWidgetParametrs.hasLabel = 1; 
+_webSettingPageWidgetParametrs.hasCommonDiv = 1; 
+_webSettingPageWidgetParametrs.labelStyle = "stLab"; 
+_webSettingPageWidgetParametrs.valueStyle = "stIF"; 
+_webSettingPageWidgetParametrs.labelPosition = 0; 
+_webSettingPageWidgetParametrs.id = "P41"; 
+_webSettingPageWidgetParametrs.maximumStringLength = 20;
+_webSettingPageWidgetParametrs.isIp = 0;
+_webSettingPageWidgetParametrs.isClient = 0;
+ESPControllerWifi_tspWebServer.sendContent( _eSP8266SettingWebPageInputFieldVisualElement ());
+_webSettingPageWidgetParametrs.style = "";
+_webSettingPageWidgetParametrs.isAutoSave = 0;
+_webSettingPageWidgetParametrs.label = "Price_9";
+_webSettingPageWidgetParametrs.hasLabel = 1; 
+_webSettingPageWidgetParametrs.hasCommonDiv = 1; 
+_webSettingPageWidgetParametrs.labelStyle = "stLab"; 
+_webSettingPageWidgetParametrs.valueStyle = "stIF"; 
+_webSettingPageWidgetParametrs.labelPosition = 0; 
+_webSettingPageWidgetParametrs.id = "P42"; 
+_webSettingPageWidgetParametrs.maximumStringLength = 20;
+_webSettingPageWidgetParametrs.isIp = 0;
+_webSettingPageWidgetParametrs.isClient = 0;
+ESPControllerWifi_tspWebServer.sendContent( _eSP8266SettingWebPageInputFieldVisualElement ());
+_webSettingPageWidgetParametrs.style = "";
+_webSettingPageWidgetParametrs.isAutoSave = 0;
+_webSettingPageWidgetParametrs.label = "Price_10";
+_webSettingPageWidgetParametrs.hasLabel = 1; 
+_webSettingPageWidgetParametrs.hasCommonDiv = 1; 
+_webSettingPageWidgetParametrs.labelStyle = "stLab"; 
+_webSettingPageWidgetParametrs.valueStyle = "stIF"; 
+_webSettingPageWidgetParametrs.labelPosition = 0; 
+_webSettingPageWidgetParametrs.id = "P43"; 
+_webSettingPageWidgetParametrs.maximumStringLength = 20;
+_webSettingPageWidgetParametrs.isIp = 0;
+_webSettingPageWidgetParametrs.isClient = 0;
+ESPControllerWifi_tspWebServer.sendContent( _eSP8266SettingWebPageInputFieldVisualElement ());
+_webSettingPageWidgetParametrs.style = "";
+_webSettingPageWidgetParametrs.isAutoSave = 0;
+_webSettingPageWidgetParametrs.label = "Price_11";
+_webSettingPageWidgetParametrs.hasLabel = 1; 
+_webSettingPageWidgetParametrs.hasCommonDiv = 1; 
+_webSettingPageWidgetParametrs.labelStyle = "stLab"; 
+_webSettingPageWidgetParametrs.valueStyle = "stIF"; 
+_webSettingPageWidgetParametrs.labelPosition = 0; 
+_webSettingPageWidgetParametrs.id = "P44"; 
+_webSettingPageWidgetParametrs.maximumStringLength = 20;
+_webSettingPageWidgetParametrs.isIp = 0;
+_webSettingPageWidgetParametrs.isClient = 0;
+ESPControllerWifi_tspWebServer.sendContent( _eSP8266SettingWebPageInputFieldVisualElement ());
+_webSettingPageWidgetParametrs.style = "";
+_webSettingPageWidgetParametrs.isAutoSave = 0;
+_webSettingPageWidgetParametrs.label = "Price_12";
+_webSettingPageWidgetParametrs.hasLabel = 1; 
+_webSettingPageWidgetParametrs.hasCommonDiv = 1; 
+_webSettingPageWidgetParametrs.labelStyle = "stLab"; 
+_webSettingPageWidgetParametrs.valueStyle = "stIF"; 
+_webSettingPageWidgetParametrs.labelPosition = 0; 
+_webSettingPageWidgetParametrs.id = "P53"; 
+_webSettingPageWidgetParametrs.maximumStringLength = 20;
+_webSettingPageWidgetParametrs.isIp = 0;
+_webSettingPageWidgetParametrs.isClient = 0;
+ESPControllerWifi_tspWebServer.sendContent( _eSP8266SettingWebPageInputFieldVisualElement ());
+ESPControllerWifi_tspWebServer.sendContent("<div>");
+ESPControllerWifi_tspWebServer.sendContent(String(_ESP8266WebInterfacePageButton_save));
+ESPControllerWifi_tspWebServer.sendContent(_ESP8266WebInterfacePageButton_reset);
+ESPControllerWifi_tspWebServer.sendContent("</div>");
+ESPControllerWifi_tspWebServer.sendContent("</div>");
+ESPControllerWifi_tspWebServer.sendContent("<div class=\"footer\">");
+ESPControllerWifi_tspWebServer.sendContent(String(webSettingPageFooterString));
+ESPControllerWifi_tspWebServer.sendContent("</div>");
+ESPControllerWifi_tspWebServer.sendContent("<script>");
+ESPControllerWifi_tspWebServer.sendContent(getXmlHttpFunction);
+ESPControllerWifi_tspWebServer.sendContent(resetControllerFromWebScript);
+ESPControllerWifi_tspWebServer.sendContent("let sD={c:12,d:[{i:\"P18\",e:0,t:\"I\"},{i:\"P21\",e:0,t:\"I\"},{i:\"P22\",e:0,t:\"I\"},{i:\"P23\",e:0,t:\"I\"},{i:\"P6\",e:0,t:\"I\"},{i:\"P7\",e:0,t:\"I\"},{i:\"P9\",e:0,t:\"I\"},{i:\"P41\",e:0,t:\"I\"},{i:\"P42\",e:0,t:\"I\"},{i:\"P43\",e:0,t:\"I\"},{i:\"P44\",e:0,t:\"I\"},{i:\"P53\",e:0,t:\"I\"}]};");
+ESPControllerWifi_tspWebServer.sendContent(webServerSettingPageSaveParametrsScript);
+ESPControllerWifi_tspWebServer.sendContent(sendWebServerResponseScriptPart1); 
+ESPControllerWifi_tspWebServer.sendContent("2");
+ESPControllerWifi_tspWebServer.sendContent(sendWebServerResponseScriptPart2); 
+ESPControllerWifi_tspWebServer.sendContent(parseWebServerResponseScript);
+ESPControllerWifi_tspWebServer.sendContent(" window.onload = function() {gND();");
+ESPControllerWifi_tspWebServer.sendContent("};");
+ESPControllerWifi_tspWebServer.sendContent("</script>");
+ESPControllerWifi_tspWebServer.sendContent("</body></html>");
+ESPControllerWifi_tspWebServer.chunkedResponseFinalize();
+}
+void _sendWebServerPage3()
+{
+ESPControllerWifi_tspWebServer.chunkedResponseModeStart(200, "text/html");
+ESPControllerWifi_tspWebServer.sendContent(webSettingPageHeader1);
+ESPControllerWifi_tspWebServer.sendContent("<head>");
+ESPControllerWifi_tspWebServer.sendContent("<style>");
+ESPControllerWifi_tspWebServer.sendContent((String(webSettingPageMainStyle)+" "));
+ESPControllerWifi_tspWebServer.sendContent("\"</style>");
+ESPControllerWifi_tspWebServer.sendContent("</head>");
+
+ESPControllerWifi_tspWebServer.sendContent("<body>");
+ESPControllerWifi_tspWebServer.sendContent("<div class=\"header\">");
+ESPControllerWifi_tspWebServer.sendContent(String(webSettingPageHeaderString));
+ESPControllerWifi_tspWebServer.sendContent("</div>");
+ESPControllerWifi_tspWebServer.sendContent((_eSP8266SettingWebPageCreateMenu(2)));
+ESPControllerWifi_tspWebServer.sendContent("<div class=\"content\">");
+_webSettingPageWidgetParametrs.style = "";
+_webSettingPageWidgetParametrs.isAutoSave = 0;
+_webSettingPageWidgetParametrs.label = "Время работы двигателя";
+_webSettingPageWidgetParametrs.hasLabel = 1; 
+_webSettingPageWidgetParametrs.hasCommonDiv = 1; 
+_webSettingPageWidgetParametrs.labelStyle = "stLab"; 
+_webSettingPageWidgetParametrs.valueStyle = "stIF"; 
+_webSettingPageWidgetParametrs.labelPosition = 0; 
+_webSettingPageWidgetParametrs.id = "P3"; 
+_webSettingPageWidgetParametrs.maximumStringLength = 20;
+_webSettingPageWidgetParametrs.isIp = 0;
+_webSettingPageWidgetParametrs.isClient = 0;
+ESPControllerWifi_tspWebServer.sendContent( _eSP8266SettingWebPageInputFieldVisualElement ());
+_webSettingPageWidgetParametrs.style = "";
+_webSettingPageWidgetParametrs.isAutoSave = 0;
+_webSettingPageWidgetParametrs.label = "Время задержки для считывания карты";
+_webSettingPageWidgetParametrs.hasLabel = 1; 
+_webSettingPageWidgetParametrs.hasCommonDiv = 1; 
+_webSettingPageWidgetParametrs.labelStyle = "stLab"; 
+_webSettingPageWidgetParametrs.valueStyle = "stIF"; 
+_webSettingPageWidgetParametrs.labelPosition = 0; 
+_webSettingPageWidgetParametrs.id = "P8"; 
+_webSettingPageWidgetParametrs.maximumStringLength = 20;
+_webSettingPageWidgetParametrs.isIp = 0;
+_webSettingPageWidgetParametrs.isClient = 0;
+ESPControllerWifi_tspWebServer.sendContent( _eSP8266SettingWebPageInputFieldVisualElement ());
+_webSettingPageWidgetParametrs.style = "";
+_webSettingPageWidgetParametrs.isAutoSave = 0;
+_webSettingPageWidgetParametrs.label = "Время ожидания платежа";
+_webSettingPageWidgetParametrs.hasLabel = 1; 
+_webSettingPageWidgetParametrs.hasCommonDiv = 1; 
+_webSettingPageWidgetParametrs.labelStyle = "stLab"; 
+_webSettingPageWidgetParametrs.valueStyle = "stIF"; 
+_webSettingPageWidgetParametrs.labelPosition = 0; 
+_webSettingPageWidgetParametrs.id = "P20"; 
+_webSettingPageWidgetParametrs.maximumStringLength = 20;
+_webSettingPageWidgetParametrs.isIp = 0;
+_webSettingPageWidgetParametrs.isClient = 0;
+ESPControllerWifi_tspWebServer.sendContent( _eSP8266SettingWebPageInputFieldVisualElement ());
+_webSettingPageWidgetParametrs.isAutoSave = 0;
+_webSettingPageWidgetParametrs.label = "Отключать при ошибке";
+_webSettingPageWidgetParametrs.valueStyle = "stChb"; 
+_webSettingPageWidgetParametrs.id = "P37"; 
+ESPControllerWifi_tspWebServer.sendContent( _eSP8266SettingWebPageCheckBoxVisualElement());
+_webSettingPageWidgetParametrs.isAutoSave = 0;
+_webSettingPageWidgetParametrs.label = "Тестовый режим";
+_webSettingPageWidgetParametrs.valueStyle = "stChb"; 
+_webSettingPageWidgetParametrs.id = "P13"; 
+ESPControllerWifi_tspWebServer.sendContent( _eSP8266SettingWebPageCheckBoxVisualElement());
+_webSettingPageWidgetParametrs.style = "";
+_webSettingPageWidgetParametrs.isAutoSave = 0;
+_webSettingPageWidgetParametrs.label = "Serial_speed";
+_webSettingPageWidgetParametrs.hasLabel = 1; 
+_webSettingPageWidgetParametrs.hasCommonDiv = 1; 
+_webSettingPageWidgetParametrs.labelStyle = "stLab"; 
+_webSettingPageWidgetParametrs.valueStyle = "stCB"; 
+_webSettingPageWidgetParametrs.labelPosition = 0; 
+_webSettingPageWidgetParametrs.id = "P39"; 
+_webSettingPageWidgetParametrs.isIp = 0;
+_webSettingPageWidgetParametrs.isClient = 0;
+ESPControllerWifi_tspWebServer.sendContent( _eSP8266SettingWebPageComboBoxVisualElement (keyArray202628349, valueArray202628349, 3));
+_webSettingPageWidgetParametrs.isAutoSave = 0;
+_webSettingPageWidgetParametrs.label = "использовать датчик выдачи";
+_webSettingPageWidgetParametrs.valueStyle = "stChb"; 
+_webSettingPageWidgetParametrs.id = "P51"; 
+ESPControllerWifi_tspWebServer.sendContent( _eSP8266SettingWebPageCheckBoxVisualElement());
+_webSettingPageWidgetParametrs.isAutoSave = 0;
+_webSettingPageWidgetParametrs.label = "Возврат денег при ошибке";
+_webSettingPageWidgetParametrs.valueStyle = "stChb"; 
+_webSettingPageWidgetParametrs.id = "P38"; 
+ESPControllerWifi_tspWebServer.sendContent( _eSP8266SettingWebPageCheckBoxVisualElement());
+_webSettingPageWidgetParametrs.style = "";
+_webSettingPageWidgetParametrs.isAutoSave = 0;
+_webSettingPageWidgetParametrs.label = "Button_sensor";
+_webSettingPageWidgetParametrs.hasLabel = 1; 
+_webSettingPageWidgetParametrs.hasCommonDiv = 1; 
+_webSettingPageWidgetParametrs.labelStyle = "stLab"; 
+_webSettingPageWidgetParametrs.valueStyle = "stIF"; 
+_webSettingPageWidgetParametrs.labelPosition = 0; 
+_webSettingPageWidgetParametrs.id = "P29"; 
+_webSettingPageWidgetParametrs.maximumStringLength = 20;
+_webSettingPageWidgetParametrs.isIp = 0;
+_webSettingPageWidgetParametrs.isClient = 0;
+ESPControllerWifi_tspWebServer.sendContent( _eSP8266SettingWebPageInputFieldVisualElement ());
+_webSettingPageWidgetParametrs.style = "";
+_webSettingPageWidgetParametrs.isAutoSave = 0;
+_webSettingPageWidgetParametrs.label = "LED_MOTOR";
+_webSettingPageWidgetParametrs.hasLabel = 1; 
+_webSettingPageWidgetParametrs.hasCommonDiv = 1; 
+_webSettingPageWidgetParametrs.labelStyle = "stLab"; 
+_webSettingPageWidgetParametrs.valueStyle = "stIF"; 
+_webSettingPageWidgetParametrs.labelPosition = 0; 
+_webSettingPageWidgetParametrs.id = "P31"; 
+_webSettingPageWidgetParametrs.maximumStringLength = 20;
+_webSettingPageWidgetParametrs.isIp = 0;
+_webSettingPageWidgetParametrs.isClient = 0;
+ESPControllerWifi_tspWebServer.sendContent( _eSP8266SettingWebPageInputFieldVisualElement ());
+_webSettingPageWidgetParametrs.style = "";
+_webSettingPageWidgetParametrs.isAutoSave = 0;
+_webSettingPageWidgetParametrs.label = "Время для сброса монет";
+_webSettingPageWidgetParametrs.hasLabel = 1; 
+_webSettingPageWidgetParametrs.hasCommonDiv = 1; 
+_webSettingPageWidgetParametrs.labelStyle = "stLab"; 
+_webSettingPageWidgetParametrs.valueStyle = "stIF"; 
+_webSettingPageWidgetParametrs.labelPosition = 0; 
+_webSettingPageWidgetParametrs.id = "P1"; 
+_webSettingPageWidgetParametrs.maximumStringLength = 20;
+_webSettingPageWidgetParametrs.isIp = 0;
+_webSettingPageWidgetParametrs.isClient = 0;
+ESPControllerWifi_tspWebServer.sendContent( _eSP8266SettingWebPageInputFieldVisualElement ());
+_webSettingPageWidgetParametrs.isAutoSave = 0;
+_webSettingPageWidgetParametrs.label = "factory";
+_webSettingPageWidgetParametrs.valueStyle = "stChb"; 
+_webSettingPageWidgetParametrs.id = "P73"; 
+ESPControllerWifi_tspWebServer.sendContent( _eSP8266SettingWebPageCheckBoxVisualElement());
+ESPControllerWifi_tspWebServer.sendContent("<div>");
+ESPControllerWifi_tspWebServer.sendContent(String(_ESP8266WebInterfacePageButton_save));
+ESPControllerWifi_tspWebServer.sendContent(_ESP8266WebInterfacePageButton_reset);
+ESPControllerWifi_tspWebServer.sendContent("</div>");
+ESPControllerWifi_tspWebServer.sendContent("</div>");
+ESPControllerWifi_tspWebServer.sendContent("<div class=\"footer\">");
+ESPControllerWifi_tspWebServer.sendContent(String(webSettingPageFooterString));
+ESPControllerWifi_tspWebServer.sendContent("</div>");
+ESPControllerWifi_tspWebServer.sendContent("<script>");
+ESPControllerWifi_tspWebServer.sendContent(getXmlHttpFunction);
+ESPControllerWifi_tspWebServer.sendContent(webSettingPageCheckBoksOnClickScript);
+ESPControllerWifi_tspWebServer.sendContent(webSettingPageComboboxOnChangeScript);
+ESPControllerWifi_tspWebServer.sendContent(resetControllerFromWebScript);
+ESPControllerWifi_tspWebServer.sendContent("let sD={c:12,d:[{i:\"P3\",e:0,t:\"I\"},{i:\"P8\",e:0,t:\"I\"},{i:\"P20\",e:0,t:\"I\"},{i:\"P37\",e:0,t:\"H\"},{i:\"P13\",e:0,t:\"H\"},{i:\"P39\",e:0,t:\"C\"},{i:\"P51\",e:0,t:\"H\"},{i:\"P38\",e:0,t:\"H\"},{i:\"P29\",e:0,t:\"I\"},{i:\"P31\",e:0,t:\"I\"},{i:\"P1\",e:0,t:\"I\"},{i:\"P73\",e:0,t:\"H\"}]};");
+ESPControllerWifi_tspWebServer.sendContent(webServerSettingPageSaveParametrsScript);
+ESPControllerWifi_tspWebServer.sendContent(sendWebServerResponseScriptPart1); 
+ESPControllerWifi_tspWebServer.sendContent("3");
+ESPControllerWifi_tspWebServer.sendContent(sendWebServerResponseScriptPart2); 
+ESPControllerWifi_tspWebServer.sendContent(parseWebServerResponseScript);
+ESPControllerWifi_tspWebServer.sendContent(" window.onload = function() {gND();");
+ESPControllerWifi_tspWebServer.sendContent("};");
+ESPControllerWifi_tspWebServer.sendContent("</script>");
+ESPControllerWifi_tspWebServer.sendContent("</body></html>");
+ESPControllerWifi_tspWebServer.chunkedResponseFinalize();
+}
+void _sendWebServerPage4()
+{
+ESPControllerWifi_tspWebServer.chunkedResponseModeStart(200, "text/html");
+ESPControllerWifi_tspWebServer.sendContent(webSettingPageHeader1);
+ESPControllerWifi_tspWebServer.sendContent("<head>");
+ESPControllerWifi_tspWebServer.sendContent("<style>");
+ESPControllerWifi_tspWebServer.sendContent((String(webSettingPageMainStyle)+" "));
+ESPControllerWifi_tspWebServer.sendContent("\"</style>");
+ESPControllerWifi_tspWebServer.sendContent("</head>");
+
+ESPControllerWifi_tspWebServer.sendContent("<body>");
+ESPControllerWifi_tspWebServer.sendContent("<div class=\"header\">");
+ESPControllerWifi_tspWebServer.sendContent(String(webSettingPageHeaderString));
+ESPControllerWifi_tspWebServer.sendContent("</div>");
+ESPControllerWifi_tspWebServer.sendContent((_eSP8266SettingWebPageCreateMenu(3)));
+ESPControllerWifi_tspWebServer.sendContent("<div class=\"content\">");
+_webSettingPageWidgetParametrs.style = "";
+_webSettingPageWidgetParametrs.isAutoSave = 0;
+_webSettingPageWidgetParametrs.label = "WiFi точка доступа - Имя сети";
+_webSettingPageWidgetParametrs.hasLabel = 1; 
+_webSettingPageWidgetParametrs.hasCommonDiv = 1; 
+_webSettingPageWidgetParametrs.labelStyle = "stLab"; 
+_webSettingPageWidgetParametrs.valueStyle = "stIF"; 
+_webSettingPageWidgetParametrs.labelPosition = 0; 
+_webSettingPageWidgetParametrs.id = "P11"; 
+_webSettingPageWidgetParametrs.maximumStringLength = 20;
+_webSettingPageWidgetParametrs.isIp = 0;
+_webSettingPageWidgetParametrs.isClient = 0;
+ESPControllerWifi_tspWebServer.sendContent( _eSP8266SettingWebPageInputFieldVisualElement ());
+_webSettingPageWidgetParametrs.style = "";
+_webSettingPageWidgetParametrs.isAutoSave = 0;
+_webSettingPageWidgetParametrs.label = "WiFi точка доступа - Пароль";
+_webSettingPageWidgetParametrs.hasLabel = 1; 
+_webSettingPageWidgetParametrs.hasCommonDiv = 1; 
+_webSettingPageWidgetParametrs.labelStyle = "stLab"; 
+_webSettingPageWidgetParametrs.valueStyle = "stIF"; 
+_webSettingPageWidgetParametrs.labelPosition = 0; 
+_webSettingPageWidgetParametrs.id = "P12"; 
+_webSettingPageWidgetParametrs.maximumStringLength = 20;
+_webSettingPageWidgetParametrs.isIp = 0;
+_webSettingPageWidgetParametrs.isClient = 0;
+ESPControllerWifi_tspWebServer.sendContent( _eSP8266SettingWebPageInputFieldVisualElement ());
+_webSettingPageWidgetParametrs.style = "";
+_webSettingPageWidgetParametrs.isAutoSave = 0;
+_webSettingPageWidgetParametrs.label = "WiFi точка доступа - IP адрес";
+_webSettingPageWidgetParametrs.hasLabel = 1; 
+_webSettingPageWidgetParametrs.hasCommonDiv = 1; 
+_webSettingPageWidgetParametrs.labelStyle = "stLab"; 
+_webSettingPageWidgetParametrs.valueStyle = "stIF"; 
+_webSettingPageWidgetParametrs.labelPosition = 0; 
+_webSettingPageWidgetParametrs.id = "P14"; 
+_webSettingPageWidgetParametrs.maximumStringLength = 20;
+_webSettingPageWidgetParametrs.isIp = 0;
+_webSettingPageWidgetParametrs.isClient = 0;
+ESPControllerWifi_tspWebServer.sendContent( _eSP8266SettingWebPageInputFieldVisualElement ());
+ESPControllerWifi_tspWebServer.sendContent("<a href=\"/firmware\" target=\"_blank\">Update ota</a>");
+ESPControllerWifi_tspWebServer.sendContent("<div>");
+ESPControllerWifi_tspWebServer.sendContent(String(_ESP8266WebInterfacePageButton_save));
+ESPControllerWifi_tspWebServer.sendContent(_ESP8266WebInterfacePageButton_reset);
+ESPControllerWifi_tspWebServer.sendContent("</div>");
+ESPControllerWifi_tspWebServer.sendContent("</div>");
+ESPControllerWifi_tspWebServer.sendContent("<div class=\"footer\">");
+ESPControllerWifi_tspWebServer.sendContent(String(webSettingPageFooterString));
+ESPControllerWifi_tspWebServer.sendContent("</div>");
+ESPControllerWifi_tspWebServer.sendContent("<script>");
+ESPControllerWifi_tspWebServer.sendContent(getXmlHttpFunction);
+ESPControllerWifi_tspWebServer.sendContent(resetControllerFromWebScript);
+ESPControllerWifi_tspWebServer.sendContent("let sD={c:3,d:[{i:\"P11\",e:0,t:\"I\"},{i:\"P12\",e:0,t:\"I\"},{i:\"P14\",e:0,t:\"I\"}]};");
+ESPControllerWifi_tspWebServer.sendContent(webServerSettingPageSaveParametrsScript);
+ESPControllerWifi_tspWebServer.sendContent(sendWebServerResponseScriptPart1); 
+ESPControllerWifi_tspWebServer.sendContent("4");
+ESPControllerWifi_tspWebServer.sendContent(sendWebServerResponseScriptPart2); 
+ESPControllerWifi_tspWebServer.sendContent(parseWebServerResponseScript);
+ESPControllerWifi_tspWebServer.sendContent(" window.onload = function() {gND();");
+ESPControllerWifi_tspWebServer.sendContent("};");
+ESPControllerWifi_tspWebServer.sendContent("</script>");
+ESPControllerWifi_tspWebServer.sendContent("</body></html>");
+ESPControllerWifi_tspWebServer.chunkedResponseFinalize();
+}
+void _sendWebServerPage5()
+{
+ESPControllerWifi_tspWebServer.chunkedResponseModeStart(200, "text/html");
+ESPControllerWifi_tspWebServer.sendContent(webSettingPageHeader1);
+ESPControllerWifi_tspWebServer.sendContent("<head>");
+ESPControllerWifi_tspWebServer.sendContent("<style>");
+ESPControllerWifi_tspWebServer.sendContent((String(webSettingPageMainStyle)+" "));
+ESPControllerWifi_tspWebServer.sendContent("\"</style>");
+ESPControllerWifi_tspWebServer.sendContent("</head>");
+
+ESPControllerWifi_tspWebServer.sendContent("<body>");
+ESPControllerWifi_tspWebServer.sendContent("<div class=\"header\">");
+ESPControllerWifi_tspWebServer.sendContent(String(webSettingPageHeaderString));
+ESPControllerWifi_tspWebServer.sendContent("</div>");
+ESPControllerWifi_tspWebServer.sendContent((_eSP8266SettingWebPageCreateMenu(4)));
+ESPControllerWifi_tspWebServer.sendContent("<div class=\"content\">");
+_webSettingPageWidgetParametrs.style = "";
+_webSettingPageWidgetParametrs.isAutoSave = 0;
+_webSettingPageWidgetParametrs.label = "Количество ошибок перед блокировкой";
+_webSettingPageWidgetParametrs.hasLabel = 1; 
+_webSettingPageWidgetParametrs.hasCommonDiv = 1; 
+_webSettingPageWidgetParametrs.labelStyle = "stLab"; 
+_webSettingPageWidgetParametrs.valueStyle = "stIF"; 
+_webSettingPageWidgetParametrs.labelPosition = 0; 
+_webSettingPageWidgetParametrs.id = "P57"; 
+_webSettingPageWidgetParametrs.maximumStringLength = 20;
+_webSettingPageWidgetParametrs.isIp = 0;
+_webSettingPageWidgetParametrs.isClient = 0;
+ESPControllerWifi_tspWebServer.sendContent( _eSP8266SettingWebPageInputFieldVisualElement ());
+_webSettingPageWidgetParametrs.style = "";
+_webSettingPageWidgetParametrs.isAutoSave = 0;
+_webSettingPageWidgetParametrs.label = "ban_1";
+_webSettingPageWidgetParametrs.hasLabel = 1; 
+_webSettingPageWidgetParametrs.hasCommonDiv = 1; 
+_webSettingPageWidgetParametrs.labelStyle = "stLab"; 
+_webSettingPageWidgetParametrs.valueStyle = "stIF"; 
+_webSettingPageWidgetParametrs.labelPosition = 0; 
+_webSettingPageWidgetParametrs.id = "P15"; 
+_webSettingPageWidgetParametrs.maximumStringLength = 20;
+_webSettingPageWidgetParametrs.isIp = 0;
+_webSettingPageWidgetParametrs.isClient = 0;
+ESPControllerWifi_tspWebServer.sendContent( _eSP8266SettingWebPageInputFieldVisualElement ());
+_webSettingPageWidgetParametrs.style = "";
+_webSettingPageWidgetParametrs.isAutoSave = 0;
+_webSettingPageWidgetParametrs.label = "ban_2";
+_webSettingPageWidgetParametrs.hasLabel = 1; 
+_webSettingPageWidgetParametrs.hasCommonDiv = 1; 
+_webSettingPageWidgetParametrs.labelStyle = "stLab"; 
+_webSettingPageWidgetParametrs.valueStyle = "stIF"; 
+_webSettingPageWidgetParametrs.labelPosition = 0; 
+_webSettingPageWidgetParametrs.id = "P27"; 
+_webSettingPageWidgetParametrs.maximumStringLength = 20;
+_webSettingPageWidgetParametrs.isIp = 0;
+_webSettingPageWidgetParametrs.isClient = 0;
+ESPControllerWifi_tspWebServer.sendContent( _eSP8266SettingWebPageInputFieldVisualElement ());
+_webSettingPageWidgetParametrs.style = "";
+_webSettingPageWidgetParametrs.isAutoSave = 0;
+_webSettingPageWidgetParametrs.label = "ban_3";
+_webSettingPageWidgetParametrs.hasLabel = 1; 
+_webSettingPageWidgetParametrs.hasCommonDiv = 1; 
+_webSettingPageWidgetParametrs.labelStyle = "stLab"; 
+_webSettingPageWidgetParametrs.valueStyle = "stIF"; 
+_webSettingPageWidgetParametrs.labelPosition = 0; 
+_webSettingPageWidgetParametrs.id = "P28"; 
+_webSettingPageWidgetParametrs.maximumStringLength = 20;
+_webSettingPageWidgetParametrs.isIp = 0;
+_webSettingPageWidgetParametrs.isClient = 0;
+ESPControllerWifi_tspWebServer.sendContent( _eSP8266SettingWebPageInputFieldVisualElement ());
+_webSettingPageWidgetParametrs.style = "";
+_webSettingPageWidgetParametrs.isAutoSave = 0;
+_webSettingPageWidgetParametrs.label = "ban_4";
+_webSettingPageWidgetParametrs.hasLabel = 1; 
+_webSettingPageWidgetParametrs.hasCommonDiv = 1; 
+_webSettingPageWidgetParametrs.labelStyle = "stLab"; 
+_webSettingPageWidgetParametrs.valueStyle = "stIF"; 
+_webSettingPageWidgetParametrs.labelPosition = 0; 
+_webSettingPageWidgetParametrs.id = "P30"; 
+_webSettingPageWidgetParametrs.maximumStringLength = 20;
+_webSettingPageWidgetParametrs.isIp = 0;
+_webSettingPageWidgetParametrs.isClient = 0;
+ESPControllerWifi_tspWebServer.sendContent( _eSP8266SettingWebPageInputFieldVisualElement ());
+_webSettingPageWidgetParametrs.style = "";
+_webSettingPageWidgetParametrs.isAutoSave = 0;
+_webSettingPageWidgetParametrs.label = "ban_5";
+_webSettingPageWidgetParametrs.hasLabel = 1; 
+_webSettingPageWidgetParametrs.hasCommonDiv = 1; 
+_webSettingPageWidgetParametrs.labelStyle = "stLab"; 
+_webSettingPageWidgetParametrs.valueStyle = "stIF"; 
+_webSettingPageWidgetParametrs.labelPosition = 0; 
+_webSettingPageWidgetParametrs.id = "P33"; 
+_webSettingPageWidgetParametrs.maximumStringLength = 20;
+_webSettingPageWidgetParametrs.isIp = 0;
+_webSettingPageWidgetParametrs.isClient = 0;
+ESPControllerWifi_tspWebServer.sendContent( _eSP8266SettingWebPageInputFieldVisualElement ());
+_webSettingPageWidgetParametrs.style = "";
+_webSettingPageWidgetParametrs.isAutoSave = 0;
+_webSettingPageWidgetParametrs.label = "ban_6";
+_webSettingPageWidgetParametrs.hasLabel = 1; 
+_webSettingPageWidgetParametrs.hasCommonDiv = 1; 
+_webSettingPageWidgetParametrs.labelStyle = "stLab"; 
+_webSettingPageWidgetParametrs.valueStyle = "stIF"; 
+_webSettingPageWidgetParametrs.labelPosition = 0; 
+_webSettingPageWidgetParametrs.id = "P34"; 
+_webSettingPageWidgetParametrs.maximumStringLength = 20;
+_webSettingPageWidgetParametrs.isIp = 0;
+_webSettingPageWidgetParametrs.isClient = 0;
+ESPControllerWifi_tspWebServer.sendContent( _eSP8266SettingWebPageInputFieldVisualElement ());
+_webSettingPageWidgetParametrs.style = "";
+_webSettingPageWidgetParametrs.isAutoSave = 0;
+_webSettingPageWidgetParametrs.label = "ban_7";
+_webSettingPageWidgetParametrs.hasLabel = 1; 
+_webSettingPageWidgetParametrs.hasCommonDiv = 1; 
+_webSettingPageWidgetParametrs.labelStyle = "stLab"; 
+_webSettingPageWidgetParametrs.valueStyle = "stIF"; 
+_webSettingPageWidgetParametrs.labelPosition = 0; 
+_webSettingPageWidgetParametrs.id = "P35"; 
+_webSettingPageWidgetParametrs.maximumStringLength = 20;
+_webSettingPageWidgetParametrs.isIp = 0;
+_webSettingPageWidgetParametrs.isClient = 0;
+ESPControllerWifi_tspWebServer.sendContent( _eSP8266SettingWebPageInputFieldVisualElement ());
+_webSettingPageWidgetParametrs.style = "";
+_webSettingPageWidgetParametrs.isAutoSave = 0;
+_webSettingPageWidgetParametrs.label = "ban_8";
+_webSettingPageWidgetParametrs.hasLabel = 1; 
+_webSettingPageWidgetParametrs.hasCommonDiv = 1; 
+_webSettingPageWidgetParametrs.labelStyle = "stLab"; 
+_webSettingPageWidgetParametrs.valueStyle = "stIF"; 
+_webSettingPageWidgetParametrs.labelPosition = 0; 
+_webSettingPageWidgetParametrs.id = "P36"; 
+_webSettingPageWidgetParametrs.maximumStringLength = 20;
+_webSettingPageWidgetParametrs.isIp = 0;
+_webSettingPageWidgetParametrs.isClient = 0;
+ESPControllerWifi_tspWebServer.sendContent( _eSP8266SettingWebPageInputFieldVisualElement ());
+_webSettingPageWidgetParametrs.style = "";
+_webSettingPageWidgetParametrs.isAutoSave = 0;
+_webSettingPageWidgetParametrs.label = "ban_9";
+_webSettingPageWidgetParametrs.hasLabel = 1; 
+_webSettingPageWidgetParametrs.hasCommonDiv = 1; 
+_webSettingPageWidgetParametrs.labelStyle = "stLab"; 
+_webSettingPageWidgetParametrs.valueStyle = "stIF"; 
+_webSettingPageWidgetParametrs.labelPosition = 0; 
+_webSettingPageWidgetParametrs.id = "P52"; 
+_webSettingPageWidgetParametrs.maximumStringLength = 20;
+_webSettingPageWidgetParametrs.isIp = 0;
+_webSettingPageWidgetParametrs.isClient = 0;
+ESPControllerWifi_tspWebServer.sendContent( _eSP8266SettingWebPageInputFieldVisualElement ());
+_webSettingPageWidgetParametrs.style = "";
+_webSettingPageWidgetParametrs.isAutoSave = 0;
+_webSettingPageWidgetParametrs.label = "ban_10";
+_webSettingPageWidgetParametrs.hasLabel = 1; 
+_webSettingPageWidgetParametrs.hasCommonDiv = 1; 
+_webSettingPageWidgetParametrs.labelStyle = "stLab"; 
+_webSettingPageWidgetParametrs.valueStyle = "stIF"; 
+_webSettingPageWidgetParametrs.labelPosition = 0; 
+_webSettingPageWidgetParametrs.id = "P54"; 
+_webSettingPageWidgetParametrs.maximumStringLength = 20;
+_webSettingPageWidgetParametrs.isIp = 0;
+_webSettingPageWidgetParametrs.isClient = 0;
+ESPControllerWifi_tspWebServer.sendContent( _eSP8266SettingWebPageInputFieldVisualElement ());
+_webSettingPageWidgetParametrs.style = "";
+_webSettingPageWidgetParametrs.isAutoSave = 0;
+_webSettingPageWidgetParametrs.label = "ban_11";
+_webSettingPageWidgetParametrs.hasLabel = 1; 
+_webSettingPageWidgetParametrs.hasCommonDiv = 1; 
+_webSettingPageWidgetParametrs.labelStyle = "stLab"; 
+_webSettingPageWidgetParametrs.valueStyle = "stIF"; 
+_webSettingPageWidgetParametrs.labelPosition = 0; 
+_webSettingPageWidgetParametrs.id = "P55"; 
+_webSettingPageWidgetParametrs.maximumStringLength = 20;
+_webSettingPageWidgetParametrs.isIp = 0;
+_webSettingPageWidgetParametrs.isClient = 0;
+ESPControllerWifi_tspWebServer.sendContent( _eSP8266SettingWebPageInputFieldVisualElement ());
+_webSettingPageWidgetParametrs.style = "";
+_webSettingPageWidgetParametrs.isAutoSave = 0;
+_webSettingPageWidgetParametrs.label = "ban_12";
+_webSettingPageWidgetParametrs.hasLabel = 1; 
+_webSettingPageWidgetParametrs.hasCommonDiv = 1; 
+_webSettingPageWidgetParametrs.labelStyle = "stLab"; 
+_webSettingPageWidgetParametrs.valueStyle = "stIF"; 
+_webSettingPageWidgetParametrs.labelPosition = 0; 
+_webSettingPageWidgetParametrs.id = "P56"; 
+_webSettingPageWidgetParametrs.maximumStringLength = 20;
+_webSettingPageWidgetParametrs.isIp = 0;
+_webSettingPageWidgetParametrs.isClient = 0;
+ESPControllerWifi_tspWebServer.sendContent( _eSP8266SettingWebPageInputFieldVisualElement ());
+ESPControllerWifi_tspWebServer.sendContent("<div>");
+ESPControllerWifi_tspWebServer.sendContent(String(_ESP8266WebInterfacePageButton_save));
+ESPControllerWifi_tspWebServer.sendContent(_ESP8266WebInterfacePageButton_reset);
+ESPControllerWifi_tspWebServer.sendContent("</div>");
+ESPControllerWifi_tspWebServer.sendContent("</div>");
+ESPControllerWifi_tspWebServer.sendContent("<div class=\"footer\">");
+ESPControllerWifi_tspWebServer.sendContent("ESP8266");
+ESPControllerWifi_tspWebServer.sendContent("</div>");
+ESPControllerWifi_tspWebServer.sendContent("<script>");
+ESPControllerWifi_tspWebServer.sendContent(getXmlHttpFunction);
+ESPControllerWifi_tspWebServer.sendContent(resetControllerFromWebScript);
+ESPControllerWifi_tspWebServer.sendContent("let sD={c:13,d:[{i:\"P57\",e:0,t:\"I\"},{i:\"P15\",e:0,t:\"I\"},{i:\"P27\",e:0,t:\"I\"},{i:\"P28\",e:0,t:\"I\"},{i:\"P30\",e:0,t:\"I\"},{i:\"P33\",e:0,t:\"I\"},{i:\"P34\",e:0,t:\"I\"},{i:\"P35\",e:0,t:\"I\"},{i:\"P36\",e:0,t:\"I\"},{i:\"P52\",e:0,t:\"I\"},{i:\"P54\",e:0,t:\"I\"},{i:\"P55\",e:0,t:\"I\"},{i:\"P56\",e:0,t:\"I\"}]};");
+ESPControllerWifi_tspWebServer.sendContent(webServerSettingPageSaveParametrsScript);
+ESPControllerWifi_tspWebServer.sendContent(sendWebServerResponseScriptPart1); 
+ESPControllerWifi_tspWebServer.sendContent("5");
+ESPControllerWifi_tspWebServer.sendContent(sendWebServerResponseScriptPart2); 
+ESPControllerWifi_tspWebServer.sendContent(parseWebServerResponseScript);
+ESPControllerWifi_tspWebServer.sendContent(" window.onload = function() {gND();");
+ESPControllerWifi_tspWebServer.sendContent("};");
+ESPControllerWifi_tspWebServer.sendContent("</script>");
+ESPControllerWifi_tspWebServer.sendContent("</body></html>");
+ESPControllerWifi_tspWebServer.chunkedResponseFinalize();
+}
+void _newDataReqestForWebPage()
+{
+ int  page = (String(ESPControllerWifi_tspWebServer.arg("page"))).toInt();
+String result ="{";
+switch (page) {
+case 1:
+result.concat("\"r\":\"");
+result.concat("1000");
+result.concat("\",\"c\":\"28\",\"d\":[");
+result.concat("{\"i\":\"P4\", \"v\":");
+result.concat("\"");
+result.concat(String((ESP.getFlashChipSize()), DEC));
+result.concat("\"");result.concat(", \"t\":\"T\"}");
+result.concat(","); 
+result.concat("{\"i\":\"P87\", \"v\":");
+result.concat("\"");
+result.concat(_gtv11);
+result.concat("\"");result.concat(", \"t\":\"T\"}");
+result.concat(","); 
+result.concat("{\"i\":\"P32\", \"v\":");
+result.concat("\"");
+result.concat(_gtv2);
+result.concat("\"");result.concat(", \"t\":\"I\"}");
+result.concat(","); 
+result.concat("{\"i\":\"P71\", \"v\":");
+result.concat("\"");
+if(_gtv85){result.concat("True");} else {result.concat("False");};
+result.concat("\"");result.concat(", \"t\":\"T\"}");
+result.concat(","); 
+result.concat("{\"i\":\"P2\", \"v\":");
+result.concat("\"");
+result.concat(_gtv40);
+result.concat("\"");result.concat(", \"t\":\"T\"}");
+result.concat(","); 
+result.concat("{\"i\":\"P17\", \"v\":");
+result.concat("\"");
+if(_gtv5){result.concat("True");} else {result.concat("False");};
+result.concat("\"");result.concat(", \"t\":\"T\"}");
+result.concat(","); 
+result.concat("{\"i\":\"P19\", \"v\":");
+result.concat("\"");
+result.concat(_gtv6);
+result.concat("\"");result.concat(", \"t\":\"I\"}");
+result.concat(","); 
+result.concat("{\"i\":\"P25\", \"v\":");
+result.concat("\"");
+result.concat(_gtv14);
+result.concat("\"");result.concat(", \"t\":\"I\"}");
+result.concat(","); 
+result.concat("{\"i\":\"P26\", \"v\":");
+result.concat("\"");
+result.concat(_gtv73);
+result.concat("\"");result.concat(", \"t\":\"I\"}");
+result.concat(","); 
+result.concat("{\"i\":\"P45\", \"v\":");
+result.concat("\"");
+result.concat(_gtv1);
+result.concat("\"");result.concat(", \"t\":\"H\"}");
+result.concat(","); 
+result.concat("{\"i\":\"P46\", \"v\":");
+result.concat("\"");
+result.concat(_gtv69);
+result.concat("\"");result.concat(", \"t\":\"H\"}");
+result.concat(","); 
+result.concat("{\"i\":\"P47\", \"v\":");
+result.concat("\"");
+if(_gtv39){result.concat("True");} else {result.concat("False");};
+result.concat("\"");result.concat(", \"t\":\"T\"}");
+result.concat(","); 
+result.concat("{\"i\":\"P48\", \"v\":");
+result.concat("\"");
+result.concat(_gtv24);
+result.concat("\"");result.concat(", \"t\":\"H\"}");
+result.concat(","); 
+result.concat("{\"i\":\"P49\", \"v\":");
+result.concat("\"");
+result.concat(_gtv17);
+result.concat("\"");result.concat(", \"t\":\"T\"}");
+result.concat(","); 
+result.concat("{\"i\":\"P50\", \"v\":");
+result.concat("\"");
+result.concat(_gtv16);
+result.concat("\"");result.concat(", \"t\":\"I\"}");
+result.concat(","); 
+result.concat("{\"i\":\"P61\", \"v\":");
+result.concat("\"");
+result.concat(_gtv18);
+result.concat("\"");result.concat(", \"t\":\"I\"}");
+result.concat(","); 
+result.concat("{\"i\":\"P64\", \"v\":");
+result.concat("\"");
+result.concat(_gtv12);
+result.concat("\"");result.concat(", \"t\":\"T\"}");
+result.concat(","); 
+result.concat("{\"i\":\"P65\", \"v\":");
+result.concat("\"");
+result.concat(_gtv36);
+result.concat("\"");result.concat(", \"t\":\"T\"}");
+result.concat(","); 
+result.concat("{\"i\":\"P63\", \"v\":");
+result.concat("\"");
+if(_gtv27){result.concat("#00FF00");} else {result.concat("#FF0000");};
+result.concat("\"");result.concat(", \"t\":\"L\"}");
+result.concat(","); 
+result.concat("{\"i\":\"P66\", \"v\":");
+result.concat("\"");
+result.concat(_gtv20);
+result.concat("\"");result.concat(", \"t\":\"I\"}");
+result.concat(","); 
+result.concat("{\"i\":\"P67\", \"v\":");
+result.concat("\"");
+result.concat(_gtv23);
+result.concat("\"");result.concat(", \"t\":\"T\"}");
+result.concat(","); 
+result.concat("{\"i\":\"P68\", \"v\":");
+result.concat("\"");
+result.concat(_gtv74);
+result.concat("\"");result.concat(", \"t\":\"H\"}");
+result.concat(","); 
+result.concat("{\"i\":\"P69\", \"v\":");
+result.concat("\"");
+if(_gtv25){result.concat("True");} else {result.concat("False");};
+result.concat("\"");result.concat(", \"t\":\"T\"}");
+result.concat(","); 
+result.concat("{\"i\":\"P70\", \"v\":");
+result.concat("\"");
+result.concat(_gtv3);
+result.concat("\"");result.concat(", \"t\":\"T\"}");
+result.concat(","); 
+result.concat("{\"i\":\"P72\", \"v\":");
+result.concat("\"");
+result.concat(_gtv26);
+result.concat("\"");result.concat(", \"t\":\"T\"}");
+result.concat(","); 
+result.concat("{\"i\":\"P5\", \"v\":");
+result.concat("\"");
+if( (digitalRead (14))){result.concat("#0000FF");} else {result.concat("#000000");};
+result.concat("\"");result.concat(", \"t\":\"L\"}");
+result.concat(","); 
+result.concat("{\"i\":\"P58\", \"v\":");
+result.concat("\"");
+result.concat(ESP8266_AnalogInputValue);
+result.concat("\"");result.concat(", \"t\":\"T\"}");
+result.concat(","); 
+result.concat("{\"i\":\"P59\", \"v\":");
+result.concat("\"");
+if(_gtv29){result.concat("True");} else {result.concat("False");};
+result.concat("\"");result.concat(", \"t\":\"T\"}");
+result.concat("]");
+ break;
+case 2:
+result.concat("\"r\":\"");
+result.concat("1000");
+result.concat("\",\"c\":\"12\",\"d\":[");
+result.concat("{\"i\":\"P18\", \"v\":");
+result.concat("\"");
+result.concat(String(ESP8266_freeParam_2908715, DEC));
+result.concat("\"");result.concat(", \"t\":\"I\"}");
+result.concat(","); 
+result.concat("{\"i\":\"P21\", \"v\":");
+result.concat("\"");
+result.concat(String(ESP8266_freeParam_167036645, DEC));
+result.concat("\"");result.concat(", \"t\":\"I\"}");
+result.concat(","); 
+result.concat("{\"i\":\"P22\", \"v\":");
+result.concat("\"");
+result.concat(String(ESP8266_freeParam_198065769, DEC));
+result.concat("\"");result.concat(", \"t\":\"I\"}");
+result.concat(","); 
+result.concat("{\"i\":\"P23\", \"v\":");
+result.concat("\"");
+result.concat(String(ESP8266_freeParam_109304058, DEC));
+result.concat("\"");result.concat(", \"t\":\"I\"}");
+result.concat(","); 
+result.concat("{\"i\":\"P6\", \"v\":");
+result.concat("\"");
+result.concat(String(ESP8266_freeParam_84774238, DEC));
+result.concat("\"");result.concat(", \"t\":\"I\"}");
+result.concat(","); 
+result.concat("{\"i\":\"P7\", \"v\":");
+result.concat("\"");
+result.concat(String(ESP8266_freeParam_41571615, DEC));
+result.concat("\"");result.concat(", \"t\":\"I\"}");
+result.concat(","); 
+result.concat("{\"i\":\"P9\", \"v\":");
+result.concat("\"");
+result.concat(String(ESP8266_freeParam_197729979, DEC));
+result.concat("\"");result.concat(", \"t\":\"I\"}");
+result.concat(","); 
+result.concat("{\"i\":\"P41\", \"v\":");
+result.concat("\"");
+result.concat(String(ESP8266_freeParam_90309138, DEC));
+result.concat("\"");result.concat(", \"t\":\"I\"}");
+result.concat(","); 
+result.concat("{\"i\":\"P42\", \"v\":");
+result.concat("\"");
+result.concat(String(ESP8266_freeParam_133909782, DEC));
+result.concat("\"");result.concat(", \"t\":\"I\"}");
+result.concat(","); 
+result.concat("{\"i\":\"P43\", \"v\":");
+result.concat("\"");
+result.concat(String(ESP8266_freeParam_27795835, DEC));
+result.concat("\"");result.concat(", \"t\":\"I\"}");
+result.concat(","); 
+result.concat("{\"i\":\"P44\", \"v\":");
+result.concat("\"");
+result.concat(String(ESP8266_freeParam_112257373, DEC));
+result.concat("\"");result.concat(", \"t\":\"I\"}");
+result.concat(","); 
+result.concat("{\"i\":\"P53\", \"v\":");
+result.concat("\"");
+result.concat(String(ESP8266_freeParam_254951221, DEC));
+result.concat("\"");result.concat(", \"t\":\"I\"}");
+result.concat("]");
+ break;
+case 3:
+result.concat("\"r\":\"");
+result.concat("1000");
+result.concat("\",\"c\":\"12\",\"d\":[");
+result.concat("{\"i\":\"P3\", \"v\":");
+result.concat("\"");
+result.concat(String(ESP8266_freeParam_71116216, DEC));
+result.concat("\"");result.concat(", \"t\":\"I\"}");
+result.concat(","); 
+result.concat("{\"i\":\"P8\", \"v\":");
+result.concat("\"");
+result.concat(String(ESP8266_freeParam_190210571, DEC));
+result.concat("\"");result.concat(", \"t\":\"I\"}");
+result.concat(","); 
+result.concat("{\"i\":\"P20\", \"v\":");
+result.concat("\"");
+result.concat(String(ESP8266_freeParam_70184650, DEC));
+result.concat("\"");result.concat(", \"t\":\"I\"}");
+result.concat(","); 
+result.concat("{\"i\":\"P37\", \"v\":");
+result.concat("\"");
+result.concat(ESP8266_freeParam_190797778);
+result.concat("\"");result.concat(", \"t\":\"H\"}");
+result.concat(","); 
+result.concat("{\"i\":\"P13\", \"v\":");
+result.concat("\"");
+result.concat(_gtv38);
+result.concat("\"");result.concat(", \"t\":\"H\"}");
+result.concat(","); 
+result.concat("{\"i\":\"P39\", \"v\":");
+result.concat("\"");
+result.concat(String(ESP8266_freeParam_19552900, DEC));
+result.concat("\"");result.concat(", \"t\":\"C\"}");
+result.concat(","); 
+result.concat("{\"i\":\"P51\", \"v\":");
+result.concat("\"");
+result.concat(_gtv62);
+result.concat("\"");result.concat(", \"t\":\"H\"}");
+result.concat(","); 
+result.concat("{\"i\":\"P38\", \"v\":");
+result.concat("\"");
+result.concat(ESP8266_freeParam_265280871);
+result.concat("\"");result.concat(", \"t\":\"H\"}");
+result.concat(","); 
+result.concat("{\"i\":\"P29\", \"v\":");
+result.concat("\"");
+result.concat(String(ESP8266_freeParam_198022797, DEC));
+result.concat("\"");result.concat(", \"t\":\"I\"}");
+result.concat(","); 
+result.concat("{\"i\":\"P31\", \"v\":");
+result.concat("\"");
+result.concat(String(ESP8266_freeParam_246427857, DEC));
+result.concat("\"");result.concat(", \"t\":\"I\"}");
+result.concat(","); 
+result.concat("{\"i\":\"P1\", \"v\":");
+result.concat("\"");
+result.concat(_gtv19);
+result.concat("\"");result.concat(", \"t\":\"I\"}");
+result.concat(","); 
+result.concat("{\"i\":\"P73\", \"v\":");
+result.concat("\"");
+result.concat(_gtv28);
+result.concat("\"");result.concat(", \"t\":\"H\"}");
+result.concat("]");
+ break;
+case 4:
+result.concat("\"r\":\"");
+result.concat("1000");
+result.concat("\",\"c\":\"3\",\"d\":[");
+result.concat("{\"i\":\"P11\", \"v\":");
+result.concat("\"");
+result.concat(ESPControllerWifiAP_SSID);
+result.concat("\"");result.concat(", \"t\":\"I\"}");
+result.concat(","); 
+result.concat("{\"i\":\"P12\", \"v\":");
+result.concat("\"");
+result.concat(ESPControllerWifiAP_password);
+result.concat("\"");result.concat(", \"t\":\"I\"}");
+result.concat(","); 
+result.concat("{\"i\":\"P14\", \"v\":");
+result.concat("\"");
+result.concat((ESPControllerWifiAP_ip.toString()));
+result.concat("\"");result.concat(", \"t\":\"I\"}");
+result.concat("]");
+ break;
+case 5:
+result.concat("\"r\":\"");
+result.concat("1000");
+result.concat("\",\"c\":\"13\",\"d\":[");
+result.concat("{\"i\":\"P57\", \"v\":");
+result.concat("\"");
+result.concat(String(ESP8266_freeParam_152708564, DEC));
+result.concat("\"");result.concat(", \"t\":\"I\"}");
+result.concat(","); 
+result.concat("{\"i\":\"P15\", \"v\":");
+result.concat("\"");
+result.concat(String(ESP8266_freeParam_216885967, DEC));
+result.concat("\"");result.concat(", \"t\":\"I\"}");
+result.concat(","); 
+result.concat("{\"i\":\"P27\", \"v\":");
+result.concat("\"");
+result.concat(String(ESP8266_freeParam_60439466, DEC));
+result.concat("\"");result.concat(", \"t\":\"I\"}");
+result.concat(","); 
+result.concat("{\"i\":\"P28\", \"v\":");
+result.concat("\"");
+result.concat(String(ESP8266_freeParam_111047777, DEC));
+result.concat("\"");result.concat(", \"t\":\"I\"}");
+result.concat(","); 
+result.concat("{\"i\":\"P30\", \"v\":");
+result.concat("\"");
+result.concat(String(ESP8266_freeParam_260883057, DEC));
+result.concat("\"");result.concat(", \"t\":\"I\"}");
+result.concat(","); 
+result.concat("{\"i\":\"P33\", \"v\":");
+result.concat("\"");
+result.concat(String(ESP8266_freeParam_80199000, DEC));
+result.concat("\"");result.concat(", \"t\":\"I\"}");
+result.concat(","); 
+result.concat("{\"i\":\"P34\", \"v\":");
+result.concat("\"");
+result.concat(String(ESP8266_freeParam_121065562, DEC));
+result.concat("\"");result.concat(", \"t\":\"I\"}");
+result.concat(","); 
+result.concat("{\"i\":\"P35\", \"v\":");
+result.concat("\"");
+result.concat(String(ESP8266_freeParam_98951291, DEC));
+result.concat("\"");result.concat(", \"t\":\"I\"}");
+result.concat(","); 
+result.concat("{\"i\":\"P36\", \"v\":");
+result.concat("\"");
+result.concat(String(ESP8266_freeParam_182290599, DEC));
+result.concat("\"");result.concat(", \"t\":\"I\"}");
+result.concat(","); 
+result.concat("{\"i\":\"P52\", \"v\":");
+result.concat("\"");
+result.concat(String(ESP8266_freeParam_174428203, DEC));
+result.concat("\"");result.concat(", \"t\":\"I\"}");
+result.concat(","); 
+result.concat("{\"i\":\"P54\", \"v\":");
+result.concat("\"");
+result.concat(String(ESP8266_freeParam_79724050, DEC));
+result.concat("\"");result.concat(", \"t\":\"I\"}");
+result.concat(","); 
+result.concat("{\"i\":\"P55\", \"v\":");
+result.concat("\"");
+result.concat(String(ESP8266_freeParam_191929235, DEC));
+result.concat("\"");result.concat(", \"t\":\"I\"}");
+result.concat(","); 
+result.concat("{\"i\":\"P56\", \"v\":");
+result.concat("\"");
+result.concat(String(ESP8266_freeParam_46230415, DEC));
+result.concat("\"");result.concat(", \"t\":\"I\"}");
+result.concat("]");
+ break;
+}
+result.concat("}");
+ESPControllerWifi_tspWebServer.send(200, "text/json",result );
+}
+bool _checkFreeLogicBlockOutput(bool inArray[], int inArraySize, bool stArray[], int stArraySize)
+{ int inIndex = 0;
+  bool result = 1;
+  for (int i = 0; i < stArraySize; i = i + 1)
+  {
+   if (!(inArray[inIndex] == stArray[i])) { result = 0;}
+   inIndex ++;
+   if (inIndex == inArraySize)
+     {
+     if (result) { return 1;} else {result = 1;}
+     inIndex = 0;
+     }
+  }
+  return 0;
+}
+void parseData(char* data)
+{
+  // Разбиваем строку по ';'
+  char* token;
+  char* rest = data;
+  while ((token = strtok_r(rest, ";", &rest))) {
+      // Разбиваем токен по '='
+    char* key = strtok(token, "=");
+    char* value = strtok(NULL, "=");
+    if (key && value) {
+      // Сопоставляем ключи и обновляем переменные
+      if (strcmp(key, "p1") == 0) p1 = atoi(value);
+      else if (strcmp(key, "p2") == 0) p2 = atoi(value);
+      else if (strcmp(key, "p3") == 0) p3 = atoi(value);
+      else if (strcmp(key, "p4") == 0) p4 = atoi(value);
+      else if (strcmp(key, "p5") == 0) p5 = atoi(value);
+      else if (strcmp(key, "p6") == 0) p6 = atoi(value);
+      else if (strcmp(key, "p7") == 0) p7 = atoi(value);
+      else if (strcmp(key, "p8") == 0) p8 = atoi(value);
+      else if (strcmp(key, "p9") == 0) p9 = atoi(value);
+      else if (strcmp(key, "p10") == 0) p10 = atoi(value);
+      else if (strcmp(key, "p11") == 0) p11 = atoi(value);
+      else if (strcmp(key, "p12") == 0) p12 = atoi(value);
+      else if (strcmp(key, "b1") == 0) b1 = atoi(value);
+      else if (strcmp(key, "b2") == 0) b2 = atoi(value);
+      else if (strcmp(key, "b3") == 0) b3 = atoi(value);
+      else if (strcmp(key, "b4") == 0) b4 = atoi(value);
+      else if (strcmp(key, "b5") == 0) b5 = atoi(value);
+      else if (strcmp(key, "b6") == 0) b6 = atoi(value);
+      else if (strcmp(key, "b7") == 0) b7 = atoi(value);
+      else if (strcmp(key, "b8") == 0) b8 = atoi(value);
+      else if (strcmp(key, "b9") == 0) b9 = atoi(value);
+      else if (strcmp(key, "b10") == 0) b10 = atoi(value);
+      else if (strcmp(key, "b11") == 0) b11 = atoi(value);
+      else if (strcmp(key, "b12") == 0) b12 = atoi(value);
+      else if (strcmp(key, "bm") == 0) bm = atoi(value);
+      else if (strcmp(key, "ss") == 0) ss = atoi(value);
+      else if (strcmp(key, "gm") == 0) gm = atoi(value);
+      else if (strcmp(key, "reboot") == 0) reboot = atoi(value); //перезагрузка контроллера
+      else if (strcmp(key, "wifion") == 0) wifion = atoi(value);
+      // Добавьте остальные переменные по аналогии
+    }
+  }
+
+}
+void MakeCRC16Table()
+{
+for (uint16_t s = 0; s < 256; s++) {
+    uint16_t r = static_cast<uint16_t>(s) << 8;
+    for (int s1 = 0; s1 < 8; s1++) {
+      if (r & 0x8000)
+        r = (r << 1) ^ 0x8005;
+      else
+        r <<= 1;
+    }
+    crcTable[s] = r;
+  }
+}
+uint16_t GetCRC16(const uint8_t *buf, uint16_t len)
+{
+ uint16_t crc = 0xFFFF;
+  while (len--) {
+    crc = crcTable[(crc >> 8) ^ *buf++] ^ (crc << 8);
+  }
+  return crc ^ 0xFFFF;
+}
+ICACHE_RAM_ATTR void ISR_Pin14()
+{
+if (digitalRead(INPUT_PIN) == HIGH) { 
+    pin14_waiting  = true;
+    pin14_startUs  = micros();
+  }
+if (digitalRead(INPUT_PIN) == LOW) { 
+   pin14_waiting  = false;
+  }
+
+}
+void AppendAsciiString(String &dest, const String &src)
+{
+  // Определяем длину (количество символов) в строке src
+  byte length = src.length();
+
+  // Добавляем длину (HEX). Если меньше 16 (0x10), добавляем ведущий '0'
+  if (length < 0x10) {
+    dest += "0";
+  }
+  dest += String(length, HEX);
+  dest += " "; // Пробел-разделитель (если нужно)
+
+  // Проходим по символам исходной строки
+  for (int i = 0; i < length; i++) {
+    byte asciiValue = (byte)src[i];
+    // Если байт < 0x10, добавляем «0»
+    if (asciiValue < 0x10) {
+      dest += "0";
+    }
+    dest += String(asciiValue, HEX);
+
+    // Между байтами ставим пробел, кроме последнего символа
+    if (i < length - 1) {
+      dest += " ";
+    }
+  }
+}
+void scanI2C_18571967_1()
+{
+  byte error, address;
+ 
+  
+  for (address = 1; address < 127; address++) {
+    Wire.beginTransmission(address);
+    error = Wire.endTransmission();
+
+    if (error == 0) {
+      detectedDevices_18571967_1 += "0x";
+      if (address < 16) detectedDevices_18571967_1 += "0";
+      detectedDevices_18571967_1 += String(address, HEX);
+      detectedDevices_18571967_1 += " ";
+    }
+  }
+
+  if (detectedDevices_18571967_1 == "") detectedDevices_18571967_1 = "No I2C devices found";
+}
+ byte readByteFromEEPROM(int addres, byte bitAddres, byte chipAddres)
+{
+return EEPROM.read(addres);
+}
+void updateByteToEEPROM(int addres, byte bitAddres, byte chipAddres, byte value)
+{
+isNeededCommitESP8266EEprom = 1;
+return EEPROM.write(addres, value);
+}
+ bool readBooleanFromEEPROM(int addres, byte bitAddres, byte chipAddres)
+{
+byte temp = readByteFromEEPROM( addres,  bitAddres,  chipAddres);
+return  bitRead(temp, bitAddres);
+}
+ void updateBooleanToEEPROM(int addres, byte bitAddres, byte chipAddres, bool value)
+{
+byte temp = readByteFromEEPROM( addres,  bitAddres,  chipAddres);
+bitWrite(temp, bitAddres, value);
+updateByteToEEPROM( addres,  bitAddres,  chipAddres, temp);
+}
+ int readIntegerFromEEPROM(int addres, byte bitAddres, byte chipAddres)
+{
+byte hight = readByteFromEEPROM( addres,  bitAddres,  chipAddres);
+byte low = readByteFromEEPROM( (addres+1),  bitAddres,  chipAddres);
+return  word(hight, low);
+}
+ void updateIntegerToEEPROM(int addres, byte bitAddres, byte chipAddres, int value)
+{
+updateByteToEEPROM( addres,  bitAddres,  chipAddres, highByte(value));
+updateByteToEEPROM( (addres+1),  bitAddres,  chipAddres, lowByte(value));
+}
+ unsigned long readUnsignedLongFromEEPROM(int addres, byte bitAddres, byte chipAddres)
+{
+byte x[4];
+for(byte i = 0; i < 4; i++) { x[i] = readByteFromEEPROM( (addres+i),  bitAddres,  chipAddres);}
+unsigned long *y = (unsigned long *)&x;
+return y[0];
+}
+ void updateUnsignedLongToEEPROM(int addres, byte bitAddres, byte chipAddres, unsigned long value)
+{
+byte *x = (byte *)&value;
+for(byte i = 0; i < 4; i++) {updateByteToEEPROM( (addres+i),  bitAddres,  chipAddres, x[i]);}
+}
+ char readCharFromEEPROM(int addres, byte bitAddres, byte chipAddres)
+{
+return  readByteFromEEPROM( addres,  bitAddres,  chipAddres);
+}
+ void updateCharToEEPROM(int addres, byte bitAddres, byte chipAddres, char value)
+{
+updateByteToEEPROM( addres,  bitAddres,  chipAddres, value);
+}
+ String readStingFromEEPROM(int addres, int dataLength, byte chipAddres)
+{
+String result = "";
+char tempChar;
+for (int i = 0;  i < dataLength; i++) {
+ tempChar =  readCharFromEEPROM((addres + i), 0, chipAddres);
+ if (byte(tempChar) == 0) {
+  return result;
+ }
+ result.concat(tempChar);
+ }
+return result;
+}
+ void updateStringToEEPROM(int addres, int dataLength, byte chipAddres, String value)
+{
+char tempChar;
+for (int i = 0;  i < dataLength; i++) {
+ if (i < value.length()) {
+ tempChar = value.charAt(i);
+ } else {
+ tempChar = char(0);
+ }
+ updateCharToEEPROM((addres + i), 0, chipAddres, tempChar);
+ }
+}
+IPAddress _ipAddressFromUnsignetLong(unsigned long value)
+{
+  IPAddress result;
+  byte *x = (byte *)&value;
+  for (byte i = 0; i < 4; i++) {
+    result[i] =  x[i];
+  }
+  return result;
+}
+
+bool checkIPAdressString(String value)
+{
+IPAddress temp;
+return temp.fromString(value);
+}
+
+IPAddress _ipAddressFromString(String value)
+{
+IPAddress temp;
+ temp.fromString(value);
+return temp;
+}
+
+unsigned long _unsignetLongFromIPAdress(IPAddress value)
+{
+  byte buufer[4] = {0, 0, 0, 0};
+ for (byte i = 0; i < 4; i++) {
+    buufer[i] = value[i];
+  }
+  unsigned long *y = (unsigned long *)&buufer;
+  return y[0];
+}
+
+String IpAddressToString(const IPAddress& ipAddress) 
+{
+  return String(ipAddress[0]) + String(".") +  String(ipAddress[1]) + String(".") +  String(ipAddress[2]) + String(".") +  String(ipAddress[3])  ;
+}
+
+
+String _eSP8266SettingWebPageCreateMenu(int pageIndex)
+{
+String styleString = "";
+String items = "";
+String  returnPart="../";
+String result = "<div ";
+if( pageIndex  == 1){returnPart= returnPart +"../";}if( pageIndex  == 2){returnPart= returnPart +"../";}if( pageIndex  == 3){returnPart= returnPart +"../";}if( pageIndex  == 4){returnPart= returnPart +"../";}
+result.concat("class=\"menu\"");
+result.concat(">");
+for( int i=0; i < 5; i++) {
+styleString = "";
+styleString = "class=\"menuItem\"";
+if(i == pageIndex ){
+if(_webInterfaceMinuItemsVisualMode[pageIndex]) {
+items.concat("<button ");
+items.concat(styleString);items.concat(">");
+items.concat(_ESP8266WebInterfacePagesNamesArray[i]);
+items.concat("</button>");
+} else {
+items.concat("<div ");
+items.concat(styleString);
+items.concat(">");
+items.concat(_ESP8266WebInterfacePagesNamesArray[i]);
+items.concat("</div>");}
+
+} else {
+if(_webInterfaceMinuItemsVisualMode[pageIndex]) {
+items.concat("<button ");
+items.concat(styleString);
+items.concat(" onclick=\"window.location.href = '");
+items.concat(returnPart);
+items.concat(_ESP8266WebInterfacePagesAddressesArray[i]);
+items.concat("';\">");
+items.concat(_ESP8266WebInterfacePagesNamesArray[i]);
+items.concat("</button>");
+} else {
+items.concat("<div ");
+items.concat(styleString);
+items.concat("><a href=\"");
+items.concat(returnPart);
+items.concat(_ESP8266WebInterfacePagesAddressesArray[i]);
+items.concat("\">");
+items.concat(_ESP8266WebInterfacePagesNamesArray[i]);
+items.concat("</a></div>");}
+}
+}
+if(!(items.length() >0)){return "";}
+result.concat(items);
+result.concat("</div>");
+
+return result;
+}
+String _eSP8266SettingWebPageStartMainDivVisualElement ()
+{
+if(!(_webSettingPageWidgetParametrs.hasCommonDiv &&  _webSettingPageWidgetParametrs.hasLabel)){return "";}
+String result ="<div";
+if (_webSettingPageWidgetParametrs.style.length() > 0) {
+result.concat(" class=\"");
+result.concat(_webSettingPageWidgetParametrs.style);
+result.concat("\"");
+}
+result.concat(">");
+return result;
+}
+String _eSP8266SettingWebPageStopMainDivVisualElement ()
+{if(_webSettingPageWidgetParametrs.hasCommonDiv &&  _webSettingPageWidgetParametrs.hasLabel){return "</div>";}
+return "";
+}
+String _eSP8266SettingWebPageWidgetLabelVisualElement (byte position)
+{
+if(!(_webSettingPageWidgetParametrs.hasLabel &&(_webSettingPageWidgetParametrs.labelPosition==position))){return "";}
+String result ="";
+bool isNeededDiv =(((position == 1) &&(_webSettingPageWidgetParametrs.labelStyle.length() > 0))||(position != 1));
+if(isNeededDiv){result.concat("<div ");}
+
+if (_webSettingPageWidgetParametrs.labelStyle.length() > 0) {
+result.concat(" class=\"");
+result.concat(_webSettingPageWidgetParametrs.labelStyle);
+result.concat("\"");
+}
+if(isNeededDiv){result.concat(" > ");}
+result.concat(_webSettingPageWidgetParametrs.label);
+if(isNeededDiv){result.concat("</div>");}return result;
+}
+String _eSP8266SettingWebPageTextVisualElement ()
+{
+String result = _eSP8266SettingWebPageStartMainDivVisualElement ();
+result.concat(_eSP8266SettingWebPageWidgetLabelVisualElement (0));
+result.concat("<div id =\"");
+result.concat(_webSettingPageWidgetParametrs.id);
+result.concat("\" ");
+if (_webSettingPageWidgetParametrs.valueStyle.length() > 0) {
+result.concat(" class=\"");
+result.concat(_webSettingPageWidgetParametrs.valueStyle);
+result.concat("\"");
+}
+result.concat("></div>");
+result.concat(_eSP8266SettingWebPageWidgetLabelVisualElement (2));
+result.concat(_eSP8266SettingWebPageStopMainDivVisualElement ());
+return result;
+}
+String _eSP8266SettingWebPageInputFieldVisualElement ()
+{
+String result =_eSP8266SettingWebPageStartMainDivVisualElement ();
+result.concat(_eSP8266SettingWebPageWidgetLabelVisualElement (0));
+result.concat("<input ");
+if (_webSettingPageWidgetParametrs.valueStyle.length() > 0) {
+result.concat(" class=\"");
+result.concat(_webSettingPageWidgetParametrs.valueStyle);
+result.concat("\"");
+}
+result.concat(" type=\"text\" id=\"");
+result.concat(_webSettingPageWidgetParametrs.id);
+result.concat( "\" value=\"\" oninput=\"blI('");
+result.concat(_webSettingPageWidgetParametrs.id);
+result.concat("')\"");
+if(_webSettingPageWidgetParametrs.isAutoSave){result.concat(" onchange=\"sED(\'");   result.concat(_webSettingPageWidgetParametrs.id);   result.concat("')\"");}
+result.concat(" maxlength=\"");
+result.concat( _webSettingPageWidgetParametrs.maximumStringLength);
+result.concat("\" >");
+result.concat(_eSP8266SettingWebPageWidgetLabelVisualElement (2));
+result.concat(_eSP8266SettingWebPageStopMainDivVisualElement ());
+return result;
+}
+String _eSP8266SettingWebPageComboBoxVisualElement (String keyArray[], String valueArray[], int arraySize)
+{
+String result =_eSP8266SettingWebPageStartMainDivVisualElement ();
+result.concat(_eSP8266SettingWebPageWidgetLabelVisualElement (0));
+result.concat("<select ");
+if (_webSettingPageWidgetParametrs.valueStyle.length() > 0) {
+result.concat(" class=\"");
+result.concat(_webSettingPageWidgetParametrs.valueStyle);
+result.concat("\"");
+}
+result.concat(" onchange=\"cbOnC('");
+ result.concat(_webSettingPageWidgetParametrs.id);
+result.concat("',");
+result.concat(_webSettingPageWidgetParametrs.isAutoSave);
+result.concat(")\"   id=\"");
+ result.concat(_webSettingPageWidgetParametrs.id);
+ result.concat("\">");
+for( int i = 0; i < arraySize; i++) { 
+ result.concat("<option value=\"");
+ result.concat(keyArray[i]);
+ result.concat("\"");
+result.concat(">");
+result.concat(valueArray[i]);
+result.concat("</option>");
+}
+result.concat("</select>");
+result.concat(_eSP8266SettingWebPageWidgetLabelVisualElement (2));
+result.concat(_eSP8266SettingWebPageStopMainDivVisualElement ());
+return result;
+}
+String _eSP8266SettingWebPageCheckBoxVisualElement ()
+{
+String result = "<div";
+if (_webSettingPageWidgetParametrs.valueStyle.length() > 0) {
+result.concat(" class=\"");
+result.concat(_webSettingPageWidgetParametrs.valueStyle);
+result.concat("\"");
+}
+result.concat("> <label><input type=\"checkbox\" onchange = \"chOnC('");
+result.concat(_webSettingPageWidgetParametrs.id);
+result.concat("',");
+result.concat(_webSettingPageWidgetParametrs.isAutoSave);
+result.concat(")\" id=\"");
+result.concat(_webSettingPageWidgetParametrs.id);
+result.concat("A\"");
+result.concat("/>");
+result.concat(_webSettingPageWidgetParametrs.label);
+result.concat("</label><input type=\"hidden\"  id=\"");
+result.concat(_webSettingPageWidgetParametrs.id);
+result.concat("\" value=\"");
+ result.concat( "\">");
+    result.concat("</div>");
+return result;
+}
+String _eSP8266SettingWebPageColorIndicatorVisualElement ()
+{
+String result = _eSP8266SettingWebPageStartMainDivVisualElement ();
+result.concat(_eSP8266SettingWebPageWidgetLabelVisualElement (0));
+result.concat("<div id =\"");
+result.concat(_webSettingPageWidgetParametrs.id);
+result.concat("\" ");
+if (_webSettingPageWidgetParametrs.valueStyle.length() > 0) {
+result.concat(" class=\"");
+result.concat(_webSettingPageWidgetParametrs.valueStyle);
+result.concat("\"");
+}
+result.concat("> ");
+result.concat(_eSP8266SettingWebPageWidgetLabelVisualElement (1));
+result.concat(" </div>");
+result.concat(_eSP8266SettingWebPageWidgetLabelVisualElement (2));
+result.concat(_eSP8266SettingWebPageStopMainDivVisualElement ());
+return result;
+}
+String _eSP8266SettingWebPageButtonVisualElement ()
+{
+String result =_eSP8266SettingWebPageStartMainDivVisualElement ();
+result.concat(_eSP8266SettingWebPageWidgetLabelVisualElement (0));
+result.concat("<button  id =\"");
+result.concat(_webSettingPageWidgetParametrs.id);
+result.concat("\" onclick=\"bOc('");
+result.concat(_webSettingPageWidgetParametrs.id);
+result.concat("')\" ");
+if (_webSettingPageWidgetParametrs.valueStyle.length() > 0) {
+result.concat(" class=\"");
+result.concat(_webSettingPageWidgetParametrs.valueStyle);
+result.concat("\"");
+}
+result.concat(">");
+result.concat(_eSP8266SettingWebPageWidgetLabelVisualElement (1));
+result.concat("</button>");
+result.concat(_eSP8266SettingWebPageWidgetLabelVisualElement (2));
+result.concat(_eSP8266SettingWebPageStopMainDivVisualElement ());
+return result;
+}
+void _newButoonClickEvent()
+{
+String id = ESPControllerWifi_tspWebServer.arg("id");
+String value="";
+if (id.equals("P78")){value = "1"; 
+_gtv85 = (value=="1");
+}
+if (id.equals("P16")){if(_gtv5){value = "0";} else{value = "1";}
+_gtv5 = (value=="1");
+}
+if (id.equals("P62")){if(_gtv4){value = "0";} else{value = "1";}
+_gtv4 = (value=="1");
+}
+if (id.equals("P24")){value = "1"; 
+_gtv50 = (value=="1");
+}
+if (id.equals("P10")){value = "1"; 
+_gtv49 = (value=="1");
+}
+ESPControllerWifi_tspWebServer.send(200, "text/plain", "ok");
+}
+int hexStrToInt(String instring)
+{
+  byte len = instring.length();
+  if  (len == 0) return 0;
+  int result = 0;
+  for (byte i = 0; i < 8; i++)   // только первые 8 цыфар влезуть в uint32
+  {
+    char ch = instring[i];
+    if (ch == 0) break;
+    result <<= 4;
+    if (isdigit(ch))
+      result = result | (ch - '0');
+    else result = result | (ch - 'A' + 10);
+  }
+  return result;
+}
+ void _esp8266WifiModuleApReconnect()
+{
+if ( _checkMacAddres(ESPControllerWifiAP_mac)) {
+ wifi_set_macaddr(1, const_cast<uint8*>(ESPControllerWifiAP_mac));
+}
+ WiFi.softAPConfig(ESPControllerWifiAP_ip, ESPControllerWifiAP_gateway, ESPControllerWifiAP_subnet);
+WiFi.softAP(ESPControllerWifiAP_SSID, ESPControllerWifiAP_password);
+if ( ! (_checkMacAddres(ESPControllerWifiAP_mac))) {
+WiFi.softAPmacAddress(ESPControllerWifiAP_mac);
+ }
+}
+bool _checkMacAddres(byte array[])
+{
+  bool result = 0;
+  for (byte i = 0; i < 6; i++)
+  {
+    if (array[i] == 255) {
+      return 0;
+    }
+    if (array[i] > 0 ) {
+      result = 1;
+    }
+  }
+  return result;
+}
+  void _parseMacAddressString(String value, byte array[])
+{
+  int index;
+  byte buffer[6] = {255, 255, 255, 255, 255, 255};
+  byte raz = 0;
+  String tempString;
+  while ((value.length() > 0) && (raz <= 6)) {
+    index = value.indexOf(":");
+    if (index == -1) {
+      tempString = value;
+      value = "";
+    } else {
+      tempString = value.substring(0, index);
+      value = value.substring(index + 1);
+    }
+    buffer[raz] = byte(hexStrToInt(tempString));
+    raz++;
+  }
+  if ( _checkMacAddres(buffer))
+  {
+    for (byte i = 0; i < 6; i++)
+    {
+      array[i] = buffer[i];
+    }
+  }
+}
+bool _compareMacAddreses(byte array1[], byte array2[])
+{
+  for (byte i = 0; i < 6; i++)
+  {
+    if (array1[i] != array2[i]) {
+      return 0;
+    }
+  }
+  return 1;
+}
+bool _compareMacAddresWithString(byte array[], String value)
+{
+ byte buffer[6] = {255, 255, 255, 255, 255, 255};
+_parseMacAddressString(value,  buffer);
+return _compareMacAddreses(array, buffer);
+}
+bool _checkMacAddresString(String value)
+{
+ byte buffer[6] = {255, 255, 255, 255, 255, 255};
+_parseMacAddressString(value,  buffer);
+return _checkMacAddres( buffer);
+}
+String _macAddresToString(byte array[])
+{
+  String result = "";
+String  temp ="";
+for (byte i = 0; i < 6; i++)
+ {
+temp=String(array[i],HEX);
+if (temp.length()  < 2) {temp = String("0") + temp; }
+ result = result + temp;
+  if (i < 5) {
+   result = result + String(":");
+}
+  }
+   result.toUpperCase();
+  return result;
+}
+
+
+void _func_UB_182885883(struct UB_182885883 *_ubInstans, int ubi_234709184)
+{
+bool ubo_218810585 = _ubInstans->ubo_218810585;
+bool ubo_64046820 = _ubInstans->ubo_64046820;
+bool ubo_74323408 = _ubInstans->ubo_74323408;
+bool ubo_5266079 = _ubInstans->ubo_5266079;
+bool ubo_233133022 = _ubInstans->ubo_233133022;
+bool _dms1Q0 = _ubInstans->_dms1Q0;
+bool _dms1Q1 = _ubInstans->_dms1Q1;
+bool _dms1Q2 = _ubInstans->_dms1Q2;
+bool _dms1Q3 = _ubInstans->_dms1Q3;
+bool _dms1Q4 = _ubInstans->_dms1Q4;
+bool _dms1Q5 = _ubInstans->_dms1Q5;
+bool _dms1Q6 = _ubInstans->_dms1Q6;
+bool _dms1Q7 = _ubInstans->_dms1Q7;
+bool _dms1Q8 = _ubInstans->_dms1Q8;
+bool _dms1Q9 = _ubInstans->_dms1Q9;
+bool _dms1Q10 = _ubInstans->_dms1Q10;
+bool _dms1Q11 = _ubInstans->_dms1Q11;
+bool _dms1Q12 = _ubInstans->_dms1Q12;
+bool _dms1Q13 = _ubInstans->_dms1Q13;
+bool _dms1Q14 = _ubInstans->_dms1Q14;
+bool _dms1Q15 = _ubInstans->_dms1Q15;
+bool _FreeLog1_Q1 = _ubInstans->_FreeLog1_Q1;
+bool _FreeLog1_Q2 = _ubInstans->_FreeLog1_Q2;
+bool _FreeLog1_Q3 = _ubInstans->_FreeLog1_Q3;
+bool _FreeLog1_Q4 = _ubInstans->_FreeLog1_Q4;
+bool _FreeLog1_IArr[15];
+bool _FreeLog1_Q1_StArr[] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+bool _FreeLog1_Q2_StArr[] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+bool _FreeLog1_Q3_StArr[] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+bool _FreeLog1_Q4_StArr[] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0};
+if((ubi_234709184 == 0)){_dms1Q0 = 1;}else {_dms1Q0 = 0;}
+if((ubi_234709184 == 1)){_dms1Q1 = 1;}else {_dms1Q1 = 0;}
+if((ubi_234709184 == 2)){_dms1Q2 = 1;}else {_dms1Q2 = 0;}
+if((ubi_234709184 == 3)){_dms1Q3 = 1;}else {_dms1Q3 = 0;}
+if((ubi_234709184 == 4)){_dms1Q4 = 1;}else {_dms1Q4 = 0;}
+if((ubi_234709184 == 5)){_dms1Q5 = 1;}else {_dms1Q5 = 0;}
+if((ubi_234709184 == 6)){_dms1Q6 = 1;}else {_dms1Q6 = 0;}
+if((ubi_234709184 == 7)){_dms1Q7 = 1;}else {_dms1Q7 = 0;}
+if((ubi_234709184 == 8)){_dms1Q8 = 1;}else {_dms1Q8 = 0;}
+if((ubi_234709184 == 9)){_dms1Q9 = 1;}else {_dms1Q9 = 0;}
+if((ubi_234709184 == 10)){_dms1Q10 = 1;}else {_dms1Q10 = 0;}
+if((ubi_234709184 == 11)){_dms1Q11 = 1;}else {_dms1Q11 = 0;}
+if((ubi_234709184 == 12)){_dms1Q12 = 1;}else {_dms1Q12 = 0;}
+if((ubi_234709184 == 13)){_dms1Q13 = 1;}else {_dms1Q13 = 0;}
+if((ubi_234709184 == 14)){_dms1Q14 = 1;}else {_dms1Q14 = 0;}
+if((ubi_234709184 == 15)){_dms1Q15 = 1;}else {_dms1Q15 = 0;}
+_FreeLog1_IArr[0] = _dms1Q1;
+_FreeLog1_IArr[1] = _dms1Q2;
+_FreeLog1_IArr[2] = _dms1Q3;
+_FreeLog1_IArr[3] = _dms1Q4;
+_FreeLog1_IArr[4] = _dms1Q5;
+_FreeLog1_IArr[5] = _dms1Q6;
+_FreeLog1_IArr[6] = _dms1Q7;
+_FreeLog1_IArr[7] = _dms1Q8;
+_FreeLog1_IArr[8] = _dms1Q9;
+_FreeLog1_IArr[9] = _dms1Q10;
+_FreeLog1_IArr[10] = _dms1Q11;
+_FreeLog1_IArr[11] = _dms1Q12;
+_FreeLog1_IArr[12] = _dms1Q13;
+_FreeLog1_IArr[13] = _dms1Q14;
+_FreeLog1_IArr[14] = _dms1Q15;
+_FreeLog1_Q1 = _checkFreeLogicBlockOutput(_FreeLog1_IArr, 15, _FreeLog1_Q1_StArr, 120); 
+_FreeLog1_Q2 = _checkFreeLogicBlockOutput(_FreeLog1_IArr, 15, _FreeLog1_Q2_StArr, 120); 
+_FreeLog1_Q3 = _checkFreeLogicBlockOutput(_FreeLog1_IArr, 15, _FreeLog1_Q3_StArr, 120); 
+_FreeLog1_Q4 = _checkFreeLogicBlockOutput(_FreeLog1_IArr, 15, _FreeLog1_Q4_StArr, 120); 
+ubo_233133022 = _FreeLog1_Q4;
+ubo_5266079 = _FreeLog1_Q3;
+ubo_74323408 = _FreeLog1_Q2;
+ubo_64046820 = _FreeLog1_Q1;
+ubo_218810585 = _dms1Q0;
+_ubInstans->ubo_218810585 = ubo_218810585;
+_ubInstans->ubo_64046820 = ubo_64046820;
+_ubInstans->ubo_74323408 = ubo_74323408;
+_ubInstans->ubo_5266079 = ubo_5266079;
+_ubInstans->ubo_233133022 = ubo_233133022;
+_ubInstans->_dms1Q0 = _dms1Q0;
+_ubInstans->_dms1Q1 = _dms1Q1;
+_ubInstans->_dms1Q2 = _dms1Q2;
+_ubInstans->_dms1Q3 = _dms1Q3;
+_ubInstans->_dms1Q4 = _dms1Q4;
+_ubInstans->_dms1Q5 = _dms1Q5;
+_ubInstans->_dms1Q6 = _dms1Q6;
+_ubInstans->_dms1Q7 = _dms1Q7;
+_ubInstans->_dms1Q8 = _dms1Q8;
+_ubInstans->_dms1Q9 = _dms1Q9;
+_ubInstans->_dms1Q10 = _dms1Q10;
+_ubInstans->_dms1Q11 = _dms1Q11;
+_ubInstans->_dms1Q12 = _dms1Q12;
+_ubInstans->_dms1Q13 = _dms1Q13;
+_ubInstans->_dms1Q14 = _dms1Q14;
+_ubInstans->_dms1Q15 = _dms1Q15;
+_ubInstans->_FreeLog1_Q1 = _FreeLog1_Q1;
+_ubInstans->_FreeLog1_Q2 = _FreeLog1_Q2;
+_ubInstans->_FreeLog1_Q3 = _FreeLog1_Q3;
+_ubInstans->_FreeLog1_Q4 = _FreeLog1_Q4;
+
+}
