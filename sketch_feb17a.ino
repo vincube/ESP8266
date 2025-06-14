@@ -161,12 +161,10 @@ bool ServoPinExit;
 int ServoPause= 20; // Длительность паузы между сигналами (в миллисекундах)
 bool serialActive= true; // Флаг для отслеживания состояния Serial
 
-#define SERIAL_BUF_SIZE 64
+#define SERIAL_BUF_SIZE 128
 volatile uint8_t serialBuf[SERIAL_BUF_SIZE];
 volatile uint8_t serialHead=0;
-volatile uint8_t serialTail=0;
-volatile uint8_t serialBuf2[SERIAL_BUF_SIZE];
-volatile uint8_t serialHead2=0;
+volatile uint8_t serialTail1=0;
 volatile uint8_t serialTail2=0;
 bool en_trigged;
 bool term1;
@@ -703,25 +701,33 @@ bool isTimerMicros(unsigned long startTime, unsigned long period) {
 void updateSerialBuffer(){
   while(mySerial.available()){
     uint8_t c = mySerial.read();
+    uint8_t nextHead = (serialHead + 1) % SERIAL_BUF_SIZE;
+    if(nextHead == serialTail1 || nextHead == serialTail2){
+      if(serialTail1 == serialTail2){
+        serialTail1 = (serialTail1 + 1) % SERIAL_BUF_SIZE;
+        serialTail2 = serialTail1;
+      }else if(((serialHead - serialTail1 + SERIAL_BUF_SIZE) % SERIAL_BUF_SIZE) >
+               ((serialHead - serialTail2 + SERIAL_BUF_SIZE) % SERIAL_BUF_SIZE)){
+        serialTail1 = (serialTail1 + 1) % SERIAL_BUF_SIZE;
+      }else{
+        serialTail2 = (serialTail2 + 1) % SERIAL_BUF_SIZE;
+      }
+    }
     serialBuf[serialHead] = c;
-    serialHead = (serialHead + 1) % SERIAL_BUF_SIZE;
-    if(serialHead == serialTail){
-      serialTail = (serialTail + 1) % SERIAL_BUF_SIZE;
-    }
-    serialBuf2[serialHead2] = c;
-    serialHead2 = (serialHead2 + 1) % SERIAL_BUF_SIZE;
-    if(serialHead2 == serialTail2){
-      serialTail2 = (serialTail2 + 1) % SERIAL_BUF_SIZE;
-    }
+    serialHead = nextHead;
   }
 }
 
-int bufferedSerialAvailable(){return (serialHead-serialTail+SERIAL_BUF_SIZE)%SERIAL_BUF_SIZE;}
-int bufferedSerialRead(){if(serialHead==serialTail)return -1;uint8_t c=serialBuf[serialTail];serialTail=(serialTail+1)%SERIAL_BUF_SIZE;return c;}
-int bufferedSerialPeek(){if(serialHead==serialTail)return -1;return serialBuf[serialTail];}
-int bufferedSerialAvailable2(){return (serialHead2-serialTail2+SERIAL_BUF_SIZE)%SERIAL_BUF_SIZE;}
-int bufferedSerialRead2(){if(serialHead2==serialTail2)return -1;uint8_t c=serialBuf2[serialTail2];serialTail2=(serialTail2+1)%SERIAL_BUF_SIZE;return c;}
-int bufferedSerialPeek2(){if(serialHead2==serialTail2)return -1;return serialBuf2[serialTail2];}
+int bufferedSerialAvailable(){return (serialHead-serialTail1+SERIAL_BUF_SIZE)%SERIAL_BUF_SIZE;}
+int bufferedSerialRead(){if(serialHead==serialTail1)return -1;uint8_t c=serialBuf[serialTail1];serialTail1=(serialTail1+1)%SERIAL_BUF_SIZE;return c;}
+int bufferedSerialPeek(){if(serialHead==serialTail1)return -1;return serialBuf[serialTail1];}
+int bufferedSerialAvailable2(){return (serialHead-serialTail2+SERIAL_BUF_SIZE)%SERIAL_BUF_SIZE;}
+int bufferedSerialRead2(){if(serialHead==serialTail2)return -1;uint8_t c=serialBuf[serialTail2];serialTail2=(serialTail2+1)%SERIAL_BUF_SIZE;return c;}
+int bufferedSerialPeek2(){if(serialHead==serialTail2)return -1;return serialBuf[serialTail2];}
+
+void serialEvent(){
+  updateSerialBuffer();
+}
 
 void setup()
 {
@@ -837,6 +843,7 @@ attachInterrupt(digitalPinToInterrupt (12), _SCT_2positiveCoutFunction, RISING )
 
 
 
+    Serial.setRxBufferSize(SERIAL_BUF_SIZE);
     mySerial.begin(ESP8266_freeParam_19552900);
 
     delay(500);
