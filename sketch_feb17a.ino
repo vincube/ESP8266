@@ -7,6 +7,7 @@
 #include <ESP8266HTTPUpdateServer.h>
 #include "RT_HW_EXPANDERS.h"
 #include <EEPROM.h>
+#include <Ticker.h>
 struct UB_182885883
 {
 bool ubo_218810585 = 0;
@@ -160,6 +161,13 @@ bool ServoPinExit;
 //int servoPin= 13; // Пин для подключения сервопривода
 int ServoPause= 20; // Длительность паузы между сигналами (в миллисекундах)
 bool serialActive= true; // Флаг для отслеживания состояния Serial
+
+#define SERIAL_BUF_SIZE 256
+volatile uint8_t serialBuf[SERIAL_BUF_SIZE];
+volatile uint16_t serialHead = 0;
+volatile uint16_t serialTailA = 0;
+volatile uint16_t serialTailB = 0;
+Ticker serialTicker;
 bool en_trigged;
 bool term1;
 bool en_reset_1425741_2;
@@ -291,9 +299,30 @@ String   resetControllerFromWebScript = " function rCon(){var x=gX();\nx.onready
 String webServerSettingPageSaveParametrsScript =" function sDat()\n{\nvar x=gX();\nvar r=\"/ee17ecc2-f0b5-46ad-a9cb-f0c7295f99e9?\";\nfor(let i=0;i<sD.c;i++)\n{\nlet e=document.getElementById(sD.d[i].i);\nsD.d[i].e=false;\nif(e!=null)\n{\nif(i>0)\n{\nr=r+\"&\";\n}\nr=r+sD.d[i].i+\"=\"+e.value;\n}\n}\nx.onreadystatechange=function()\n{\nif(x.readyState==4)\n{\n}\n}\nx.open(\"GET\",r,true);\nx.send();}";
 
 String webServerSettingPageAutoSaveParametrsScript =" function sED(id)\n{\nvar x=gX();\nvar r=\"/ee17ecc2-f0b5-46ad-a9cb-f0c7295f99e9?\";\nvar e=document.getElementById(id);\nif(e!=null)\n{\nr=r+id+\"=\"+e.value;\n}\nfor(let i=0;i<sD.c;i++)\n{\nsD.d[i].e=false;\n}\nx.onreadystatechange=function()\n{\nif(x.readyState==4)\n{}\n}\nx.open(\"GET\",r,true);\nx.send();\n}";
-String webSettingPageMainStyle = "body{font-family:'Roboto', sans-serif;margin:0;padding:0;background-color:#f0f2f5;}.menu{display:inline-flex;flex-direction:column;align-items:center;justify-content:center;padding:1%;margin:1%;width:16%;border:1px solid black;border-radius:8px;}.menuItem{font-weight:600;font-family:'Times New Roman', Times, serif;display:block;margin:5px;width:95%;}.header{padding:10px;left:0px;right:0px;top:0px;background:#00FFFF;text-align:center;font-weight:600;font-family:'Times New Roman', Times, serif;font-size:250%;}.content{float:right;width:78%;}.footer{float:left;padding:1%;width:98%;background:#00FFFF;margin-top:1%;text-align:center;font-weight:600;font-family:'Times New Roman', Times, serif;font-size:150%;}.buttonFlp{width:150px;border-radius:20px;background:#459DE5;color:#fff;font-size:12px;cursor:pointer;float:left;padding:1%;margin:1%;border:none;transition:background 0.3s ease;}.buttonFlp:hover{background:#358DE5;}.buttonFlp:focus{outline:none;}.stLab{margin:5px 0;}.stBtn{margin:5px;}.stLig{margin:5px;width:50px;height:50px;border-radius:20%;display:inline-flex;align-items:center;justify-content:center;}.stText{margin:5px 0;}.stIF{margin:5px 0;width:calc(100% - 10px);/* Ширина поля ввода, чтобы оно адаптировалось к контейнеру */    padding:10px;/* Добавьте немного отступа для лучшего восприятия */    border:1px solid #ccc;/* Граница для поля ввода */    border-radius:4px;/* Скругленные углы */    font-size:16px;/* Размер шрифта */}.stIF:focus{border-color:#459DE5;outline:none;}.stWL{height:100px;width:400px;overflow:auto;margin:5px 0;}.stChb, .stRb, .stCB{margin:5px 0;}";
-String parseWebServerResponseScript ="  function pRD(x){\ntry {var r=JSON.parse(x.responseText);}\ncatch (e) {setTimeout(gND(),1000); return;}\nif(r.r < 1){setTimeout(gND(),1000); return;}\nfor(let i=0;i<r.c;i++){uCE(i,r);}\nsetTimeout(gND(),1000);\n}\nfunction uCE(i,r){\nlet e=document.getElementById(r.d[i].i);\nif(e==null){return;}\nif(r.d[i].t==\"T\") { e.innerHTML=r.d[i].v; return;}\nif(r.d[i].t==\"L\") {e.style.backgroundColor=r.d[i].v; return;}\nif(!(cND(r.d[i].i))){return;}\ne.value=r.d[i].v;\nif(r.d[i].t==\"H\")\n{\ne=document.getElementById(r.d[i].i+\"A\");\nif(e!=null){e.checked=(r.d[i].v==\"1\");}\n}\nif(r.d[i].t==\"R\"){\ne=document.getElementsByName(r.d[i].i);\nif(e==null){return;}\nfor(let i1=0;i1<e.length;i1++){\nif(e[i1].value ==r.d[i].v){\ne[i1].checked=true;\n}\nelse {\ne[i1].checked=false;\n}\n}\n}\n}\nfunction cND(id){\nfor(let i=0;i<sD.c;i++){\nif(sD.d[i].i == id){return !sD.d[i].e;}\n}\nreturn false;\n}\nfunction blI(id){\nfor(let i=0;i<sD.c;i++){\nif(sD.d[i].i == id){sD.d[i].e=true; return; }\n}\n}";
 String sendWebServerResponseScriptPart1 =" function gND(){\nlet x=gX();\nx.onreadystatechange=function()\n{\nif(x.readyState==4)\n{pRD(x);\n}\n};\nlet r=\"/7a2677ef-dafe-405a-89a1-be6d0547dfbf?page=";
+String webSettingPageMainStyle =
+  "body{font-family:'Roboto', sans-serif;margin:0;padding:0;background-color:#f0f2f5;}"
+  ".menu{display:inline-flex;flex-direction:column;align-items:center;justify-content:center;padding:1%;margin:1%;width:16%;border:1px solid black;border-radius:8px;}"
+  ".menuItem{font-weight:600;font-family:'Times New Roman', Times, serif;display:block;margin:5px;width:95%;}"
+  ".header{padding:10px;left:0px;right:0px;top:0px;background:#00FFFF;text-align:center;font-weight:600;font-family:'Times New Roman', Times, serif;font-size:250%;}"
+  ".content{float:right;width:78%;}"
+  ".footer{float:left;padding:1%;width:98%;background:#00FFFF;margin-top:1%;text-align:center;font-weight:600;font-family:'Times New Roman', Times, serif;font-size:150%;}"
+  ".buttonFlp{width:150px;border-radius:20px;background:#459DE5;color:#fff;font-size:12px;cursor:pointer;float:left;padding:1%;margin:1%;border:none;transition:background 0.3s ease;}"
+  ".buttonFlp:hover{background:#358DE5;}.buttonFlp:focus{outline:none;}"
+  ".stLab{margin:5px 0;}"
+  ".stBtn{margin:5px;}"
+  ".stLig{margin:5px;width:50px;height:50px;border-radius:20%;display:inline-flex;align-items:center;justify-content:center;}"
+  ".stText{margin:5px 0;}"
+  ".stIF{margin:5px 0;width:calc(100% - 10px);padding:10px;border:1px solid #ccc;border-radius:4px;font-size:16px;}"
+  ".stIF:focus{border-color:#459DE5;outline:none;}"
+  ".stWL{height:100px;width:400px;overflow:auto;margin:5px 0;}"
+  ".stChb, .stRb, .stCB{margin:5px 0;}";
+String parseWebServerResponseScript =
+  "  function pRD(x){\ntry {var r=JSON.parse(x.responseText);}\ncatch (e) {setTimeout(gND(),1000); return;}\nif(r.r < 1){setTimeout(gND(),1000); return;}\nfor(let i=0;i<r.c;i++){uCE(i,r);}\nsetTimeout(gND(),1000);}"
+  "\nfunction uCE(i,r){\nlet e=document.getElementById(r.d[i].i);\nif(e==null){return;}\nif(r.d[i].t==\"T\") { e.innerHTML=r.d[i].v; return;}"
+  "\nif(r.d[i].t==\"L\") {e.style.backgroundColor=r.d[i].v; return;}\nif(!(cND(r.d[i].i))){return;}\ne.value=r.d[i].v;\nif(r.d[i].t==\"H\")\n{\ne=document.getElementById(r.d[i].i+\"A\");\nif(e!=null){e.checked=(r.d[i].v==\"1\");}\n}"
+  "\nif(r.d[i].t==\"R\"){\ne=document.getElementsByName(r.d[i].i);\nif(e==null){return;}\nfor(let i1=0;i1<e.length;i1++){\nif(e[i1].value ==r.d[i].v){\ne[i1].checked=true;}\nelse {\ne[i1].checked=false;}\n}\n}\n}"
+  "\nfunction cND(id){\nfor(let i=0;i<sD.c;i++){\nif(sD.d[i].i == id){return !sD.d[i].e;}\n}\nreturn false;}\nfunction blI(id){\nfor(let i=0;i<sD.c;i++){\nif(sD.d[i].i == id){sD.d[i].e=true; return; }\n}\n}";
 String sendWebServerResponseScriptPart2 ="\";\nx.open(\"GET\",r,true);\nx.send();\n}";
 bool isNeededCommitESP8266EEprom = 0;
 bool _gtv74 = 0;
@@ -669,6 +698,26 @@ bool isTimerMicros(unsigned long startTime, unsigned long period) {
    }
 }
 #endif
+
+
+void ICACHE_RAM_ATTR updateSerialBuffer(){
+  while(mySerial.available()){
+    uint8_t c = mySerial.read();
+    serialBuf[serialHead] = c;
+    uint16_t next = (serialHead + 1) % SERIAL_BUF_SIZE;
+    if(next == serialTailA) serialTailA = (serialTailA + 1) % SERIAL_BUF_SIZE;
+    if(next == serialTailB) serialTailB = (serialTailB + 1) % SERIAL_BUF_SIZE;
+    serialHead = next;
+  }
+}
+
+int bufferedSerialAvailableA(){return (serialHead - serialTailA + SERIAL_BUF_SIZE)%SERIAL_BUF_SIZE;}
+int bufferedSerialReadA(){if(serialHead==serialTailA)return -1;uint8_t c=serialBuf[serialTailA];serialTailA=(serialTailA+1)%SERIAL_BUF_SIZE;return c;}
+int bufferedSerialPeekA(){if(serialHead==serialTailA)return -1;return serialBuf[serialTailA];}
+int bufferedSerialAvailableB(){return (serialHead - serialTailB + SERIAL_BUF_SIZE)%SERIAL_BUF_SIZE;}
+int bufferedSerialReadB(){if(serialHead==serialTailB)return -1;uint8_t c=serialBuf[serialTailB];serialTailB=(serialTailB+1)%SERIAL_BUF_SIZE;return c;}
+int bufferedSerialPeekB(){if(serialHead==serialTailB)return -1;return serialBuf[serialTailB];}
+
 void setup()
 {
 
@@ -784,7 +833,7 @@ attachInterrupt(digitalPinToInterrupt (12), _SCT_2positiveCoutFunction, RISING )
 
 
     mySerial.begin(ESP8266_freeParam_19552900);
-
+    serialTicker.attach_ms(5, updateSerialBuffer);
     delay(500);
     MakeCRC16Table();
 
@@ -842,7 +891,6 @@ RT_HW_Base.shed.frdm.qnt=6;
 }
 void loop()
 {
-
 
 _PWDC = 0;
 ESPControllerWifi_tspWebServer.handleClient();
@@ -966,9 +1014,9 @@ _gtv73=0;
 
 
 
-    while (mySerial.available()) {
+    while (bufferedSerialAvailableA()) {
 
-      char inChar = (char)mySerial.read();
+      char inChar = (char)bufferedSerialReadA();
 
   //  Serial.print(inChar);
 //      myStringLog += inChar;
@@ -1524,10 +1572,10 @@ if (En_Price > 0) {
 
      delay(1000);
 
-     while (mySerial.available() > 0) {
-     uint8_t msg_Hight = mySerial.read();
+     while (bufferedSerialAvailableB() > 0) {
+     uint8_t msg_Hight = bufferedSerialReadB();
      if (msg_Hight == crccont2) {
-    uint8_t msg_Low = mySerial.read();
+    uint8_t msg_Low = bufferedSerialReadB();
     if (msg_Low == crccont1) {
     Permission = 1; 
     } 
@@ -1564,12 +1612,12 @@ if (En_Payment > 0 ) {
 
   }
 
- if (mySerial.available() && Test_mode1 == 0) {
-  char msg = mySerial.read();
+ if (bufferedSerialAvailableB() && Test_mode1 == 0) {
+  char msg = bufferedSerialReadB();
   uint8_t msgValue = msg;
     if (msgValue == 0x13) { //Результат поиска и чтения карты
     _gtv1 = 0; 
-      uint8_t result1 = mySerial.read();
+      uint8_t result1 = bufferedSerialReadB();
       if (result1 == 0x02) {  //0x02 - карта считана успешно
        _gtv1 = 0; //блокировка кнопок
       }
@@ -1578,7 +1626,7 @@ if (En_Payment > 0 ) {
       }
     }
     if (msgValue == 0x14) {
-      uint8_t resultpayment = mySerial.read();
+      uint8_t resultpayment = bufferedSerialReadB();
       if (resultpayment == 0x01) {
           _gtv1 = 0;
         _gtv36 = 0;  //ожидание платежа _wait_payment
@@ -1590,7 +1638,7 @@ if (En_Payment > 0 ) {
     }
 
     if (msgValue == 0xF2) {
-      byte result = mySerial.read();
+      byte result = bufferedSerialReadB();
       if (result == 0x6A) {
         _gtv36 = 0;  //ожидание платежа _wait_payment
       }
@@ -1753,11 +1801,11 @@ if (En_Coin_once > 0 && check_COINMODE == 0)  {
       delay(100);
 
       // Читаем входные байты, если пришёл ack (2 байта = наш CRC)
-      while (mySerial.available() > 0) {
-        byte ackLow = mySerial.read();
+      while (bufferedSerialAvailableB() > 0) {
+        byte ackLow = bufferedSerialReadB();
         // Сначала сверяем ackLow
-        if (ackLow == crcLow && mySerial.available() > 0) {
-          byte ackHigh = mySerial.read();
+        if (ackLow == crcLow && bufferedSerialAvailableB() > 0) {
+          byte ackHigh = bufferedSerialReadB();
           if (ackHigh == crcHigh) {
             // Подтверждение есть
             isDelivered = true;
@@ -2368,8 +2416,8 @@ if (EN_MONEY > 0) {
    _gtv24 = 0; //Payment_on_motor
    _gtv1 = 1;   
  //mySerial.flush();
-//  while (mySerial.available() > 0) {
-//  mySerial.read(); }   
+//  while (bufferedSerialAvailable() > 0) {
+//  bufferedSerialRead(); }   
   uint8_t sendData[] = {0x01, 0x00, 0xEC, 0x82, 0x07};
   mySerial.write(sendData, sizeof(sendData));
   delay(5000);
@@ -2938,11 +2986,11 @@ inputString_crc = _gtv2;
       delay(100);
 
       // Читаем входные байты, если пришёл ack (2 байта = наш CRC)
-      while (mySerial.available() > 0) {
-        byte ackLow = mySerial.read();
+      while (bufferedSerialAvailableB() > 0) {
+        byte ackLow = bufferedSerialReadB();
         // Сначала сверяем ackLow
-        if (ackLow == crcLow && mySerial.available() > 0) {
-          byte ackHigh = mySerial.read();
+        if (ackLow == crcLow && bufferedSerialAvailableB() > 0) {
+          byte ackHigh = bufferedSerialReadB();
           if (ackHigh == crcHigh) {
             // Подтверждение есть
             isDelivered = true;
