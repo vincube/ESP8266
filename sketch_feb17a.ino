@@ -7,6 +7,7 @@
 #include <ESP8266HTTPUpdateServer.h>
 #include "RT_HW_EXPANDERS.h"
 #include <EEPROM.h>
+#include <Ticker.h>
 struct UB_182885883
 {
 bool ubo_218810585 = 0;
@@ -161,13 +162,14 @@ bool ServoPinExit;
 int ServoPause= 20; // Длительность паузы между сигналами (в миллисекундах)
 bool serialActive= true; // Флаг для отслеживания состояния Serial
 
-#define SERIAL_BUF_SIZE 64
+
+#define SERIAL_BUF_SIZE 256
 volatile uint8_t serialBuf[SERIAL_BUF_SIZE];
-volatile uint8_t serialHead=0;
-volatile uint8_t serialTail=0;
-volatile uint8_t serialBuf2[SERIAL_BUF_SIZE];
-volatile uint8_t serialHead2=0;
-volatile uint8_t serialTail2=0;
+volatile uint16_t serialHead = 0;
+volatile uint16_t serialTailA = 0;
+volatile uint16_t serialTailB = 0;
+Ticker serialTicker;
+
 bool en_trigged;
 bool term1;
 bool en_reset_1425741_2;
@@ -700,28 +702,25 @@ bool isTimerMicros(unsigned long startTime, unsigned long period) {
 #endif
 
 
-void updateSerialBuffer(){
+
+void ICACHE_RAM_ATTR updateSerialBuffer(){
   while(mySerial.available()){
     uint8_t c = mySerial.read();
     serialBuf[serialHead] = c;
-    serialHead = (serialHead + 1) % SERIAL_BUF_SIZE;
-    if(serialHead == serialTail){
-      serialTail = (serialTail + 1) % SERIAL_BUF_SIZE;
-    }
-    serialBuf2[serialHead2] = c;
-    serialHead2 = (serialHead2 + 1) % SERIAL_BUF_SIZE;
-    if(serialHead2 == serialTail2){
-      serialTail2 = (serialTail2 + 1) % SERIAL_BUF_SIZE;
-    }
+    uint16_t next = (serialHead + 1) % SERIAL_BUF_SIZE;
+    if(next == serialTailA) serialTailA = (serialTailA + 1) % SERIAL_BUF_SIZE;
+    if(next == serialTailB) serialTailB = (serialTailB + 1) % SERIAL_BUF_SIZE;
+    serialHead = next;
   }
 }
 
-int bufferedSerialAvailable(){return (serialHead-serialTail+SERIAL_BUF_SIZE)%SERIAL_BUF_SIZE;}
-int bufferedSerialRead(){if(serialHead==serialTail)return -1;uint8_t c=serialBuf[serialTail];serialTail=(serialTail+1)%SERIAL_BUF_SIZE;return c;}
-int bufferedSerialPeek(){if(serialHead==serialTail)return -1;return serialBuf[serialTail];}
-int bufferedSerialAvailable2(){return (serialHead2-serialTail2+SERIAL_BUF_SIZE)%SERIAL_BUF_SIZE;}
-int bufferedSerialRead2(){if(serialHead2==serialTail2)return -1;uint8_t c=serialBuf2[serialTail2];serialTail2=(serialTail2+1)%SERIAL_BUF_SIZE;return c;}
-int bufferedSerialPeek2(){if(serialHead2==serialTail2)return -1;return serialBuf2[serialTail2];}
+int bufferedSerialAvailableA(){return (serialHead - serialTailA + SERIAL_BUF_SIZE)%SERIAL_BUF_SIZE;}
+int bufferedSerialReadA(){if(serialHead==serialTailA)return -1;uint8_t c=serialBuf[serialTailA];serialTailA=(serialTailA+1)%SERIAL_BUF_SIZE;return c;}
+int bufferedSerialPeekA(){if(serialHead==serialTailA)return -1;return serialBuf[serialTailA];}
+int bufferedSerialAvailableB(){return (serialHead - serialTailB + SERIAL_BUF_SIZE)%SERIAL_BUF_SIZE;}
+int bufferedSerialReadB(){if(serialHead==serialTailB)return -1;uint8_t c=serialBuf[serialTailB];serialTailB=(serialTailB+1)%SERIAL_BUF_SIZE;return c;}
+int bufferedSerialPeekB(){if(serialHead==serialTailB)return -1;return serialBuf[serialTailB];}
+
 
 void setup()
 {
@@ -838,7 +837,7 @@ attachInterrupt(digitalPinToInterrupt (12), _SCT_2positiveCoutFunction, RISING )
 
 
     mySerial.begin(ESP8266_freeParam_19552900);
-
+    serialTicker.attach_ms(5, updateSerialBuffer);
     delay(500);
     MakeCRC16Table();
 
@@ -894,10 +893,10 @@ RT_HW_Base.shed.back.qnt=5;
 RT_HW_Base.shed.frdm.qnt=6;
 
 }
+
 void loop()
 {
 
-  updateSerialBuffer();
 
 _PWDC = 0;
 ESPControllerWifi_tspWebServer.handleClient();
@@ -962,13 +961,13 @@ _gtv52 = ESP8266_freeParam_70184650;
 
 //Плата:3
 if (_gtv10 == 2) {
-En_UART_T = _Terminal_105251992;
+En_UART_T = 1;
   if (En_UART_T > 0) {
 
-_gtv1 = 1;
+//_gtv1 = 1;
  
 if (_gtv73 > 0) {
-_gtv73=0; 
+//_gtv73=0; 
 }
   if (reboot > 0) {
      ESP.restart();
@@ -1021,9 +1020,11 @@ _gtv73=0;
 
 
 
-    while (bufferedSerialAvailable()) {
 
-      char inChar = (char)bufferedSerialRead();
+    while (bufferedSerialAvailableA()) {
+
+      char inChar = (char)bufferedSerialReadA();
+
 
   //  Serial.print(inChar);
 //      myStringLog += inChar;
@@ -1579,10 +1580,12 @@ if (En_Price > 0) {
 
      delay(1000);
 
-     while (bufferedSerialAvailable2() > 0) {
-     uint8_t msg_Hight = bufferedSerialRead2();
+
+     while (bufferedSerialAvailableB() > 0) {
+     uint8_t msg_Hight = bufferedSerialReadB();
      if (msg_Hight == crccont2) {
-    uint8_t msg_Low = bufferedSerialRead2();
+    uint8_t msg_Low = bufferedSerialReadB();
+
     if (msg_Low == crccont1) {
     Permission = 1; 
     } 
@@ -1619,12 +1622,14 @@ if (En_Payment > 0 ) {
 
   }
 
- if (bufferedSerialAvailable2() && Test_mode1 == 0) {
-  char msg = bufferedSerialRead2();
+
+ if (bufferedSerialAvailableB() && Test_mode1 == 0) {
+  char msg = bufferedSerialReadB();
   uint8_t msgValue = msg;
     if (msgValue == 0x13) { //Результат поиска и чтения карты
     _gtv1 = 0; 
-      uint8_t result1 = bufferedSerialRead2();
+      uint8_t result1 = bufferedSerialReadB();
+
       if (result1 == 0x02) {  //0x02 - карта считана успешно
        _gtv1 = 0; //блокировка кнопок
       }
@@ -1633,11 +1638,13 @@ if (En_Payment > 0 ) {
       }
     }
     if (msgValue == 0x14) {
-      uint8_t resultpayment = bufferedSerialRead2();
+
+      uint8_t resultpayment = bufferedSerialReadB();
+
       if (resultpayment == 0x01) {
           _gtv1 = 0;
         _gtv36 = 0;  //ожидание платежа _wait_payment
-  //      paymant_result = 1;
+        paymant_result = 1;
         }
         else if (resultpayment == 0x00) {
           _gtv36 = 0;  //ожидание платежа _wait_payment
@@ -1645,7 +1652,9 @@ if (En_Payment > 0 ) {
     }
 
     if (msgValue == 0xF2) {
-      byte result = bufferedSerialRead2();
+
+      byte result = bufferedSerialReadB();
+
       if (result == 0x6A) {
         _gtv36 = 0;  //ожидание платежа _wait_payment
       }
@@ -1808,11 +1817,13 @@ if (En_Coin_once > 0 && check_COINMODE == 0)  {
       delay(100);
 
       // Читаем входные байты, если пришёл ack (2 байта = наш CRC)
-      while (bufferedSerialAvailable2() > 0) {
-        byte ackLow = bufferedSerialRead2();
+
+      while (bufferedSerialAvailableB() > 0) {
+        byte ackLow = bufferedSerialReadB();
         // Сначала сверяем ackLow
-        if (ackLow == crcLow && bufferedSerialAvailable2() > 0) {
-          byte ackHigh = bufferedSerialRead2();
+        if (ackLow == crcLow && bufferedSerialAvailableB() > 0) {
+          byte ackHigh = bufferedSerialReadB();
+
           if (ackHigh == crcHigh) {
             // Подтверждение есть
             isDelivered = true;
@@ -2993,11 +3004,13 @@ inputString_crc = _gtv2;
       delay(100);
 
       // Читаем входные байты, если пришёл ack (2 байта = наш CRC)
-      while (bufferedSerialAvailable2() > 0) {
-        byte ackLow = bufferedSerialRead2();
+
+      while (bufferedSerialAvailableB() > 0) {
+        byte ackLow = bufferedSerialReadB();
         // Сначала сверяем ackLow
-        if (ackLow == crcLow && bufferedSerialAvailable2() > 0) {
-          byte ackHigh = bufferedSerialRead2();
+        if (ackLow == crcLow && bufferedSerialAvailableB() > 0) {
+          byte ackHigh = bufferedSerialReadB();
+
           if (ackHigh == crcHigh) {
             // Подтверждение есть
             isDelivered = true;
